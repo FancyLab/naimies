@@ -136,9 +136,9 @@
       <price-per-item
         class="price-per-item"
         data-variant-id="{{ variant.id }}"
-        data-variant-price="{%- if use_currency -%}{{ variant.price | money_with_currency | escape }}{%- else -%}{{ variant.price | money | escape }}{%- endif -%}"
+        data-variant-price="{%- if fcy_hide_prices -%}{%- else -%}{%- if use_currency -%}{{ variant.price | money_with_currency | escape }}{%- else -%}{{ variant.price | money | escape }}{%- endif -%}{%- endif -%}"
         data-min-quantity="{{ variant.quantity_rule.min | default: 1 }}"
-        data-price-breaks="{{ price_breaks_json | strip | escape }}"
+        data-price-breaks="{%- if fcy_hide_prices -%}[]{%- else -%}{{ price_breaks_json | strip | escape }}{%- endif -%}"
         data-at-text="{{ 'content.price_at' | t | escape }}"
         data-each-text="{{ 'content.each_abbreviation' | t | escape }}"
         ref="pricePerItem"

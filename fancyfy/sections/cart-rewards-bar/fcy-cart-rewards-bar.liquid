@@ -1,0 +1,57 @@
+{%- liquid
+  assign threshold = section.settings.threshold | default: 5000
+  assign cart_total = cart.total_price
+  assign is_unlocked = false
+  if cart_total >= threshold
+    assign is_unlocked = true
+  endif
+
+  if is_unlocked == false
+    assign remaining = threshold | minus: cart_total
+    if settings.currency_code_enabled_cart_total
+      assign remaining_formatted = remaining | money_with_currency
+    else
+      assign remaining_formatted = remaining | money
+    endif
+    assign progress_message = section.settings.progress_message | replace: '__REMAINING__', remaining_formatted
+  endif
+
+  assign progress_pct = cart_total | times: 100.0 | divided_by: threshold
+  if progress_pct > 100
+    assign progress_pct = 100
+  endif
+-%}
+
+<fcy-cart-rewards-bar
+  class="fcy-cart-rewards-bar color-{{ section.settings.color_scheme }} shopify-section"
+  id="fcy-cart-rewards-bar-{{ section.id }}"
+  data-threshold="{{ threshold }}"
+  data-reward-type="{{ section.settings.reward_type }}"
+  data-progress-message="{{ section.settings.progress_message | escape }}"
+  data-reward-message="{{ section.settings.reward_message | escape }}"
+  data-currency-with-code="{{ settings.currency_code_enabled_cart_total }}"
+>
+  <div
+    class="fcy-cart-rewards-bar__track"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="{{ threshold }}"
+    aria-valuenow="{{ cart_total }}"
+    aria-label="{{ section.settings.reward_message | escape }}"
+  >
+    <div
+      class="fcy-cart-rewards-bar__fill{% if is_unlocked %} fcy-cart-rewards-bar__fill--complete{% endif %}"
+      style="--fcy-crb-progress: {{ progress_pct }}%;"
+    ></div>
+  </div>
+
+  <p class="fcy-cart-rewards-bar__message" ref="message">
+    {%- if is_unlocked -%}
+      {{ section.settings.reward_message }}
+    {%- else -%}
+      {{ progress_message }}
+    {%- endif -%}
+  </p>
+</fcy-cart-rewards-bar>
+
+{% fcy_schema %}

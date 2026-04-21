@@ -1,0 +1,19 @@
+{%- comment -%} fcy-price-visibility.liquid — ADR-009 §2
+  Computes fcy_hide_prices boolean, available to all templates/sections.
+  Rendered once in layout/theme.liquid (patch P15).
+{%- endcomment -%}
+{%- assign fcy_hide_prices = false -%}
+{%- if settings.fancyfy_hide_prices_enabled -%}
+  {%- assign _fcy_tags = settings.fancyfy_hide_prices_tag | downcase | split: ',' -%}
+  {%- if settings.fancyfy_hide_prices_mode == 'login-required' and customer == blank -%}
+    {%- assign fcy_hide_prices = true -%}
+  {%- elsif customer != blank -%}
+    {%- for _fcy_tag in _fcy_tags -%}
+      {%- assign _fcy_clean = _fcy_tag | strip -%}
+      {%- if customer.tags contains _fcy_clean -%}
+        {%- assign fcy_hide_prices = true -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}

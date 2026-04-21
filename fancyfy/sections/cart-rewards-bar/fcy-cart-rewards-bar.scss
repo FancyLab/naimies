@@ -1,0 +1,41 @@
+// fcy-cart-rewards-bar — F3 v1.0.0
+@use '../../ds/abstracts' as fcy;
+
+.fcy-cart-rewards-bar {
+  display: block;
+  padding: var(--padding-md) 0;
+  border-block-end: var(--style-border-width) solid var(--color-border);
+
+  &__track {
+    height: 6px;
+    background: color-mix(in srgb, var(--color-foreground) 12%, var(--color-background));
+    border-radius: var(--style-border-radius-sm);
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--fcy-crb-progress, 0%);
+    background: var(--color-primary);
+    border-radius: inherit;
+    transition: width var(--animation-speed) var(--animation-easing);
+
+    &--complete {
+      background: var(--color-success, var(--color-primary));
+    }
+  }
+
+  &__message {
+    font-size: var(--font-size--xs);
+    color: var(--color-foreground-muted);
+    margin: var(--margin-xs) 0 0;
+    text-align: center;
+  }
+
+  @include fcy.reduce-motion {
+    &__fill { transition: none; }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "cart-upsell",
+  "version": "1.0.0",
+  "displayName": "Cart Upsell",
+  "files": {
+    "sections": ["fcy-cart-upsell.liquid"],
+    "blocks": ["fcy-cu-item.liquid"]
+  }
+}

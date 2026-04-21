@@ -1,0 +1,24 @@
+{%- comment -%}
+  fcy-ld-item-list — ItemList JSON-LD for collection pages.
+  Rendered from layout/theme.liquid when request.page_type == 'collection'
+  and settings.fancyfy_seo_itemlist_enabled is true.
+{%- endcomment -%}
+{%- if settings.fancyfy_seo_itemlist_enabled and request.page_type == 'collection' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": {{ collection.title | json }},
+      "itemListElement": [
+        {%- for _prod in collection.products limit: 20 -%}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "name": {{ _prod.title | json }},
+            "url": {{ shop.url | append: _prod.url | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

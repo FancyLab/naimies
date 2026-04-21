@@ -1,0 +1,51 @@
+{%- comment -%}
+  fcy-ld-breadcrumb — BreadcrumbList JSON-LD.
+  Supports product, collection, article, blog, page page types.
+  Rendered from layout/theme.liquid when settings.fancyfy_seo_breadcrumb_enabled is true.
+{%- endcomment -%}
+{%- if settings.fancyfy_seo_breadcrumb_enabled -%}
+  {%- assign _fcy_bc_items = '' -%}
+
+  {%- if request.page_type == 'product' -%}
+    {%- capture _fcy_bc_items -%}
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | default: 'Home' | json }}, "item": {{ shop.url | json }} },
+      {%- if collection -%}
+      { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} },
+      { "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- else -%}
+      { "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- endif -%}
+    {%- endcapture -%}
+  {%- elsif request.page_type == 'collection' -%}
+    {%- capture _fcy_bc_items -%}
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | default: 'Home' | json }}, "item": {{ shop.url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
+    {%- endcapture -%}
+  {%- elsif request.page_type == 'article' -%}
+    {%- capture _fcy_bc_items -%}
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | default: 'Home' | json }}, "item": {{ shop.url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ shop.url | append: blog.url | json }} },
+      { "@type": "ListItem", "position": 3, "name": {{ article.title | json }}, "item": {{ shop.url | append: article.url | json }} }
+    {%- endcapture -%}
+  {%- elsif request.page_type == 'blog' -%}
+    {%- capture _fcy_bc_items -%}
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | default: 'Home' | json }}, "item": {{ shop.url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ blog.title | json }}, "item": {{ shop.url | append: blog.url | json }} }
+    {%- endcapture -%}
+  {%- elsif request.page_type == 'page' -%}
+    {%- capture _fcy_bc_items -%}
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.home' | t | default: 'Home' | json }}, "item": {{ shop.url | json }} },
+      { "@type": "ListItem", "position": 2, "name": {{ page.title | json }}, "item": {{ shop.url | append: page.url | json }} }
+    {%- endcapture -%}
+  {%- endif -%}
+
+  {%- if _fcy_bc_items != blank -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [ {{ _fcy_bc_items }} ]
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}

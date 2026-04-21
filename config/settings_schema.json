@@ -2287,5 +2287,151 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Fancyfy — Platform",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Hidden Prices"
+      },
+      {
+        "type": "paragraph",
+        "content": "Hide prices for specific customer tags. See docs/adr/ADR-009-hidden-prices.md for full details."
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_hide_prices_enabled",
+        "label": "Enable hidden prices",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "fancyfy_hide_prices_tag",
+        "label": "Customer tag (comma-separated)",
+        "default": "B2B",
+        "info": "Prices are hidden for customers matching any of these tags. Case-insensitive."
+      },
+      {
+        "type": "select",
+        "id": "fancyfy_hide_prices_mode",
+        "label": "Replacement mode",
+        "options": [
+          { "value": "message", "label": "Show message" },
+          { "value": "blank", "label": "Show blank" },
+          { "value": "login-required", "label": "Show login CTA (anonymous visitors too)" }
+        ],
+        "default": "message"
+      },
+      {
+        "type": "text",
+        "id": "fancyfy_hide_prices_message",
+        "label": "Replacement message",
+        "default": "Contact us for pricing",
+        "visible_if": "{{ settings.fancyfy_hide_prices_mode == 'message' }}"
+      },
+      {
+        "type": "text",
+        "id": "fancyfy_hide_prices_login_text",
+        "label": "Login CTA text",
+        "default": "Log in to see prices",
+        "visible_if": "{{ settings.fancyfy_hide_prices_mode == 'login-required' }}"
+      },
+      {
+        "type": "url",
+        "id": "fancyfy_hide_prices_login_url",
+        "label": "Login CTA URL",
+        "visible_if": "{{ settings.fancyfy_hide_prices_mode == 'login-required' }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_hide_prices_hide_filters",
+        "label": "Hide price filters and sort options",
+        "default": true,
+        "info": "Hides price range filter and price sorting when prices are hidden for the visitor."
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_hide_prices_hide_cart_totals",
+        "label": "Hide cart totals and checkout button",
+        "default": true,
+        "info": "Replaces subtotal, total, and checkout button with a contact CTA in cart and drawer."
+      }
+    ]
+  },
+  {
+    "name": "Fancyfy — SEO",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Organization"
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_org_enabled",
+        "label": "Output Organization JSON-LD",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "fancyfy_seo_org_name",
+        "label": "Organization name",
+        "info": "Defaults to store name if blank."
+      },
+      {
+        "type": "image_picker",
+        "id": "fancyfy_seo_org_logo",
+        "label": "Organization logo"
+      },
+      {
+        "type": "textarea",
+        "id": "fancyfy_seo_org_same_as",
+        "label": "Social profile URLs",
+        "info": "One URL per line (Facebook, Instagram, LinkedIn, etc.)."
+      },
+      {
+        "type": "header",
+        "content": "Website"
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_website_enabled",
+        "label": "Output WebSite JSON-LD",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_website_searchbox",
+        "label": "Include Sitelinks Searchbox",
+        "default": true,
+        "info": "Adds potentialAction to WebSite JSON-LD to enable search box in Google results."
+      },
+      {
+        "type": "header",
+        "content": "Product pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_product_enabled",
+        "label": "Output Product JSON-LD",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Navigation"
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_breadcrumb_enabled",
+        "label": "Output BreadcrumbList JSON-LD",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "fancyfy_seo_itemlist_enabled",
+        "label": "Output ItemList JSON-LD on collection pages",
+        "default": true
+      }
+    ]
   }
 ]

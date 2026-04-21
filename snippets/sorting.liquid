@@ -45,6 +45,7 @@
         {% endif %}
       >
         {% for option in results.sort_options %}
+          {%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters and option.value == 'price-ascending' or option.value == 'price-descending' -%}{%- continue -%}{%- endif -%}
           <option
             value="{{ option.value }}"
             {% if option.value == sort_by %}
@@ -113,6 +114,7 @@
       >
         <div class="sorting-filter__options-inner">
           {% for option in results.sort_options %}
+            {%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters and option.value == 'price-ascending' or option.value == 'price-descending' -%}{%- continue -%}{%- endif -%}
             <label
               for="sort-option-{{ option.value }}-{{ section_id }}"
             >

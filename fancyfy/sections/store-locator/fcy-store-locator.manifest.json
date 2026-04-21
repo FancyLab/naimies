@@ -1,0 +1,8 @@
+{
+  "id": "store-locator",
+  "version": "1.0.0",
+  "displayName": "Store Locator",
+  "files": {
+    "sections": ["fcy-store-locator.liquid"]
+  }
+}

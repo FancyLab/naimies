@@ -1,0 +1,9 @@
+{
+  "id": "cart-downsell",
+  "version": "1.0.0",
+  "displayName": "Cart Downsell",
+  "files": {
+    "sections": ["fcy-cart-downsell.liquid"],
+    "blocks": ["fcy-cds-option.liquid"]
+  }
+}

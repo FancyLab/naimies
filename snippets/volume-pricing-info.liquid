@@ -15,6 +15,7 @@
   %}
 {% enddoc %}
 
+{%- if fcy_hide_prices -%}{%- return -%}{%- endif -%}
 {%- liquid
   assign has_quantity_rules = false
   if variant.quantity_rule.min > 1 or variant.quantity_rule.increment > 1 or variant.quantity_rule.max != null

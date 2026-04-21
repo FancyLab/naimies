@@ -1,0 +1,125 @@
+{%- assign sl_locations = section.settings.metaobject_type | metaobjects: section.settings.locations_limit -%}
+
+<fcy-store-locator
+  class="fcy-store-locator color-{{ section.settings.color_scheme }}"
+  id="fcy-store-locator-{{ section.id }}"
+  data-map-style="{{ section.settings.map_style_url | escape }}"
+  data-map-lat="{{ section.settings.map_lat }}"
+  data-map-lng="{{ section.settings.map_lng }}"
+  data-map-zoom="{{ section.settings.map_zoom }}"
+  data-map-id="fcy-sl-map-{{ section.id }}"
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="fcy-store-locator__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <div class="fcy-store-locator__layout">
+    <div class="fcy-store-locator__sidebar">
+      <div class="fcy-store-locator__search-wrap">
+        <label for="fcy-sl-search-{{ section.id }}" class="visually-hidden">
+          {{ 'store_locator.search_label' | t | default: 'Search stores' }}
+        </label>
+        <input
+          id="fcy-sl-search-{{ section.id }}"
+          class="fcy-store-locator__search"
+          type="search"
+          placeholder="{{ 'store_locator.search_placeholder' | t | default: 'City, address or name…' }}"
+          autocomplete="off"
+        >
+      </div>
+
+      <p class="fcy-store-locator__count" aria-live="polite" aria-atomic="true"></p>
+
+      <ul class="fcy-store-locator__list" role="list">
+        {%- for location in sl_locations -%}
+          {%- assign loc_lat = location.fields.latitude.value -%}
+          {%- assign loc_lng = location.fields.longitude.value -%}
+          <li
+            class="fcy-store-locator__card"
+            data-id="{{ location.id }}"
+            data-lat="{{ loc_lat }}"
+            data-lng="{{ loc_lng }}"
+            data-search="{{ location.fields.name.value | downcase }} {{ location.fields.city.value | downcase }} {{ location.fields.address.value | downcase }}"
+            tabindex="0"
+            role="button"
+            aria-pressed="false"
+          >
+            {%- if location.fields.image.value != blank -%}
+              <div class="fcy-store-locator__card-img-wrap">
+                {{
+                  location.fields.image.value
+                  | image_url: width: 400
+                  | image_tag:
+                    class: 'fcy-store-locator__card-img',
+                    loading: 'lazy',
+                    alt: location.fields.name.value | escape
+                }}
+              </div>
+            {%- endif -%}
+
+            <div class="fcy-store-locator__card-body">
+              <strong class="fcy-store-locator__card-name">{{ location.fields.name.value | escape }}</strong>
+
+              {%- assign addr = location.fields.address.value -%}
+              {%- assign city = location.fields.city.value -%}
+              {%- assign country = location.fields.country.value -%}
+              {%- if addr != blank or city != blank -%}
+                <address class="fcy-store-locator__card-address">
+                  {%- if addr != blank -%}{{ addr | escape }}{%- endif -%}
+                  {%- if addr != blank and city != blank -%}<br>{%- endif -%}
+                  {%- if city != blank -%}{{ city | escape }}{%- endif -%}
+                  {%- if country != blank -%}, {{ country | escape }}{%- endif -%}
+                </address>
+              {%- endif -%}
+
+              {%- if location.fields.phone.value != blank -%}
+                <a
+                  class="fcy-store-locator__card-phone"
+                  href="tel:{{ location.fields.phone.value | remove: ' ' }}"
+                >{{ location.fields.phone.value | escape }}</a>
+              {%- endif -%}
+
+              {%- if location.fields.hours.value != blank -%}
+                <details class="fcy-store-locator__card-hours">
+                  <summary>{{ 'store_locator.opening_hours' | t | default: 'Opening hours' }}</summary>
+                  <p>{{ location.fields.hours.value | escape | newline_to_br }}</p>
+                </details>
+              {%- endif -%}
+
+              {%- if loc_lat != blank and loc_lng != blank -%}
+                <a
+                  class="fcy-store-locator__card-directions"
+                  href="https://www.google.com/maps/dir/?api=1&destination={{ loc_lat }},{{ loc_lng }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ 'store_locator.get_directions' | t | default: 'Get directions' }}
+                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                </a>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- else -%}
+          <li class="fcy-store-locator__empty">
+            {{ 'store_locator.no_stores' | t | default: 'No stores found.' }}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div
+      id="fcy-sl-map-{{ section.id }}"
+      class="fcy-store-locator__map"
+      aria-label="{{ 'store_locator.map_label' | t | default: 'Store locations map' }}"
+      role="img"
+    ></div>
+  </div>
+
+  {%- if section.settings.show_json_ld -%}
+    {%- for location in sl_locations -%}
+      {%- render 'fcy-ld-local-business', location: location -%}
+    {%- endfor -%}
+  {%- endif -%}
+</fcy-store-locator>
+
+{% fcy_schema %}

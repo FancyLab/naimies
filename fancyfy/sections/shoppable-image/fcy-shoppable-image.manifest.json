@@ -1,0 +1,9 @@
+{
+  "id": "shoppable-image",
+  "version": "1.0.0",
+  "displayName": "Shoppable Image",
+  "files": {
+    "sections": ["fcy-shoppable-image.liquid"],
+    "blocks": ["fcy-si-pin.liquid"]
+  }
+}

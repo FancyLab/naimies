@@ -1,0 +1,11 @@
+{%- comment -%} fcy-price-display.liquid — ADR-009 §3
+  Reserved for future use: full-replacement strategy where price.liquid
+  is completely delegated to fcy-price.liquid → fcy-price-display.liquid.
+
+  Current implementation (F2) uses an in-place gate in snippets/price.liquid
+  (patch P1) rather than full delegation. This file exists for the ADR-009
+  compliance record and future migration path.
+
+  If you need to replace price.liquid entirely, move the price rendering
+  HTML here and call it from fcy-price.liquid's else branch.
+{%- endcomment -%}

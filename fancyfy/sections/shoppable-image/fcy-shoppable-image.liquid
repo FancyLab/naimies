@@ -1,0 +1,107 @@
+{%- if section.settings.image != blank -%}
+<fcy-shoppable-image
+  class="fcy-shoppable-image color-{{ section.settings.color_scheme }} shopify-section{% if section.settings.max_width == 'full' %} fcy-shoppable-image--full{% endif %}"
+  id="fcy-shoppable-image-{{ section.id }}"
+>
+  <div
+    class="fcy-shoppable-image__canvas"
+    style="--fcy-si-ratio: {{ section.settings.image_ratio | replace: '/', ' / ' }};"
+  >
+    {{
+      section.settings.image
+      | image_url: width: 2000
+      | image_tag:
+        class: 'fcy-shoppable-image__img',
+        loading: 'lazy',
+        alt: section.settings.image_alt | default: section.settings.image.alt,
+        widths: '600, 800, 1200, 1600, 2000',
+        sizes: '(min-width: 1200px) 1200px, 100vw'
+    }}
+
+    {%- for block in section.blocks -%}
+      {%- assign pin_product = all_products[block.settings.product] -%}
+      {%- if pin_product != blank -%}
+        {%- assign pin_variant = pin_product.selected_or_first_available_variant -%}
+        <button
+          class="fcy-shoppable-image__pin"
+          type="button"
+          style="--pin-x: {{ block.settings.pin_x }}%; --pin-y: {{ block.settings.pin_y }}%;"
+          aria-label="{{ pin_product.title | escape }}"
+          aria-expanded="false"
+          aria-controls="fcy-si-popup-{{ block.id }}"
+          data-block-id="{{ block.id }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="fcy-shoppable-image__pin-icon" aria-hidden="true">+</span>
+        </button>
+
+        <div
+          id="fcy-si-popup-{{ block.id }}"
+          class="fcy-shoppable-image__popup color-{{ section.settings.color_scheme }}"
+          role="tooltip"
+          hidden
+          data-position="{{ block.settings.popup_position | default: 'auto' }}"
+          style="--pin-x: {{ block.settings.pin_x }}%; --pin-y: {{ block.settings.pin_y }}%;"
+        >
+          {%- if pin_product.featured_image -%}
+            <a href="{{ pin_product.url }}" class="fcy-shoppable-image__popup-image-link" tabindex="-1">
+              {{
+                pin_product.featured_image
+                | image_url: width: 240
+                | image_tag:
+                  class: 'fcy-shoppable-image__popup-image',
+                  loading: 'lazy',
+                  alt: pin_product.featured_image.alt | default: pin_product.title
+              }}
+            </a>
+          {%- endif -%}
+          <div class="fcy-shoppable-image__popup-body">
+            <a href="{{ pin_product.url }}" class="fcy-shoppable-image__popup-title">
+              {{ pin_product.title }}
+            </a>
+            <div class="fcy-shoppable-image__popup-price">
+              {%- render 'price', product_resource: pin_product -%}
+            </div>
+            <a href="{{ pin_product.url }}" class="fcy-shoppable-image__popup-link">
+              {{ 'actions.view_product' | t | default: 'View product' }}
+              {{- 'icon-arrow.svg' | inline_asset_content -}}
+            </a>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="fcy-shoppable-image__mobile-list" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign pin_product = all_products[block.settings.product] -%}
+        {%- if pin_product != blank -%}
+          <li class="fcy-shoppable-image__mobile-item">
+            <a href="{{ pin_product.url }}" class="fcy-shoppable-image__mobile-link">
+              {%- if pin_product.featured_image -%}
+                {{
+                  pin_product.featured_image
+                  | image_url: width: 120
+                  | image_tag:
+                    class: 'fcy-shoppable-image__mobile-image',
+                    loading: 'lazy',
+                    alt: pin_product.featured_image.alt | default: pin_product.title
+                }}
+              {%- endif -%}
+              <div>
+                <span class="fcy-shoppable-image__mobile-title">{{ pin_product.title }}</span>
+                <span class="fcy-shoppable-image__mobile-price">
+                  {%- render 'price', product_resource: pin_product -%}
+                </span>
+              </div>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</fcy-shoppable-image>
+{%- endif -%}
+
+{% fcy_schema %}

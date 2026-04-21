@@ -1,0 +1,32 @@
+{% comment %} fcy-ccs-rule — cross-sell rule block {% endcomment %}
+
+{% schema %}
+{
+  "name": "Cross-sell rule",
+  "settings": [
+    {
+      "type": "product",
+      "id": "trigger_product",
+      "label": "Trigger product",
+      "info": "Show this cross-sell when the trigger product is in the cart."
+    },
+    {
+      "type": "product",
+      "id": "suggested_product",
+      "label": "Suggested product"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "placeholder": "Goes well with…"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Add"
+    }
+  ]
+}
+{% endschema %}

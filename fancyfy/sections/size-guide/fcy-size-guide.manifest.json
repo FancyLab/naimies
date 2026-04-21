@@ -1,0 +1,9 @@
+{
+  "id": "size-guide",
+  "version": "1.0.0",
+  "displayName": "Size Guide",
+  "files": {
+    "sections": ["fcy-size-guide.liquid"],
+    "blocks": ["fcy-sg-table.liquid", "fcy-sg-note.liquid", "fcy-sg-image.liquid"]
+  }
+}

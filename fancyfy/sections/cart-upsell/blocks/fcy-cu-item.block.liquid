@@ -1,0 +1,28 @@
+{% comment %} fcy-cu-item — upsell item block {% endcomment %}
+{% comment %} This block is configured in the section's blocks array. {% endcomment %}
+{% comment %} The liquid rendering happens in fcy-cart-upsell.liquid. {% endcomment %}
+
+{% schema %}
+{
+  "name": "Upsell item",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Override title",
+      "info": "Leave blank to use the product title."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Add"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,8 @@
+{
+  "id": "cart-rewards-bar",
+  "version": "1.0.0",
+  "displayName": "Cart Rewards Bar",
+  "files": {
+    "sections": ["fcy-cart-rewards-bar.liquid"]
+  }
+}

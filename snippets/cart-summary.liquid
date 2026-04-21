@@ -7,6 +7,7 @@
 
 <div class="cart-totals">
   {% # We need to keep this node in place to allow morphing to work properly # %}
+  {%- unless fcy_hide_prices and settings.fancyfy_hide_prices_hide_cart_totals -%}
   <div class="cart-totals__original-container cart-primary-typography">
     {%- if cart.cart_level_discount_applications.size > 0 -%}
       <span class="cart-totals__item cart-totals__original">
@@ -37,6 +38,7 @@
       </ul>
     {%- endif -%}
   </div>
+  {%- endunless -%}
 
   {% if settings.show_cart_note or settings.show_add_discount_code %}
     <div class="cart-actions">
@@ -229,23 +231,31 @@
       role="status"
     >
       <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
-      <text-component
-        ref="cartTotal"
-        value="{{ total_price | strip_html }}"
-        class="cart-totals__total-value cart-secondary-typography"
-        {% comment %} Used by payment_terms web component {% endcomment %}
-        data-testid="cart-total-value"
-        data-cart-subtotal
-      >
-        {{ total_price }}
-      </text-component>
+      {%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_cart_totals -%}
+        <span class="cart-totals__total-value fcy-price fcy-price--locked cart-secondary-typography">
+          {%- render 'fcy-price' -%}
+        </span>
+      {%- else -%}
+        <text-component
+          ref="cartTotal"
+          value="{{ total_price | strip_html }}"
+          class="cart-totals__total-value cart-secondary-typography"
+          {% comment %} Used by payment_terms web component {% endcomment %}
+          data-testid="cart-total-value"
+          data-cart-subtotal
+        >
+          {{ total_price }}
+        </text-component>
+      {%- endif -%}
     </span>
     {% if settings.show_installments %}
+      {%- unless fcy_hide_prices and settings.fancyfy_hide_prices_hide_cart_totals -%}
       <span class="cart-totals__item cart-totals__installments">
         {% form 'cart', cart %}
           {{ form | payment_terms }}
         {% endform %}
       </span>
+      {%- endunless -%}
     {% endif %}
     <div class="cart-totals__item cart-totals__tax-note cart-primary-typography">
       {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
@@ -254,31 +264,42 @@
 </div>
 
 <div class="cart__ctas">
-  <button
-    type="submit"
-    id="checkout"
-    class="cart__checkout-button button"
-    name="checkout"
-    {% if cart == empty %}
-      disabled
-    {% endif %}
-    form="cart-form"
-  >
-    <span class="button-text">
-      {{ 'content.checkout' | t }}
-    </span>
-  </button>
-
-  {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
-    <div
-      class="
-        additional-checkout-buttons
-        {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
-      "
+  {%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_cart_totals -%}
+    <a
+      class="cart__checkout-button button"
+      href="{{ settings.fancyfy_hide_prices_login_url | default: '/pages/contact' }}"
     >
-      {{ content_for_additional_checkout_buttons }}
-    </div>
-  {% endif %}
+      <span class="button-text">
+        {{- settings.fancyfy_hide_prices_message | default: 'Contact us for pricing' -}}
+      </span>
+    </a>
+  {%- else -%}
+    <button
+      type="submit"
+      id="checkout"
+      class="cart__checkout-button button"
+      name="checkout"
+      {% if cart == empty %}
+        disabled
+      {% endif %}
+      form="cart-form"
+    >
+      <span class="button-text">
+        {{ 'content.checkout' | t }}
+      </span>
+    </button>
+
+    {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
+      <div
+        class="
+          additional-checkout-buttons
+          {% if accelerated_checkout_buttons_layout == 'vertical' %}additional-checkout-buttons--vertical{% endif %}
+        "
+      >
+        {{ content_for_additional_checkout_buttons }}
+      </div>
+    {% endif %}
+  {%- endif -%}
 </div>
 
 {% stylesheet %}

@@ -1,0 +1,67 @@
+{%- comment -%}
+  Cart downsell: shows alternate cheaper products when cart total is below a threshold.
+  Threshold is in cents (store currency × 100).
+{%- endcomment -%}
+
+{%- assign threshold = section.settings.threshold | default: 5000 -%}
+{%- if cart.total_price < threshold and section.blocks.size > 0 -%}
+<section
+  class="fcy-cart-downsell color-{{ section.settings.color_scheme }} shopify-section"
+  id="fcy-cart-downsell-{{ section.id }}"
+>
+  <div class="fcy-cart-downsell__container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="fcy-cart-downsell__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <ul class="fcy-cart-downsell__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign ds_product = all_products[block.settings.product] -%}
+        {%- if ds_product != blank -%}
+          {%- assign ds_variant = ds_product.selected_or_first_available_variant -%}
+          <li class="fcy-cart-downsell__item" {{ block.shopify_attributes }}>
+            {%- if ds_product.featured_image -%}
+              <a href="{{ ds_product.url }}" class="fcy-cart-downsell__image-link" tabindex="-1" aria-hidden="true">
+                {{
+                  ds_product.featured_image
+                  | image_url: width: 200
+                  | image_tag:
+                    class: 'fcy-cart-downsell__image',
+                    loading: 'lazy',
+                    alt: ds_product.featured_image.alt | default: ds_product.title
+                }}
+              </a>
+            {%- endif -%}
+
+            <div class="fcy-cart-downsell__info">
+              {%- if block.settings.label != blank -%}
+                <p class="fcy-cart-downsell__label">{{ block.settings.label }}</p>
+              {%- endif -%}
+              <a href="{{ ds_product.url }}" class="fcy-cart-downsell__title">{{ ds_product.title }}</a>
+              {%- if section.settings.show_price -%}
+                <div class="fcy-cart-downsell__price">
+                  {%- render 'price', product_resource: ds_product -%}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <form action="{{ routes.cart_add_url }}" method="post" class="fcy-cart-downsell__form">
+              <input type="hidden" name="id" value="{{ ds_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button
+                type="submit"
+                class="fcy-cart-downsell__cta button"
+                {%- unless ds_variant.available %} disabled{%- endunless %}
+              >
+                <span class="button-text">{{ block.settings.cta_label | default: 'Add' }}</span>
+              </button>
+            </form>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+
+{% fcy_schema %}

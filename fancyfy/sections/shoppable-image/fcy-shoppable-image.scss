@@ -1,0 +1,178 @@
+// fcy-shoppable-image — F4 v1.0.0
+@use '../../ds/abstracts' as fcy;
+
+.fcy-shoppable-image {
+  display: block;
+  padding-block: var(--padding-2xl);
+
+  &--full { padding-inline: 0; }
+
+  &__canvas {
+    position: relative;
+    max-width: var(--normal-page-width);
+    margin-inline: auto;
+
+    .fcy-shoppable-image--full & { max-width: none; }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--fcy-si-ratio, auto);
+    object-fit: cover;
+    border-radius: var(--style-border-radius-md);
+
+    .fcy-shoppable-image--full & { border-radius: 0; }
+  }
+
+  &__pin {
+    position: absolute;
+    left: var(--pin-x);
+    top: var(--pin-y);
+    transform: translate(-50%, -50%);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-background);
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition:
+      background-color var(--hover-transition-duration) var(--hover-transition-timing),
+      color var(--hover-transition-duration) var(--hover-transition-timing),
+      transform var(--hover-transition-duration) var(--hover-transition-timing);
+    z-index: 1;
+
+    &:hover, &:focus-visible, &[aria-expanded="true"] {
+      background: var(--color-primary);
+      color: var(--color-background);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-outline-width) solid var(--color-primary);
+      outline-offset: var(--focus-outline-offset);
+    }
+
+    &[aria-expanded="true"] .fcy-shoppable-image__pin-icon {
+      transform: rotate(45deg);
+    }
+  }
+
+  &__pin-icon {
+    display: block;
+    transition: transform var(--hover-transition-duration) var(--hover-transition-timing);
+    user-select: none;
+  }
+
+  &__popup {
+    position: absolute;
+    left: var(--pin-x);
+    top: var(--pin-y);
+    transform: translate(-50%, calc(-100% - 1rem));
+    z-index: 2;
+    background: var(--color-background);
+    border: var(--style-border-width) solid var(--color-border);
+    border-radius: var(--style-border-radius-md);
+    box-shadow: 0 4px 16px rgb(var(--color-shadow-rgb) / 0.15);
+    width: 200px;
+    overflow: hidden;
+
+    &[hidden] { display: none; }
+
+    &[data-position="bottom"] { transform: translate(-50%, 1rem); }
+    &[data-position="left"] { transform: translate(calc(-100% - 1rem), -50%); }
+    &[data-position="right"] { transform: translate(1rem, -50%); }
+  }
+
+  &__popup-image-link { display: block; }
+
+  &__popup-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__popup-body {
+    padding: var(--padding-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs);
+  }
+
+  &__popup-title {
+    font-size: var(--font-size--sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-foreground);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    &:hover { color: var(--color-primary); }
+  }
+
+  &__popup-price { font-size: var(--font-size--xs); }
+
+  &__popup-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-2xs);
+    font-size: var(--font-size--xs);
+    color: var(--color-primary);
+    text-decoration: none;
+
+    .svg-wrapper { width: var(--icon-size-xs); height: var(--icon-size-xs); }
+
+    &:hover { opacity: 0.8; }
+  }
+
+  &__mobile-list {
+    list-style: none;
+    margin: var(--margin-lg) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+
+    @include fcy.respond-to(md) { display: none; }
+  }
+
+  &__mobile-link {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    text-decoration: none;
+    color: var(--color-foreground);
+    padding: var(--padding-xs) 0;
+    border-block-end: var(--style-border-width) solid var(--color-border);
+  }
+
+  &__mobile-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--style-border-radius-sm);
+    flex-shrink: 0;
+  }
+
+  &__mobile-title {
+    display: block;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+    margin-block-end: var(--margin-3xs);
+  }
+
+  &__mobile-price { font-size: var(--font-size--xs); color: var(--color-foreground-muted); }
+
+  @include fcy.reduce-motion {
+    &__pin, &__pin-icon { transition: none !important; }
+  }
+}

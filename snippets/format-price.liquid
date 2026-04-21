@@ -28,4 +28,8 @@
   endif
 %}
 
-{{- formatted_price -}}
+{%- if fcy_hide_prices -%}
+  {{- settings.fancyfy_hide_prices_message -}}
+{%- else -%}
+  {{- formatted_price -}}
+{%- endif -%}

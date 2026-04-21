@@ -1,0 +1,94 @@
+{%- comment -%}
+  Cart cross-sell: shows suggested products when a trigger product is in the cart.
+  Each block defines: trigger product + suggested product + optional message.
+{%- endcomment -%}
+
+{%- liquid
+  assign has_match = false
+  assign matched_blocks = '' | split: ''
+  for block in section.blocks
+    assign trigger = all_products[block.settings.trigger_product]
+    for item in cart.items
+      if item.product.handle == trigger.handle
+        assign has_match = true
+        break
+      endif
+    endfor
+    if has_match
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_match -%}
+<section
+  class="fcy-cart-crosssell color-{{ section.settings.color_scheme }} shopify-section"
+  id="fcy-cart-crosssell-{{ section.id }}"
+>
+  <div class="fcy-cart-crosssell__container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="fcy-cart-crosssell__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <ul class="fcy-cart-crosssell__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign trigger = all_products[block.settings.trigger_product] -%}
+        {%- assign is_trigger_in_cart = false -%}
+        {%- for item in cart.items -%}
+          {%- if item.product.handle == trigger.handle -%}
+            {%- assign is_trigger_in_cart = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if is_trigger_in_cart -%}
+          {%- assign suggestion = all_products[block.settings.suggested_product] -%}
+          {%- if suggestion != blank -%}
+            {%- assign suggestion_variant = suggestion.selected_or_first_available_variant -%}
+            <li class="fcy-cart-crosssell__item" {{ block.shopify_attributes }}>
+              {%- if suggestion.featured_image -%}
+                <a href="{{ suggestion.url }}" class="fcy-cart-crosssell__image-link" tabindex="-1" aria-hidden="true">
+                  {{
+                    suggestion.featured_image
+                    | image_url: width: 200
+                    | image_tag:
+                      class: 'fcy-cart-crosssell__image',
+                      loading: 'lazy',
+                      alt: suggestion.featured_image.alt | default: suggestion.title
+                  }}
+                </a>
+              {%- endif -%}
+
+              <div class="fcy-cart-crosssell__info">
+                {%- if block.settings.message != blank -%}
+                  <p class="fcy-cart-crosssell__message">{{ block.settings.message }}</p>
+                {%- endif -%}
+                <a href="{{ suggestion.url }}" class="fcy-cart-crosssell__title">{{ suggestion.title }}</a>
+                {%- if section.settings.show_price -%}
+                  <div class="fcy-cart-crosssell__price">
+                    {%- render 'price', product_resource: suggestion -%}
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <form action="{{ routes.cart_add_url }}" method="post" class="fcy-cart-crosssell__form">
+                <input type="hidden" name="id" value="{{ suggestion_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button
+                  type="submit"
+                  class="fcy-cart-crosssell__cta button"
+                  {%- unless suggestion_variant.available %} disabled{%- endunless %}
+                >
+                  <span class="button-text">{{ block.settings.cta_label | default: 'Add' }}</span>
+                </button>
+              </form>
+            </li>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+
+{% fcy_schema %}

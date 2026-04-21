@@ -1,0 +1,53 @@
+{%- comment -%}
+  fcy-ld-local-business — renders LocalBusiness JSON-LD for a store_location metaobject.
+  Params:
+    location  {Metaobject}  — the store_location metaobject instance
+{%- endcomment -%}
+{%- if location != blank -%}
+  {%- assign loc_lat = location.fields.latitude.value -%}
+  {%- assign loc_lng = location.fields.longitude.value -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": {{ location.fields.name.value | json }},
+      {%- if location.fields.description.value != blank -%}
+      "description": {{ location.fields.description.value | json }},
+      {%- endif -%}
+      {%- if location.fields.phone.value != blank -%}
+      "telephone": {{ location.fields.phone.value | json }},
+      {%- endif -%}
+      {%- if location.fields.image.value != blank -%}
+      "image": {{ location.fields.image.value | image_url: width: 800 | prepend: 'https:' | json }},
+      {%- endif -%}
+      "address": {
+        "@type": "PostalAddress"
+        {%- if location.fields.address.value != blank -%},
+        "streetAddress": {{ location.fields.address.value | json }}
+        {%- endif -%}
+        {%- if location.fields.city.value != blank -%},
+        "addressLocality": {{ location.fields.city.value | json }}
+        {%- endif -%}
+        {%- if location.fields.state.value != blank -%},
+        "addressRegion": {{ location.fields.state.value | json }}
+        {%- endif -%}
+        {%- if location.fields.postal_code.value != blank -%},
+        "postalCode": {{ location.fields.postal_code.value | json }}
+        {%- endif -%}
+        {%- if location.fields.country.value != blank -%},
+        "addressCountry": {{ location.fields.country.value | json }}
+        {%- endif -%}
+      }
+      {%- if loc_lat != blank and loc_lng != blank -%},
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": {{ loc_lat }},
+        "longitude": {{ loc_lng }}
+      }
+      {%- endif -%}
+      {%- if location.fields.hours.value != blank -%},
+      "openingHours": {{ location.fields.hours.value | json }}
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}

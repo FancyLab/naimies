@@ -1,0 +1,54 @@
+{%- comment -%} fcy-price.liquid — ADR-009 §3
+  Renders the price replacement when fcy_hide_prices is true.
+  Called from patched price surfaces (P1, P4, P5, etc.) inside
+  {%- if fcy_hide_prices -%}…{%- endif -%} gates.
+{%- endcomment -%}
+{%- case settings.fancyfy_hide_prices_mode -%}
+  {%- when 'blank' -%}
+    <span class="fcy-price fcy-price--hidden" aria-hidden="true"></span>
+  {%- when 'login-required' -%}
+    <a
+      class="fcy-price fcy-price--locked"
+      href="{{ settings.fancyfy_hide_prices_login_url | default: routes.account_login_url }}"
+      aria-label="{{ settings.fancyfy_hide_prices_login_text | escape }}"
+    >
+      {{- settings.fancyfy_hide_prices_login_text -}}
+    </a>
+  {%- else -%}
+    <span
+      class="fcy-price fcy-price--locked"
+      aria-label="{{ settings.fancyfy_hide_prices_message | escape }}"
+    >
+      {{- settings.fancyfy_hide_prices_message -}}
+    </span>
+{%- endcase -%}
+
+{% stylesheet %}
+  .fcy-price--hidden {
+    display: none;
+  }
+
+  .fcy-price--locked {
+    display: inline-block;
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground-muted);
+    font-style: italic;
+  }
+
+  a.fcy-price--locked {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a.fcy-price--locked:hover,
+  a.fcy-price--locked:focus-visible {
+    opacity: 0.8;
+  }
+
+  a.fcy-price--locked:focus-visible {
+    outline: var(--focus-outline-width) solid var(--color-primary);
+    outline-offset: var(--focus-outline-offset);
+  }
+{% endstylesheet %}

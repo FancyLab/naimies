@@ -38,26 +38,26 @@ Derived from the Horizon audit (`docs/horizon-audit.md` §2). Strategy per ADR-0
 
 | # | File | Anchor | Patch | Status |
 |---|---|---|---|---|
-| P1 | `snippets/price.liquid` | Top of file (before first money filter) | Gate on `fcy_hide_prices`; render `fcy-price` replacement when true | planned (F2) |
-| P2 | `snippets/format-price.liquid` | Top of file (lines 20–22 core formatter) | Same gating pattern | planned (F2) |
-| P3 | `snippets/unit-price.liquid` | Top of file | Same gating pattern | planned (F2) |
-| P4 | `snippets/cart-products.liquid` | Line 81 subtotal; 266–294 unit-price wrapper; 357–372 line-total | Wrap each price region with the visibility check | planned (F2) |
-| P5 | `snippets/cart-summary.liquid` | 12–20 subtotal; 226–253 totals container | Wrap; replace `#checkout` CTA with Contact CTA when hidden | planned (F2) |
-| P6 | `snippets/volume-pricing-info.liquid` | Entire snippet output | Wrap whole output | planned (F2) |
+| P1 | `snippets/price.liquid` | Top of file (before first money filter) | Gate on `fcy_hide_prices`; render `fcy-price` replacement when true | live |
+| P2 | `snippets/format-price.liquid` | Top of file (lines 20–22 core formatter) | Same gating pattern | live |
+| P3 | `snippets/unit-price.liquid` | Top of file | Same gating pattern | live |
+| P4 | `snippets/cart-products.liquid` | Line 81 subtotal; 266–294 unit-price wrapper; 357–372 line-total | Wrap each price region with the visibility check | live |
+| P5 | `snippets/cart-summary.liquid` | 12–20 subtotal; 226–253 totals container | Wrap; replace `#checkout` CTA with Contact CTA when hidden | live |
+| P6 | `snippets/volume-pricing-info.liquid` | Entire snippet output | Wrap whole output | live |
 
 **Selective patches** (complementary surfaces not covered by centrals):
 
 | # | File | Anchor | Patch | Status |
 |---|---|---|---|---|
-| P7 | `blocks/buy-buttons.liquid` | 121–212 `<volume-pricing>` container | Wrap the entire volume-pricing block | planned (F2) |
-| P8 | `blocks/price.liquid` | 70–82 installments div | Wrap installments (price itself is via P1) | planned (F2) |
-| P9 | `blocks/_featured-product-price.liquid` | 5–14, 37–39 inline "From $X" | Wrap these specific lines (P1 covers line 40) | planned (F2) |
-| P10 | `snippets/quantity-selector.liquid` | 116, 139, 152, 154 `data-variant-price` attributes + quantity-break JSON | Attribute-level: empty string or sentinel when `fcy_hide_prices` | planned (F2) |
-| P11 | `snippets/meta-tags.liquid` | 77 `<meta property="product:price:amount">` | Omit the meta when hidden (avoid OG leak) | planned (F2) |
-| P12 | `snippets/price-filter.liquid` | Top of file | `{% if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters %}{% return %}{% endif %}` | planned (F2) |
-| P13 | `snippets/filter-remove-buttons.liquid` | 31–39 price branch | Wrap the price-type branch only | planned (F2) |
-| P14 | `snippets/sorting.liquid` | Sort options loop | `{% continue %}` on `price-ascending` / `price-descending` | planned (F2) |
-| P15 | `layout/theme.liquid` | Before the closing `</head>` tag (or at top of the hidden-prices dependency chain) | `{%- render 'fcy-price-visibility' -%}` to compute `fcy_hide_prices` once | planned (F2) |
+| P7 | `blocks/buy-buttons.liquid` | 121–212 `<volume-pricing>` container | Wrap the entire volume-pricing block | deferred |
+| P8 | `blocks/price.liquid` | 70–82 installments div | Wrap installments (price itself is via P1) | live |
+| P9 | `blocks/_featured-product-price.liquid` | 5–14, 37–39 inline "From $X" | Wrap these specific lines (P1 covers line 40) | live |
+| P10 | `snippets/quantity-selector.liquid` | 116, 139, 152, 154 `data-variant-price` attributes + quantity-break JSON | Attribute-level: empty string or sentinel when `fcy_hide_prices` | live |
+| P11 | `snippets/meta-tags.liquid` | 77 `<meta property="product:price:amount">` | Omit the meta when hidden (avoid OG leak) | live |
+| P12 | `snippets/price-filter.liquid` | Top of file | `{% if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters %}{% return %}{% endif %}` | live |
+| P13 | `snippets/filter-remove-buttons.liquid` | 31–39 price branch | Wrap the price-type branch only | live |
+| P14 | `snippets/sorting.liquid` | Sort options loop | `{% continue %}` on `price-ascending` / `price-descending` | live |
+| P15 | `layout/theme.liquid` | After `{%- render 'fcy-tokens' -%}` | `{%- render 'fcy-price-visibility' -%}` to compute `fcy_hide_prices` once | live |
 
 **Out of scope (explicitly not patched):**
 
@@ -66,6 +66,16 @@ Derived from the Horizon audit (`docs/horizon-audit.md` §2). Strategy per ADR-0
 | `templates/gift_card.liquid:55,137` | Gift card balance — customer-owned value, not product price. |
 | `snippets/tax-info.liquid` | No literal price; only tax copy. |
 | Checkout pages | Not part of the theme. Merchants wanting hard enforcement use a Shopify Function (ADR-009 §6). |
+
+---
+
+## ADR-008 Schema.org patches (F6)
+
+Additive render calls in `layout/theme.liquid`. Each snippet self-guards on its own `settings.fancyfy_seo_*` setting; no Horizon logic is altered.
+
+| # | File | Anchor | Patch | Status |
+|---|---|---|---|---|
+| S3 | `layout/theme.liquid` | After `{%- render 'meta-tags' -%}` | Five `{%- render 'fcy-ld-*' -%}` calls (organization, website, product, breadcrumb, item-list) | live |
 
 ---
 
@@ -88,3 +98,5 @@ A merge PR that fails any of these steps blocks until resolved.
 |---|---|
 | 2026-04-21 | F0 landed S1, S2 (structural patches to `layout/theme.liquid`). |
 | 2026-04-21 | P1–P15 enumerated from audit (§2 of `docs/horizon-audit.md`). Status: `planned` pending F2. |
+| 2026-04-21 | F2 landed: P1–P6 `live`, P8–P15 `live`, P7 `deferred` (P6 covers volume-pricing display; buy-buttons.liquid patch deferred to next client need). |
+| 2026-04-21 | F6 landed: S3 `live` — Schema.org render calls added after `meta-tags` in `layout/theme.liquid`. |

@@ -1,0 +1,46 @@
+{% comment %} fcy-si-pin — product pin block {% endcomment %}
+
+{% schema %}
+{
+  "name": "Product pin",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "range",
+      "id": "pin_x",
+      "label": "Horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 0.5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "pin_y",
+      "label": "Vertical position",
+      "min": 0,
+      "max": 100,
+      "step": 0.5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "select",
+      "id": "popup_position",
+      "label": "Popup direction",
+      "options": [
+        { "value": "auto", "label": "Auto (above pin)" },
+        { "value": "bottom", "label": "Below pin" },
+        { "value": "left", "label": "Left of pin" },
+        { "value": "right", "label": "Right of pin" }
+      ],
+      "default": "auto"
+    }
+  ]
+}
+{% endschema %}

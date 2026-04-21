@@ -1,0 +1,47 @@
+{%- comment -%}
+  fcy-ld-product — Product JSON-LD for product pages.
+  Rendered from layout/theme.liquid only when request.page_type == 'product'.
+  Guards: fcy_hide_prices suppresses price data in offers.
+{%- endcomment -%}
+{%- if settings.fancyfy_seo_product_enabled and request.page_type == 'product' -%}
+  {%- assign _fcy_p = product -%}
+  {%- assign _fcy_v = _fcy_p.selected_or_first_available_variant -%}
+
+  {%- capture _fcy_offers -%}
+    {%- for _v in _fcy_p.variants -%}
+      {
+        "@type": "Offer",
+        "url": {{ shop.url | append: _fcy_p.url | append: '?variant=' | append: _v.id | json }},
+        {%- unless fcy_hide_prices -%}
+        "price": {{ _v.price | divided_by: 100.0 | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        {%- endunless -%}
+        "availability": {%- if _v.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
+        "itemCondition": "https://schema.org/NewCondition"
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- assign _fcy_images = _fcy_p.images | map: 'src' -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ _fcy_p.title | json }},
+      "description": {{ _fcy_p.description | strip_html | truncatewords: 60 | json }},
+      "url": {{ shop.url | append: _fcy_p.url | json }},
+      "sku": {{ _fcy_v.sku | default: _fcy_p.id | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": {{ _fcy_p.vendor | json }}
+      },
+      "image": [
+        {%- for _img in _fcy_p.images limit: 5 -%}
+          {{ _img | image_url: width: 1200 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "offers": [ {{ _fcy_offers }} ]
+    }
+  </script>
+{%- endif -%}

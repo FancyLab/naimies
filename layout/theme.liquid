@@ -25,6 +25,12 @@
     {% endif %}
 
     {%- render 'meta-tags' -%}
+    {%- comment -%} fancyfy — Schema.org JSON-LD (ADR-008) {%- endcomment -%}
+    {%- render 'fcy-ld-organization' -%}
+    {%- render 'fcy-ld-website' -%}
+    {%- render 'fcy-ld-product' -%}
+    {%- render 'fcy-ld-breadcrumb' -%}
+    {%- render 'fcy-ld-item-list' -%}
     {%- render 'stylesheets' -%}
     {%- render 'fonts' -%}
     {%- render 'scripts' -%}
@@ -33,6 +39,7 @@
 
     {%- comment -%} fancyfy — see ADR-001 §2 addendum & ADR-003 §3 {%- endcomment -%}
     {%- render 'fcy-tokens' -%}
+    {%- render 'fcy-price-visibility' -%}
 
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}

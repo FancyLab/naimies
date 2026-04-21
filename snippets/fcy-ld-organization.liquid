@@ -1,0 +1,31 @@
+{%- comment -%}
+  fcy-ld-organization — Organization JSON-LD. Rendered once from layout/theme.liquid.
+  Guards: settings.fancyfy_seo_org_enabled must be true.
+{%- endcomment -%}
+{%- if settings.fancyfy_seo_org_enabled and settings.fancyfy_seo_org_name != blank -%}
+  {%- assign _fcy_org_same_as = settings.fancyfy_seo_org_same_as | strip | split: newline -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ settings.fancyfy_seo_org_name | json }},
+      "url": {{ shop.url | json }}
+      {%- if settings.fancyfy_seo_org_logo != blank -%},
+      "logo": {
+        "@type": "ImageObject",
+        "url": {{ settings.fancyfy_seo_org_logo | image_url: width: 600 | prepend: 'https:' | json }}
+      }
+      {%- endif -%}
+      {%- if _fcy_org_same_as.size > 0 -%},
+      "sameAs": [
+        {%- for _url in _fcy_org_same_as -%}
+          {%- assign _url_clean = _url | strip -%}
+          {%- if _url_clean != blank -%}
+            {{ _url_clean | json }}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}

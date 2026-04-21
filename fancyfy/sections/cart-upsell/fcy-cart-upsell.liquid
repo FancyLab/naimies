@@ -1,0 +1,63 @@
+{%- if section.blocks.size > 0 -%}
+<section
+  class="fcy-cart-upsell color-{{ section.settings.color_scheme }} shopify-section"
+  id="fcy-cart-upsell-{{ section.id }}"
+>
+  <div class="fcy-cart-upsell__container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="fcy-cart-upsell__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <ul class="fcy-cart-upsell__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign upsell_product = all_products[block.settings.product] -%}
+        {%- if upsell_product != blank -%}
+          {%- assign upsell_variant = upsell_product.selected_or_first_available_variant -%}
+          <li class="fcy-cart-upsell__item" {{ block.shopify_attributes }}>
+            {%- if upsell_product.featured_image -%}
+              <a href="{{ upsell_product.url }}" class="fcy-cart-upsell__image-link" tabindex="-1" aria-hidden="true">
+                {{
+                  upsell_product.featured_image
+                  | image_url: width: 200
+                  | image_tag:
+                    class: 'fcy-cart-upsell__image',
+                    loading: 'lazy',
+                    alt: upsell_product.featured_image.alt | default: upsell_product.title
+                }}
+              </a>
+            {%- endif -%}
+
+            <div class="fcy-cart-upsell__info">
+              <a href="{{ upsell_product.url }}" class="fcy-cart-upsell__title">
+                {{ block.settings.heading | default: upsell_product.title }}
+              </a>
+
+              {%- if section.settings.show_price -%}
+                <div class="fcy-cart-upsell__price">
+                  {%- render 'price', product_resource: upsell_product -%}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <form action="{{ routes.cart_add_url }}" method="post" class="fcy-cart-upsell__form">
+              <input type="hidden" name="id" value="{{ upsell_variant.id }}">
+              <input type="hidden" name="quantity" value="1">
+              <button
+                type="submit"
+                class="fcy-cart-upsell__cta button"
+                {%- unless upsell_variant.available %} disabled{%- endunless %}
+              >
+                <span class="button-text">
+                  {{ block.settings.cta_label | default: 'Add' }}
+                </span>
+              </button>
+            </form>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+
+{% fcy_schema %}

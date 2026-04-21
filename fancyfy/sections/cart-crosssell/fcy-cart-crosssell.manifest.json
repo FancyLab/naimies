@@ -1,0 +1,9 @@
+{
+  "id": "cart-crosssell",
+  "version": "1.0.0",
+  "displayName": "Cart Cross-sell",
+  "files": {
+    "sections": ["fcy-cart-crosssell.liquid"],
+    "blocks": ["fcy-ccs-rule.liquid"]
+  }
+}

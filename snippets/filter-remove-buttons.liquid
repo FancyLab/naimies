@@ -11,6 +11,7 @@
 
 <div class="facets-remove facets-remove--mobile-and-vertical">
   {%- for filter in filters -%}
+    {%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters and filter.type == 'price_range' -%}{%- continue -%}{%- endif -%}
     {% if filter.type == 'price_range' and filter.min_value.value != null or filter.max_value.value != null %}
       {%- liquid
         assign is_active = true

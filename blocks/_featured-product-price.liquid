@@ -34,15 +34,17 @@
   "
   {{ block.shopify_attributes }}
 >
-  {% if product.price_varies and has_swatches_only == false and price_min != blank %}
+  {%- if fcy_hide_prices -%}
+    {%- render 'fcy-price' -%}
+  {%- elsif product.price_varies and has_swatches_only == false and price_min != blank -%}
     <span class="price">{{ display_price }}</span>
-  {% else %}
+  {%- else -%}
     {% render 'price',
       show_unit_price: true,
       show_sale_price_first: block_settings.show_sale_price_first,
       product_resource: product
     %}
-  {% endif %}
+  {%- endif -%}
 </product-price>
 
 {% schema %}

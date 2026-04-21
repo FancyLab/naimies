@@ -72,6 +72,9 @@
   endif
 -%}
 
+{%- if fcy_hide_prices -%}
+  {%- render 'fcy-price' -%}
+{%- else -%}
 <div ref="priceContainer">
   {% if has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}
@@ -123,4 +126,5 @@
 </div>
 {%- if has_volume_pricing -%}
   <small ref="volumePricingNote" class="volume-pricing-note">{{ 'content.volume_pricing_available' | t }}</small>
+{%- endif -%}
 {%- endif -%}

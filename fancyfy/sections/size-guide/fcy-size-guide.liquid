@@ -1,0 +1,81 @@
+{%- assign modal_id = 'fcy-size-guide-modal-' | append: section.id -%}
+
+<fcy-size-guide
+  class="fcy-size-guide color-{{ section.settings.color_scheme }} shopify-section"
+  id="fcy-size-guide-{{ section.id }}"
+  data-modal-id="{{ modal_id }}"
+>
+  <button
+    class="fcy-size-guide__trigger button button--secondary{% if section.settings.trigger_position == 'floating' %} fcy-size-guide__trigger--floating{% endif %}"
+    type="button"
+    aria-haspopup="dialog"
+    aria-controls="{{ modal_id }}"
+    aria-expanded="false"
+    ref="trigger"
+  >
+    <span class="svg-wrapper">
+      {{- 'icon-ruler.svg' | inline_asset_content -}}
+    </span>
+    {{ section.settings.trigger_label }}
+  </button>
+
+  <dialog
+    id="{{ modal_id }}"
+    class="fcy-size-guide__modal color-{{ section.settings.color_scheme }}"
+    aria-modal="true"
+    aria-labelledby="{{ modal_id }}-heading"
+    ref="modal"
+  >
+    <div class="fcy-size-guide__modal-inner">
+      <div class="fcy-size-guide__modal-header">
+        <h2
+          id="{{ modal_id }}-heading"
+          class="fcy-size-guide__modal-heading"
+        >
+          {{ section.settings.modal_heading }}
+        </h2>
+        <button
+          class="fcy-size-guide__close button-unstyled"
+          type="button"
+          aria-label="{{ 'accessibility.close' | t }}"
+          ref="closeButton"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+      </div>
+
+      <div class="fcy-size-guide__modal-body">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'fcy-sg-table' -%}
+              <div class="fcy-size-guide__block fcy-size-guide__block--table" {{ block.shopify_attributes }}>
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="fcy-size-guide__block-heading">{{ block.settings.heading }}</h3>
+                {%- endif -%}
+                <div class="fcy-size-guide__table rte">{{ block.settings.table_html }}</div>
+              </div>
+            {%- when 'fcy-sg-note' -%}
+              <div class="fcy-size-guide__block fcy-size-guide__block--note" {{ block.shopify_attributes }}>
+                <div class="fcy-size-guide__note rte">{{ block.settings.content }}</div>
+              </div>
+            {%- when 'fcy-sg-image' -%}
+              {%- if block.settings.image != blank -%}
+                <div class="fcy-size-guide__block fcy-size-guide__block--image" {{ block.shopify_attributes }}>
+                  {{
+                    block.settings.image
+                    | image_url: width: 800
+                    | image_tag:
+                      class: 'fcy-size-guide__block-image',
+                      loading: 'lazy',
+                      alt: block.settings.alt | default: block.settings.image.alt
+                  }}
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </dialog>
+</fcy-size-guide>
+
+{% fcy_schema %}
