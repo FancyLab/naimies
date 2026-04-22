@@ -535,49 +535,68 @@
               },
               "blocks": {}
             },
-            "fcy_badge_shipping": {
-              "type": "fcy-info-badge",
+            "group_shipping_returns": {
+              "type": "group",
+              "name": "Shipping & returns badges",
               "settings": {
-                "icon": "truck",
-                "icon_size": 20,
-                "title": "Free International Shipping over $120",
-                "description": "",
-                "link": "",
-                "link_label": "",
-                "open_in_new_tab": false,
-                "variant": "inline",
-                "emphasis": "none",
-                "tone": "scheme",
-                "inherit_color_scheme": true,
-                "color_scheme": "scheme-1",
-                "padding-block-start": 8,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "fcy_badge_returns": {
-              "type": "fcy-info-badge",
-              "settings": {
-                "icon": "return",
-                "icon_size": 20,
-                "title": "Free Returns Within 30 days",
-                "description": "",
-                "link": "",
-                "link_label": "",
-                "open_in_new_tab": false,
-                "variant": "inline",
-                "emphasis": "none",
-                "tone": "scheme",
-                "inherit_color_scheme": true,
-                "color_scheme": "scheme-1",
-                "padding-block-start": 0,
+                "content_direction": "row",
+                "vertical_on_mobile": false,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "gap": 16,
+                "width": "fill",
+                "padding-block-start": 4,
                 "padding-block-end": 4,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
-              "blocks": {}
+              "blocks": {
+                "fcy_badge_shipping": {
+                  "type": "fcy-info-badge",
+                  "settings": {
+                    "icon": "truck",
+                    "icon_size": 18,
+                    "title": "Free International Shipping over $120",
+                    "description": "",
+                    "link": "",
+                    "link_label": "",
+                    "open_in_new_tab": false,
+                    "variant": "inline",
+                    "emphasis": "none",
+                    "tone": "scheme",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "fcy_badge_returns": {
+                  "type": "fcy-info-badge",
+                  "settings": {
+                    "icon": "return",
+                    "icon_size": 18,
+                    "title": "Free Returns Within 30 days",
+                    "description": "",
+                    "link": "",
+                    "link_label": "",
+                    "open_in_new_tab": false,
+                    "variant": "inline",
+                    "emphasis": "none",
+                    "tone": "scheme",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": ["fcy_badge_shipping", "fcy_badge_returns"]
             },
             "fcy_badge_limited_offer": {
               "type": "fcy-info-badge",
@@ -771,8 +790,7 @@
             "group_delivery_options",
             "buy_buttons_eYQEYi",
             "text_aEtTtq",
-            "fcy_badge_shipping",
-            "fcy_badge_returns",
+            "group_shipping_returns",
             "fcy_badge_limited_offer",
             "fcy_lookbook_main",
             "fcy_payment_security_main",
