@@ -135,11 +135,17 @@
                       data-key="variant-option-pill"
                     ></span>
                   {% endif %}
-                  <span
-                    class="variant-option__button-label__text"
-                    data-key="variant-option-text"
-                  >
-                    {{- product_option_value | escape -}}
+                  <span class="variant-option__button-label__text-group">
+                    <span
+                      class="variant-option__button-label__text"
+                      data-key="variant-option-text"
+                    >
+                      {{- product_option_value | escape -}}
+                    </span>
+                    {%- assign size_sublabel = product_option_value.variant.metafields.custom.size_label -%}
+                    {%- if size_sublabel != blank -%}
+                      <span class="variant-option__button-label__sublabel">{{ size_sublabel | escape }}</span>
+                    {%- endif -%}
                   </span>
                 {% endif %}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
@@ -306,5 +312,20 @@
   .variant-picker--right .variant-option {
     text-align: right;
     justify-content: right;
+  }
+
+  .variant-option__button-label__text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .variant-option__button-label__sublabel {
+    font-size: 0.625rem;
+    line-height: 1.2;
+    white-space: normal;
+    text-align: center;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
   }
 {% endstylesheet %}
