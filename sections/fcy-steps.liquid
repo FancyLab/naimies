@@ -1,0 +1,98 @@
+{%- comment -%}
+  fcy-steps — "How to use" numbered step list.
+
+  Fixed 5 slots (1–5). Hide a step by clearing its title.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+{%- assign alignment = s.alignment | default: 'center' -%}
+
+<div class="fcy-steps-wrapper color-{{ s.color_scheme }}">
+  <fcy-steps
+    class="fcy-steps section"
+    data-alignment="{{ alignment }}"
+    style="{% render 'spacing-style', settings: s %}"
+  >
+    {%- if s.heading != blank -%}
+      <h2 class="fcy-steps__heading" style="text-align: {{ alignment }};">
+        {{ s.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    <ol class="fcy-steps__list" role="list">
+      {%- for i in (1..5) -%}
+        {%- assign title_key = 'step_' | append: i | append: '_title' -%}
+        {%- assign body_key = 'step_' | append: i | append: '_body' -%}
+        {%- assign title = s[title_key] -%}
+        {%- assign body = s[body_key] -%}
+        {%- if title != blank -%}
+          <li class="fcy-steps__item">
+            <span class="fcy-steps__number" aria-hidden="true">{{ i }}.</span>
+            <div class="fcy-steps__content">
+              <p class="fcy-steps__title">{{ title | escape }}</p>
+              {%- if body != blank -%}
+                <div class="fcy-steps__body">{{ body }}</div>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ol>
+  </fcy-steps>
+</div>
+
+{% schema %}
+{
+  "name": "Fancyfy — Steps",
+  "tag": "section",
+  "class": "fcy-steps-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How to Use" },
+
+    { "type": "header", "content": "Step 1" },
+    { "type": "text",     "id": "step_1_title", "label": "Title", "default": "Bake" },
+    { "type": "richtext", "id": "step_1_body",  "label": "Body",  "default": "<p>Apply a generous layer of powder to areas you want to brighten or set, such as under the eyes, T-zone, smile lines, and chin.</p>" },
+
+    { "type": "header", "content": "Step 2" },
+    { "type": "text",     "id": "step_2_title", "label": "Title", "default": "Set" },
+    { "type": "richtext", "id": "step_2_body",  "label": "Body",  "default": "<p>Lightly sweep powder across the face to lock in makeup and control shine. Focus on oily areas like the forehead, nose, and around the eyes.</p>" },
+
+    { "type": "header", "content": "Step 3" },
+    { "type": "text",     "id": "step_3_title", "label": "Title", "default": "Touch up" },
+    { "type": "richtext", "id": "step_3_body",  "label": "Body",  "default": "<p>Use throughout the day to refresh makeup and reduce shine without buildup. Perfect for quick on-the-go mattifying.</p>" },
+
+    { "type": "header", "content": "Step 4 (optional)" },
+    { "type": "text",     "id": "step_4_title", "label": "Title", "default": "" },
+    { "type": "richtext", "id": "step_4_body",  "label": "Body",  "default": "" },
+
+    { "type": "header", "content": "Step 5 (optional)" },
+    { "type": "text",     "id": "step_5_title", "label": "Title", "default": "" },
+    { "type": "richtext", "id": "step_5_body",  "label": "Body",  "default": "" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "alignment", "label": "Heading alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding-block-end",   "label": "Bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Fancyfy — Steps",
+      "category": "Fancyfy"
+    }
+  ]
+}
+{% endschema %}

@@ -651,10 +651,541 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "fcy_highlights_main": {
+      "type": "fcy-highlights",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "Highlights",
+        "item_1_icon": "check_box",
+        "item_1_label": "Matte",
+        "item_2_icon": "silhouette",
+        "item_2_label": "Medium Coverage",
+        "item_3_icon": "stopwatch",
+        "item_3_label": "Long Wearing",
+        "item_4_icon": "fire",
+        "item_4_label": "Oily Skin",
+        "item_5_icon": "perfume",
+        "item_5_label": "Liquid Formulation",
+        "icon_size": 28,
+        "gap": 32,
+        "alignment": "center",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 24,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
+    },
+    "product_recs_use_with": {
+      "type": "product-recommendations",
+      "name": "Use it with",
+      "blocks": {
+        "text_header_use_with": {
+          "type": "text",
+          "name": "Header",
+          "settings": {
+            "text": "<h3>Use it With</h3>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h4",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 12,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "solid",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 12,
+            "padding-block-start": 12,
+            "padding-block-end": 12,
+            "padding-inline-start": 12,
+            "padding-inline-end": 12
+          },
+          "blocks": {
+            "pc_gallery_uw": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_title_uw": {
+              "type": "product-title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 8,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_price_uw": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 2,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_review_uw": {
+              "type": "review",
+              "settings": {
+                "alignment": "left",
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "pc_gallery_uw",
+            "pc_title_uw",
+            "pc_price_uw",
+            "pc_review_uw"
+          ]
+        }
+      },
+      "block_order": [
+        "text_header_use_with"
+      ],
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "complementary",
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "max_products": 3,
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 16,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 20,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 24
+      }
+    },
+    "fcy_steps_howto": {
+      "type": "fcy-steps",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "heading": "How to Use",
+        "step_1_title": "Bake",
+        "step_1_body": "<p>Apply a generous layer of powder to areas you want to brighten or set, such as under the eyes, T-zone, smile lines, and chin.</p>",
+        "step_2_title": "Set",
+        "step_2_body": "<p>Lightly sweep powder across the face to lock in makeup and control shine. Focus on oily areas like the forehead, nose, and around the eyes.</p>",
+        "step_3_title": "Touch up",
+        "step_3_body": "<p>Use throughout the day to refresh makeup and reduce shine without buildup. Perfect for quick on-the-go mattifying.</p>",
+        "step_4_title": "",
+        "step_4_body": "",
+        "step_5_title": "",
+        "step_5_body": "",
+        "alignment": "center",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 48,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
+    },
+    "product_recs_similar": {
+      "type": "product-recommendations",
+      "name": "Similar products",
+      "blocks": {
+        "text_header_similar": {
+          "type": "text",
+          "name": "Header",
+          "settings": {
+            "text": "<h3>Similar Products</h3>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h4",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 12,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "pc_gallery_sim": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_title_sim": {
+              "type": "product-title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 6,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_price_sim": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "0.9375rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 2,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "pc_review_sim": {
+              "type": "review",
+              "settings": {
+                "alignment": "left",
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "pc_gallery_sim",
+            "pc_title_sim",
+            "pc_price_sim",
+            "pc_review_sim"
+          ]
+        }
+      },
+      "block_order": [
+        "text_header_similar"
+      ],
+      "settings": {
+        "product": "{{ closest.product }}",
+        "recommendation_type": "related",
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "max_products": 5,
+        "columns": 5,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 24,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 48
+      }
+    },
+    "fcy_feature_duo_love_it": {
+      "type": "fcy-feature-duo",
+      "blocks": {
+        "media_comparison": {
+          "type": "comparison-slider",
+          "settings": {
+            "slider_style": "horizontal",
+            "image_ratio": "adapt",
+            "show_text": true,
+            "before_text": "Before",
+            "after_text": "After 6 hours",
+            "text_preset": "h6",
+            "text_position_horizontal": "bottom",
+            "text_background": true,
+            "text_background_color": "#ffffffcc",
+            "text_corner_radius": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 12,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "media_comparison"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Why You'll Love It",
+        "body": "<p>Our award-winning setting powder combines cutting-edge technology with clean, skin-caring ingredients. The weightless formula creates a soft-focus finish that photographs beautifully—perfect for everyday wear or special events.</p>",
+        "check_icon": "check_box",
+        "item_1": "<p><strong>Invisible Finish:</strong> Ultra-fine milled powder blurs imperfections without looking cakey or settling into fine lines.</p>",
+        "item_2": "<p><strong>All-Day Wear:</strong> Locks in your makeup for 16+ hours while controlling oil and shine.</p>",
+        "item_3": "<p><strong>Skin-Perfecting Formula:</strong> Infused with light-reflecting pearls and skin-loving ingredients for a luminous, airbrushed effect.</p>",
+        "item_4": "<p><strong>Universal Shade Range:</strong> 8 expertly curated shades designed to complement every skin tone without oxidising or changing color.</p>",
+        "item_5": "",
+        "cta_label": "Buy it now",
+        "cta_link": "",
+        "layout": "image-right",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 72,
+        "padding-block-end": 72,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
+    },
+    "fcy_faq_main": {
+      "type": "fcy-faq",
+      "blocks": {
+        "faq_row_1": {
+          "type": "_accordion-row",
+          "settings": { "heading": "What skin types is this powder best for?", "open_by_default": true },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>This lightweight setting powder works especially well for normal, combination, and oily skin. It helps control shine while keeping makeup looking smooth and fresh.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        },
+        "faq_row_2": {
+          "type": "_accordion-row",
+          "settings": { "heading": "Will this powder cause flashback in photos?", "open_by_default": false },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>No. The formula is photo-optimised and avoids the white cast you see with silica-heavy powders.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        },
+        "faq_row_3": {
+          "type": "_accordion-row",
+          "settings": { "heading": "How do I choose the right shade?", "open_by_default": false },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>Translucent works across the shade range; tinted options are matched to our foundation family — match to your undertone, not your depth.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        },
+        "faq_row_4": {
+          "type": "_accordion-row",
+          "settings": { "heading": "Can I use this powder for baking?", "open_by_default": false },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>Yes. Apply a generous layer under the eyes and T-zone, let it sit for 5–10 minutes, then dust away the excess.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        },
+        "faq_row_5": {
+          "type": "_accordion-row",
+          "settings": { "heading": "How often should I replace this product?", "open_by_default": false },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>Every 12–18 months once opened, depending on use and storage.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        },
+        "faq_row_6": {
+          "type": "_accordion-row",
+          "settings": { "heading": "Is this product suitable for professional makeup kits?", "open_by_default": false },
+          "blocks": {
+            "t": { "type": "text", "settings": { "text": "<p>Absolutely — it's a favorite in artist kits for long-wear editorial and bridal work.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          },
+          "block_order": ["t"]
+        }
+      },
+      "block_order": [
+        "faq_row_1",
+        "faq_row_2",
+        "faq_row_3",
+        "faq_row_4",
+        "faq_row_5",
+        "faq_row_6"
+      ],
+      "settings": {
+        "heading": "Discover more in our FAQ",
+        "heading_alignment": "center",
+        "contact_prompt": "Still have questions?",
+        "contact_label": "Contact Us",
+        "contact_link": "/pages/contact",
+        "footer_alignment": "center",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 64,
+        "padding-block-end": 64,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
+    },
+    "fcy_feature_duo_about_brand": {
+      "type": "fcy-feature-duo",
+      "blocks": {
+        "media_image": {
+          "type": "image",
+          "settings": {
+            "image_ratio": "landscape",
+            "image_width": "100",
+            "image_fit": "cover",
+            "image_radius": 12,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "media_image"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "About the Brand",
+        "body": "<p>Huda Beauty is known for creating high-performance makeup designed for both professional artists and everyday beauty lovers. Focused on innovation, texture, and long-wear results, the brand offers products that enhance confidence while supporting creative expression.</p>",
+        "check_icon": "check_box",
+        "item_1": "<p><strong>Ultra-Fine Texture:</strong> Helps blur imperfections and smooth the look of skin without feeling heavy.</p>",
+        "item_2": "<p><strong>Long-Wear Performance:</strong> Supports makeup longevity through busy days, events, and on-set use.</p>",
+        "item_3": "<p><strong>Photo-Friendly Finish:</strong> Designed to reduce flashback and maintain a natural appearance under different lighting conditions.</p>",
+        "item_4": "",
+        "item_5": "",
+        "cta_label": "",
+        "cta_link": "",
+        "layout": "image-left",
+        "color_scheme": "scheme-2",
+        "padding-block-start": 72,
+        "padding-block-end": 72,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
     }
   },
   "order": [
     "main",
-    "product_recommendations_qggXJq"
+    "fcy_highlights_main",
+    "product_recs_use_with",
+    "fcy_steps_howto",
+    "product_recs_similar",
+    "fcy_feature_duo_love_it",
+    "product_recommendations_qggXJq",
+    "fcy_faq_main",
+    "fcy_feature_duo_about_brand"
   ]
 }
