@@ -23,6 +23,51 @@
   </div>
 {%- endif -%}
 
+{% stylesheet %}
+  .fcy-spec-table {
+    width: 100%;
+  }
+
+  .fcy-spec-table__heading {
+    margin: 0 0 var(--gap-xs);
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-spec-table__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size--xs);
+    line-height: 1.5;
+  }
+
+  .fcy-spec-table__row {
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .fcy-spec-table__row:last-child {
+    border-block-end: none;
+  }
+
+  .fcy-spec-table__label {
+    padding-block: var(--gap-xs);
+    padding-inline-end: var(--gap-sm);
+    font-weight: 600;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-align: start;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .fcy-spec-table__value {
+    padding-block: var(--gap-xs);
+    color: var(--color-foreground);
+    text-align: start;
+    vertical-align: top;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "Fancyfy — Spec table",
