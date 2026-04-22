@@ -370,7 +370,7 @@
                 "link_label": "",
                 "open_in_new_tab": false,
                 "variant": "inline",
-                "emphasis": "filled",
+                "emphasis": "outline",
                 "tone": "success",
                 "inherit_color_scheme": true,
                 "color_scheme": "scheme-1",
