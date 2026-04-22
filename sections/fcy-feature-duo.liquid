@@ -21,6 +21,7 @@
   style="
     --fcy-duo-icon-size: {{ s.check_icon_size | default: 18 }}px;
     --fcy-duo-media-ratio: {{ s.media_aspect_ratio | default: '4/5' }};
+    {%- if s.background_color != blank and s.background_color != 'rgba(0,0,0,0)' -%}background-color: {{ s.background_color }};{%- endif -%}
     {% render 'spacing-style', settings: s %}
   "
 >
@@ -81,7 +82,7 @@
         {%- endif -%}
       </div>
 
-      <div class="fcy-feature-duo__media" data-media-type="{{ media_type }}">
+      <div class="fcy-feature-duo__media" data-media-type="{{ media_type }}" data-ratio="{{ s.media_aspect_ratio | default: '4/5' }}">
         {%- case media_type -%}
           {%- when 'image' -%}
             {%- if s.image != blank -%}
@@ -269,6 +270,7 @@
   .fcy-feature-duo__heading {
     margin: 0;
     font-family: var(--font-heading--family);
+    color: var(--color-foreground-heading);
   }
 
   .fcy-feature-duo__body {
@@ -340,6 +342,16 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .fcy-feature-duo__media[data-ratio='auto'] {
+    aspect-ratio: unset;
+  }
+
+  .fcy-feature-duo__media[data-ratio='auto'] .fcy-feature-duo__image,
+  .fcy-feature-duo__media[data-ratio='auto'] .fcy-feature-duo__video {
+    height: auto;
+    object-fit: unset;
   }
 
   .fcy-feature-duo__placeholder {
@@ -491,6 +503,7 @@
 
     { "type": "header", "content": "Color" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "color", "id": "background_color", "label": "Custom background color (overrides scheme)" },
 
     { "type": "header", "content": "Padding" },
     { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
