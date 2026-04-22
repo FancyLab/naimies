@@ -597,25 +597,55 @@
       "type": "fcy-highlights",
       "settings": {
         "heading": "Highlights",
-        "item_1_icon": "check_box",
-        "item_1_label": "Matte",
-        "item_2_icon": "silhouette",
-        "item_2_label": "Medium Coverage",
-        "item_3_icon": "stopwatch",
-        "item_3_label": "Long Wearing",
-        "item_4_icon": "fire",
-        "item_4_label": "Oily Skin",
-        "item_5_icon": "perfume",
-        "item_5_label": "Liquid Formulation",
-        "icon_size": 28,
-        "gap": 32,
+        "icon_size": 32,
+        "gap": 40,
         "alignment": "center",
         "color_scheme": "scheme-1",
+        "icon_bg_color": "#F6F6F8",
         "padding-block-start": 48,
         "padding-block-end": 24,
         "padding-inline-start": 0,
         "padding-inline-end": 0
-      }
+      },
+      "blocks": {
+        "highlight_1": {
+          "type": "item",
+          "settings": {
+            "label": "Matte"
+          }
+        },
+        "highlight_2": {
+          "type": "item",
+          "settings": {
+            "label": "Medium Coverage"
+          }
+        },
+        "highlight_3": {
+          "type": "item",
+          "settings": {
+            "label": "Long Wearing"
+          }
+        },
+        "highlight_4": {
+          "type": "item",
+          "settings": {
+            "label": "Oily Skin"
+          }
+        },
+        "highlight_5": {
+          "type": "item",
+          "settings": {
+            "label": "Liquid Formulation"
+          }
+        }
+      },
+      "block_order": [
+        "highlight_1",
+        "highlight_2",
+        "highlight_3",
+        "highlight_4",
+        "highlight_5"
+      ]
     },
     "product_recs_use_with": {
       "type": "product-recommendations",
