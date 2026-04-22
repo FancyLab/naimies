@@ -5,6 +5,54 @@
   block_shopify_attributes: block.shopify_attributes
 %}
 
+{%- if block.settings.gallery_badge_enabled
+    and product.metafields.custom.is_most_loved
+    and block.settings.gallery_badge_label != blank -%}
+  <div class="fcy-gallery-badge fcy-gallery-badge--{{ block.settings.gallery_badge_tone }}">
+    {{- block.settings.gallery_badge_label | escape -}}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  /* Make the media column a stacking context so the badge can be absolutely positioned */
+  .product-information__media {
+    position: relative;
+  }
+
+  .fcy-gallery-badge {
+    position: absolute;
+    z-index: var(--layer-raised);
+    bottom: var(--gap-sm, 0.75rem);
+    left: var(--gap-sm, 0.75rem);
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375em 0.875em;
+    border-radius: var(--style-border-radius-pills);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: 500;
+    line-height: 1.4;
+    pointer-events: none;
+  }
+
+  .fcy-gallery-badge--accent {
+    background-color: var(--fcy-color-accent);
+    color: var(--fcy-color-accent-contrast);
+  }
+
+  .fcy-gallery-badge--success {
+    background-color: var(--fcy-color-success-surface);
+    color: var(--fcy-color-success-surface-contrast);
+  }
+
+  @media screen and (max-width: 749px) {
+    .fcy-gallery-badge {
+      bottom: var(--gap-xs, 0.5rem);
+      left: var(--gap-xs, 0.5rem);
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.product_media",
