@@ -4,22 +4,28 @@
   Repeater block pattern: up to 6 items, each with an image_picker icon
   (accepts SVG or raster) and a text label. Icons render inside a circular
   tinted badge whose size scales with the icon_size setting.
+
+  Padding is handled by the Horizon .section.spacing-style pattern on the
+  outer wrapper, so the section respects the same vertical rhythm as the
+  rest of the page.
 {%- endcomment -%}
 
 {%- assign s = section.settings -%}
 {%- assign alignment = s.alignment | default: 'center' -%}
 {%- assign icon_size = s.icon_size | default: 32 -%}
 
-<div class="fcy-highlights-wrapper color-{{ s.color_scheme }}">
+<div
+  class="fcy-highlights-wrapper section spacing-style color-{{ s.color_scheme }}"
+  style="
+    --fcy-highlights-gap: {{ s.gap | default: 64 }}px;
+    --fcy-highlights-icon-size: {{ icon_size }}px;
+    --fcy-highlights-icon-bg: {{ s.icon_bg_color }};
+    {% render 'spacing-style', settings: s %}
+  "
+>
   <fcy-highlights
-    class="fcy-highlights section"
+    class="fcy-highlights"
     data-alignment="{{ alignment }}"
-    style="
-      --fcy-highlights-gap: {{ s.gap | default: 40 }}px;
-      --fcy-highlights-icon-size: {{ icon_size }}px;
-      --fcy-highlights-icon-bg: {{ s.icon_bg_color }};
-      {% render 'spacing-style', settings: s %}
-    "
   >
     {%- if s.heading != blank -%}
       <h2 class="fcy-highlights__heading" style="text-align: {{ alignment }};">
@@ -59,13 +65,10 @@
 
 {% stylesheet %}
   fcy-highlights {
-    display: block;
-  }
-
-  .fcy-highlights {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   .fcy-highlights__heading {
@@ -77,7 +80,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--fcy-highlights-gap, 40px);
+    gap: var(--fcy-highlights-gap, 64px);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -112,7 +115,7 @@
 
   .fcy-highlights__label {
     font-family: var(--font-body--family);
-    font-size: var(--font-size--xs);
+    font-size: var(--font-size--sm);
     color: var(--color-foreground);
   }
 {% endstylesheet %}
@@ -139,7 +142,7 @@
 
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 56, "step": 2, "unit": "px", "default": 32 },
-    { "type": "range", "id": "gap", "label": "Gap between items", "min": 8, "max": 80, "step": 2, "unit": "px", "default": 40 },
+    { "type": "range", "id": "gap", "label": "Gap between items", "min": 8, "max": 120, "step": 4, "unit": "px", "default": 64 },
     { "type": "select", "id": "alignment", "label": "Alignment",
       "options": [
         { "value": "flex-start", "label": "Left" },
