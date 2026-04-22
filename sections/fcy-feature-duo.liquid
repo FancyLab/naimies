@@ -3,19 +3,26 @@
   body, checklist, CTA). Used twice on the PDP ("Why You'll Love It" with
   a before/after slider, and "About the Brand" reversed on a bg scheme).
 
-  Media is a child theme block — merchant drops Horizon's `image` OR
-  `comparison-slider` via the block picker. Content is section-level
-  settings (fixed-slot checklist, CTA).
+  Media is merchant-selected inline (image, video, or before/after slider)
+  rather than via blocks, so the three variants can expose tailored
+  settings (e.g. before/after pill labels) directly on the section.
 {%- endcomment -%}
 
 {%- assign s = section.settings -%}
 {%- assign layout = s.layout | default: 'image-right' -%}
+{%- assign media_type = s.media_type | default: 'image' -%}
 
-<div class="fcy-feature-duo-wrapper color-{{ s.color_scheme }}">
+{%- if media_type == 'before-after' -%}
+  <script src="{{ 'comparison-slider.js' | asset_url }}" type="module" fetchpriority="low"></script>
+{%- endif -%}
+
+<div
+  class="fcy-feature-duo-wrapper section spacing-style color-{{ s.color_scheme }}"
+  style="{% render 'spacing-style', settings: s %}"
+>
   <fcy-feature-duo
-    class="fcy-feature-duo section"
+    class="fcy-feature-duo"
     data-layout="{{ layout }}"
-    style="{% render 'spacing-style', settings: s %}"
   >
     <div class="fcy-feature-duo__grid" data-layout="{{ layout }}">
       <div class="fcy-feature-duo__content">
@@ -57,12 +64,316 @@
         {%- endif -%}
       </div>
 
-      <div class="fcy-feature-duo__media" data-testid="feature-duo-media">
-        {% content_for 'blocks' %}
+      <div class="fcy-feature-duo__media" data-media-type="{{ media_type }}">
+        {%- case media_type -%}
+          {%- when 'image' -%}
+            {%- if s.image != blank -%}
+              {{
+                s.image
+                | image_url: width: 1600
+                | image_tag:
+                    class: 'fcy-feature-duo__image',
+                    alt: s.image.alt,
+                    sizes: '(min-width: 750px) 50vw, 100vw',
+                    widths: '480, 720, 960, 1200, 1600',
+                    loading: 'lazy'
+              }}
+            {%- else -%}
+              <div class="fcy-feature-duo__placeholder">
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'fcy-feature-duo__placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'video' -%}
+            {%- if s.video != blank -%}
+              {{
+                s.video
+                | video_tag:
+                    image_size: '1600x',
+                    autoplay: s.video_autoplay,
+                    loop: s.video_loop,
+                    muted: true,
+                    controls: s.video_controls,
+                    class: 'fcy-feature-duo__video'
+              }}
+            {%- else -%}
+              <div class="fcy-feature-duo__placeholder">
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'fcy-feature-duo__placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+          {%- when 'before-after' -%}
+            {%- assign ratio = 1 -%}
+            {%- if s.before_image != blank -%}
+              {%- assign ratio = s.before_image.aspect_ratio -%}
+            {%- elsif s.after_image != blank -%}
+              {%- assign ratio = s.after_image.aspect_ratio -%}
+            {%- endif -%}
+            {%- if ratio == 0 or ratio == null -%}
+              {%- assign ratio = 1 -%}
+            {%- endif -%}
+            <comparison-slider-component
+              class="fcy-feature-duo__compare comparison-slider comparison-slider--horizontal"
+              style="--ratio: {{ ratio }};"
+            >
+              <div class="comparison-slider__container">
+                <div
+                  class="comparison-slider__media-wrapper"
+                  ref="mediaWrapper"
+                  data-comparison-slider
+                  data-orientation="horizontal"
+                  data-text-position="end"
+                >
+                  <div class="comparison-slider__layer comparison-slider__layer--before">
+                    {%- if s.before_image != blank -%}
+                      {{
+                        s.before_image
+                        | image_url: width: 1600
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'before-image',
+                          alt: s.before_image.alt,
+                          sizes: '(min-width: 750px) 50vw, 100vw',
+                          widths: '480, 720, 960, 1200, 1600',
+                          ref: 'beforeImage'
+                      }}
+                    {%- else -%}
+                      <div class="comparison-slider__placeholder before-image" ref="beforeImage">
+                        {{ 'product-apparel-1' | placeholder_svg_tag }}
+                      </div>
+                    {%- endif -%}
+                    {%- if s.show_labels and s.before_label != blank -%}
+                      <div class="fcy-feature-duo__pill fcy-feature-duo__pill--before">
+                        <span>{{ s.before_label | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="comparison-slider__layer comparison-slider__layer--after">
+                    {%- if s.after_image != blank -%}
+                      {{
+                        s.after_image
+                        | image_url: width: 1600
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'after-image',
+                          alt: s.after_image.alt,
+                          sizes: '(min-width: 750px) 50vw, 100vw',
+                          widths: '480, 720, 960, 1200, 1600',
+                          ref: 'afterImage'
+                      }}
+                    {%- else -%}
+                      <div class="comparison-slider__placeholder after-image" ref="afterImage">
+                        {{ 'product-apparel-2' | placeholder_svg_tag }}
+                      </div>
+                    {%- endif -%}
+                    {%- if s.show_labels and s.after_label != blank -%}
+                      <div class="fcy-feature-duo__pill fcy-feature-duo__pill--after">
+                        <span>{{ s.after_label | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  <div class="cs-slider__handle">
+                    <span class="cs-slider__chevron">
+                      {{- 'icon-chevron-left.svg' | inline_asset_content -}}
+                    </span>
+                    <span class="cs-slider__chevron">
+                      {{- 'icon-chevron-right.svg' | inline_asset_content -}}
+                    </span>
+                  </div>
+
+                  <input
+                    type="range"
+                    class="cs-slider"
+                    ref="slider"
+                    min="0"
+                    max="100"
+                    value="50"
+                    aria-label="{{ 'blocks.slider_label' | t | default: 'Before and after comparison' }}"
+                    on:input="/sync"
+                    on:pointerdown="/sync"
+                  >
+                </div>
+              </div>
+            </comparison-slider-component>
+        {%- endcase -%}
       </div>
     </div>
   </fcy-feature-duo>
 </div>
+
+{% stylesheet %}
+  fcy-feature-duo {
+    display: block;
+    width: 100%;
+  }
+
+  .fcy-feature-duo__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .fcy-feature-duo__grid[data-layout='image-left'] .fcy-feature-duo__content {
+    order: 2;
+  }
+
+  .fcy-feature-duo__grid[data-layout='image-left'] .fcy-feature-duo__media {
+    order: 1;
+  }
+
+  @media screen and (min-width: 750px) {
+    .fcy-feature-duo__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+
+  .fcy-feature-duo__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    min-width: 0;
+  }
+
+  .fcy-feature-duo__eyebrow {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-feature-duo__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--3xl);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .fcy-feature-duo__body {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    line-height: 1.6;
+  }
+
+  .fcy-feature-duo__body p {
+    margin: 0;
+  }
+
+  .fcy-feature-duo__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+  }
+
+  .fcy-feature-duo__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--gap-md);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    line-height: 1.5;
+  }
+
+  .fcy-feature-duo__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    color: var(--color-foreground);
+  }
+
+  .fcy-feature-duo__check-media {
+    display: block;
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .fcy-feature-duo__item-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .fcy-feature-duo__item-text p {
+    margin: 0;
+  }
+
+  .fcy-feature-duo__cta {
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  .fcy-feature-duo__media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+  }
+
+  .fcy-feature-duo__image,
+  .fcy-feature-duo__video {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .fcy-feature-duo__placeholder {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: rgb(var(--color-foreground-rgb) / 0.04);
+  }
+
+  .fcy-feature-duo__placeholder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .fcy-feature-duo__compare {
+    display: block;
+    width: 100%;
+    border-radius: inherit;
+  }
+
+  .fcy-feature-duo__pill {
+    position: absolute;
+    bottom: 1rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 1rem;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    border-radius: var(--style-border-radius-pills);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .fcy-feature-duo__pill--before {
+    left: 1rem;
+  }
+
+  .fcy-feature-duo__pill--after {
+    right: 1rem;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -70,11 +381,6 @@
   "tag": "section",
   "class": "fcy-feature-duo-section",
   "disabled_on": { "groups": ["header", "footer"] },
-  "blocks": [
-    { "type": "image" },
-    { "type": "comparison-slider" },
-    { "type": "video" }
-  ],
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Why You'll Love It" },
@@ -84,10 +390,23 @@
     { "type": "header", "content": "Checklist (clear to hide)" },
     { "type": "select", "id": "check_icon", "label": "Check icon",
       "options": [
+        { "value": "none", "label": "None" },
         { "value": "check_box", "label": "Check" },
         { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
         { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" }
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "return", "label": "Return arrow" },
+        { "value": "map_pin", "label": "Map pin" },
+        { "value": "box", "label": "Box" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "plane", "label": "Plane" },
+        { "value": "clipboard", "label": "Clipboard" }
       ],
       "default": "check_box" },
     { "type": "richtext", "id": "item_1", "label": "Item 1",
@@ -103,6 +422,38 @@
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_label", "label": "Label", "default": "Buy it now" },
     { "type": "url",  "id": "cta_link",  "label": "Link" },
+
+    { "type": "header", "content": "Media" },
+    { "type": "select", "id": "media_type", "label": "Media type",
+      "options": [
+        { "value": "image",         "label": "Image" },
+        { "value": "video",         "label": "Video" },
+        { "value": "before-after",  "label": "Before / After slider" }
+      ],
+      "default": "before-after" },
+
+    { "type": "image_picker", "id": "image", "label": "Image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}" },
+
+    { "type": "video", "id": "video", "label": "Video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}" },
+    { "type": "checkbox", "id": "video_autoplay", "label": "Autoplay", "default": true,
+      "visible_if": "{{ section.settings.media_type == 'video' }}" },
+    { "type": "checkbox", "id": "video_loop",     "label": "Loop",     "default": true,
+      "visible_if": "{{ section.settings.media_type == 'video' }}" },
+    { "type": "checkbox", "id": "video_controls", "label": "Show controls", "default": false,
+      "visible_if": "{{ section.settings.media_type == 'video' }}" },
+
+    { "type": "image_picker", "id": "before_image", "label": "Before image",
+      "visible_if": "{{ section.settings.media_type == 'before-after' }}" },
+    { "type": "image_picker", "id": "after_image",  "label": "After image",
+      "visible_if": "{{ section.settings.media_type == 'before-after' }}" },
+    { "type": "checkbox", "id": "show_labels", "label": "Show Before/After labels", "default": true,
+      "visible_if": "{{ section.settings.media_type == 'before-after' }}" },
+    { "type": "text", "id": "before_label", "label": "Before label", "default": "Before",
+      "visible_if": "{{ section.settings.media_type == 'before-after' and section.settings.show_labels }}" },
+    { "type": "text", "id": "after_label",  "label": "After label",  "default": "After 6 hours",
+      "visible_if": "{{ section.settings.media_type == 'before-after' and section.settings.show_labels }}" },
 
     { "type": "header", "content": "Layout" },
     { "type": "select", "id": "layout", "label": "Media position",
@@ -127,24 +478,14 @@
       "category": "Fancyfy",
       "settings": {
         "heading": "Why You'll Love It",
+        "media_type": "before-after",
+        "show_labels": true,
+        "before_label": "Before",
+        "after_label": "After 6 hours",
         "layout": "image-right",
         "color_scheme": "scheme-1",
         "cta_label": "Buy it now"
-      },
-      "blocks": {
-        "media": {
-          "type": "comparison-slider",
-          "settings": {
-            "slider_style": "horizontal",
-            "image_ratio": "adapt",
-            "show_text": true,
-            "before_text": "Before",
-            "after_text": "After 6 hours",
-            "text_position_horizontal": "bottom"
-          }
-        }
-      },
-      "block_order": ["media"]
+      }
     },
     {
       "name": "Fancyfy — About the brand (reverse)",
@@ -159,16 +500,10 @@
         "item_4": "",
         "item_5": "",
         "cta_label": "",
+        "media_type": "image",
         "layout": "image-left",
         "color_scheme": "scheme-2"
-      },
-      "blocks": {
-        "media": {
-          "type": "image",
-          "settings": {}
-        }
-      },
-      "block_order": ["media"]
+      }
     }
   ]
 }
