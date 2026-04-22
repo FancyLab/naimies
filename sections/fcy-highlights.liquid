@@ -1,18 +1,32 @@
 {%- comment -%}
-  fcy-highlights — Row of 3–5 icon + label highlights.
+  fcy-highlights — Horizontal row of icon + label highlights.
 
-  Fixed-slot pattern: slots with a blank label are skipped, so merchants
-  scale the row from 3 to 5 items without touching block children.
+  Repeater block pattern: up to 6 items, each with an image_picker icon
+  (accepts SVG or raster) and a text label. Icons render inside a circular
+  tinted badge whose size scales with the icon_size setting.
+
+  Padding is handled by the Horizon .section.spacing-style pattern on the
+  outer wrapper, so the section respects the same vertical rhythm as the
+  rest of the page.
 {%- endcomment -%}
 
 {%- assign s = section.settings -%}
 {%- assign alignment = s.alignment | default: 'center' -%}
+{%- assign icon_size = s.icon_size | default: 32 -%}
 
-<div class="fcy-highlights-wrapper color-{{ s.color_scheme }}">
+<div
+  class="fcy-highlights-wrapper section spacing-style color-{{ s.color_scheme }}"
+  style="
+    --fcy-highlights-gap: {{ s.gap | default: 64 }}px;
+    --fcy-highlights-icon-size: {{ icon_size }}px;
+    --fcy-highlights-icon-bg: {{ s.icon_bg_color }};
+    --fcy-highlights-count: {{ section.blocks.size }};
+    {% render 'spacing-style', settings: s %}
+  "
+>
   <fcy-highlights
-    class="fcy-highlights section"
+    class="fcy-highlights"
     data-alignment="{{ alignment }}"
-    style="--fcy-highlights-gap: {{ s.gap | default: 32 }}px; {% render 'spacing-style', settings: s %}"
   >
     {%- if s.heading != blank -%}
       <h2 class="fcy-highlights__heading" style="text-align: {{ alignment }};">
@@ -20,26 +34,106 @@
       </h2>
     {%- endif -%}
 
-    <ul class="fcy-highlights__list" role="list">
-      {%- for i in (1..5) -%}
-        {%- assign label_key = 'item_' | append: i | append: '_label' -%}
-        {%- assign icon_key = 'item_' | append: i | append: '_icon' -%}
-        {%- assign label = s[label_key] -%}
-        {%- assign icon = s[icon_key] -%}
-        {%- if label != blank -%}
-          <li class="fcy-highlights__item">
-            {%- if icon != blank and icon != 'none' -%}
-              <span class="fcy-highlights__icon" aria-hidden="true">
-                {%- render 'icon-or-image', icon: icon, width: s.icon_size | default: 28, class_name: 'fcy-highlights__icon-media' -%}
-              </span>
+    {%- if section.blocks.size > 0 -%}
+      <ul class="fcy-highlights__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign icon_img = block.settings.icon -%}
+          {%- assign label = block.settings.label -%}
+          <li class="fcy-highlights__item" {{ block.shopify_attributes }}>
+            <span class="fcy-highlights__icon-wrap" aria-hidden="true">
+              {%- if icon_img != blank -%}
+                {{
+                  icon_img
+                  | image_url: width: 120
+                  | image_tag:
+                      alt: '',
+                      class: 'fcy-highlights__icon-media',
+                      width: icon_size,
+                      height: icon_size,
+                      loading: 'lazy'
+                }}
+              {%- endif -%}
+            </span>
+            {%- if label != blank -%}
+              <span class="fcy-highlights__label">{{ label | escape }}</span>
             {%- endif -%}
-            <span class="fcy-highlights__label">{{ label | escape }}</span>
           </li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </fcy-highlights>
 </div>
+
+{% stylesheet %}
+  fcy-highlights {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .fcy-highlights__heading {
+    margin: 0 0 2rem;
+    font-family: var(--font-heading--family);
+  }
+
+  .fcy-highlights__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    column-gap: var(--fcy-highlights-gap, 64px);
+    row-gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .fcy-highlights__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .fcy-highlights__list {
+      grid-template-columns: repeat(var(--fcy-highlights-count, 5), max-content);
+      justify-content: center;
+    }
+  }
+
+  .fcy-highlights__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-sm);
+    text-align: center;
+  }
+
+  .fcy-highlights__icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--fcy-highlights-icon-size, 32px) * 2.25);
+    height: calc(var(--fcy-highlights-icon-size, 32px) * 2.25);
+    border-radius: 50%;
+    background-color: var(--fcy-highlights-icon-bg);
+    flex-shrink: 0;
+  }
+
+  .fcy-highlights__icon-media {
+    display: block;
+    width: var(--fcy-highlights-icon-size, 32px);
+    height: var(--fcy-highlights-icon-size, 32px);
+    object-fit: contain;
+  }
+
+  .fcy-highlights__label {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--sm);
+    color: var(--color-foreground);
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -47,127 +141,23 @@
   "tag": "section",
   "class": "fcy-highlights-section",
   "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Highlight item",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Icon (SVG or image)" },
+        { "type": "text", "id": "label", "label": "Label" }
+      ]
+    }
+  ],
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Highlights" },
 
-    { "type": "header", "content": "Item 1" },
-    { "type": "select", "id": "item_1_icon", "label": "Icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "eye", "label": "Eye" },
-        { "value": "lipstick", "label": "Lipstick" },
-        { "value": "perfume", "label": "Perfume" },
-        { "value": "silhouette", "label": "Silhouette" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" }
-      ],
-      "default": "check_box" },
-    { "type": "text", "id": "item_1_label", "label": "Label", "default": "Matte" },
-
-    { "type": "header", "content": "Item 2" },
-    { "type": "select", "id": "item_2_icon", "label": "Icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "eye", "label": "Eye" },
-        { "value": "lipstick", "label": "Lipstick" },
-        { "value": "perfume", "label": "Perfume" },
-        { "value": "silhouette", "label": "Silhouette" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" }
-      ],
-      "default": "silhouette" },
-    { "type": "text", "id": "item_2_label", "label": "Label", "default": "Medium Coverage" },
-
-    { "type": "header", "content": "Item 3" },
-    { "type": "select", "id": "item_3_icon", "label": "Icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "eye", "label": "Eye" },
-        { "value": "lipstick", "label": "Lipstick" },
-        { "value": "perfume", "label": "Perfume" },
-        { "value": "silhouette", "label": "Silhouette" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" }
-      ],
-      "default": "stopwatch" },
-    { "type": "text", "id": "item_3_label", "label": "Label", "default": "Long Wearing" },
-
-    { "type": "header", "content": "Item 4" },
-    { "type": "select", "id": "item_4_icon", "label": "Icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "eye", "label": "Eye" },
-        { "value": "lipstick", "label": "Lipstick" },
-        { "value": "perfume", "label": "Perfume" },
-        { "value": "silhouette", "label": "Silhouette" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" }
-      ],
-      "default": "fire" },
-    { "type": "text", "id": "item_4_label", "label": "Label", "default": "Oily Skin" },
-
-    { "type": "header", "content": "Item 5" },
-    { "type": "select", "id": "item_5_icon", "label": "Icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "eye", "label": "Eye" },
-        { "value": "lipstick", "label": "Lipstick" },
-        { "value": "perfume", "label": "Perfume" },
-        { "value": "silhouette", "label": "Silhouette" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" }
-      ],
-      "default": "perfume" },
-    { "type": "text", "id": "item_5_label", "label": "Label", "default": "Liquid Formulation" },
-
     { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 56, "step": 2, "unit": "px", "default": 28 },
-    { "type": "range", "id": "gap", "label": "Gap between items", "min": 8, "max": 80, "step": 2, "unit": "px", "default": 32 },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 56, "step": 2, "unit": "px", "default": 32 },
+    { "type": "range", "id": "gap", "label": "Gap between items", "min": 8, "max": 240, "step": 4, "unit": "px", "default": 64 },
     { "type": "select", "id": "alignment", "label": "Alignment",
       "options": [
         { "value": "flex-start", "label": "Left" },
@@ -178,17 +168,25 @@
 
     { "type": "header", "content": "Color" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "color", "id": "icon_bg_color", "label": "Icon background", "default": "#F6F6F8" },
 
     { "type": "header", "content": "Padding" },
     { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
     { "type": "range", "id": "padding-block-end",   "label": "Bottom", "min": 0, "max": 128, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 },
-    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 }
+    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 80,  "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 80,  "step": 2, "unit": "px", "default": 0 }
   ],
   "presets": [
     {
       "name": "Fancyfy — Highlights",
-      "category": "Fancyfy"
+      "category": "Fancyfy",
+      "blocks": [
+        { "type": "item", "settings": { "label": "Matte" } },
+        { "type": "item", "settings": { "label": "Medium Coverage" } },
+        { "type": "item", "settings": { "label": "Long Wearing" } },
+        { "type": "item", "settings": { "label": "Oily Skin" } },
+        { "type": "item", "settings": { "label": "Liquid Formulation" } }
+      ]
     }
   ]
 }
