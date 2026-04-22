@@ -34,3 +34,6 @@ yarn-error.log*
 
 # Shopify CLI
 .shopifyignore
+
+# Local design reference (Figma exports + JSON) — not tracked
+design/
