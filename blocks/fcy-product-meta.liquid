@@ -1,0 +1,176 @@
+{%- assign block_settings = block.settings -%}
+{%- assign sku = product.selected_or_first_available_variant.sku -%}
+{%- assign rating_meta = product.metafields.reviews.rating -%}
+{%- assign rating_count_meta = product.metafields.reviews.rating_count -%}
+
+{%- assign show_bestseller = false -%}
+{%- if block_settings.show_bestseller_pill
+    and product.metafields.custom.is_bestseller
+    and block_settings.bestseller_label != blank -%}
+  {%- assign show_bestseller = true -%}
+{%- endif -%}
+
+{%- assign show_rating = false -%}
+{%- if block_settings.show_rating and rating_meta != blank -%}
+  {%- assign show_rating = true -%}
+{%- endif -%}
+
+{%- assign show_sku = false -%}
+{%- if block_settings.show_sku and sku != blank -%}
+  {%- assign show_sku = true -%}
+{%- endif -%}
+
+{%- if show_bestseller or show_rating or show_sku -%}
+  <div
+    class="fcy-product-meta{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if show_bestseller or show_rating -%}
+      <div class="fcy-product-meta__top">
+        {%- if show_rating -%}
+          {%- assign rating_value = rating_meta.value | plus: 0.0 -%}
+          {%- assign rating_pct = rating_value | times: 100.0 | divided_by: 5.0 | round -%}
+          {%- assign rating_count = rating_count_meta.value -%}
+          <div
+            class="fcy-product-meta__rating"
+            aria-label="{{ 'accessibility.rating' | t: rating: rating_value | round: 1 }}"
+          >
+            <span class="fcy-product-meta__stars" aria-hidden="true">
+              <span class="fcy-product-meta__stars-base">★★★★★</span>
+              <span class="fcy-product-meta__stars-fill" style="width: {{ rating_pct }}%">★★★★★</span>
+            </span>
+            <span class="fcy-product-meta__rating-value">{{ rating_value | round: 1 }}</span>
+            {%- if rating_count != blank -%}
+              <span class="fcy-product-meta__rating-sep" aria-hidden="true">·</span>
+              <span class="fcy-product-meta__rating-count">{{ rating_count }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+        {%- if show_bestseller -%}
+          <span class="fcy-product-meta__pill">{{ block_settings.bestseller_label | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if show_sku -%}
+      <p class="fcy-product-meta__sku">
+        <span class="fcy-product-meta__sku-label">{{ block_settings.sku_label | escape }}:</span>
+        <span class="fcy-product-meta__sku-value">{{ sku | escape }}</span>
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .fcy-product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .fcy-product-meta__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .fcy-product-meta__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+  }
+
+  .fcy-product-meta__stars {
+    position: relative;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: rgb(var(--color-foreground-rgb) / 0.2);
+  }
+
+  .fcy-product-meta__stars-base {
+    display: block;
+  }
+
+  .fcy-product-meta__stars-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--fcy-color-accent);
+  }
+
+  .fcy-product-meta__rating-value {
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .fcy-product-meta__rating-sep,
+  .fcy-product-meta__rating-count {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-product-meta__pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2em 0.625em;
+    border-radius: var(--style-border-radius-pills);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: 500;
+    line-height: 1.4;
+    background-color: var(--fcy-color-success-surface);
+    color: var(--fcy-color-success-surface-contrast);
+  }
+
+  .fcy-product-meta__sku {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-product-meta__sku-label {
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fancyfy — Product Meta",
+  "settings": [
+    { "type": "header", "content": "Bestseller pill" },
+    { "type": "checkbox", "id": "show_bestseller_pill", "label": "Show when 'bestseller' metafield is true", "default": true },
+    { "type": "text", "id": "bestseller_label", "label": "Pill label", "default": "Industry Bestseller" },
+
+    { "type": "header", "content": "Star rating" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating from reviews.rating metafield", "default": true },
+
+    { "type": "header", "content": "SKU" },
+    { "type": "checkbox", "id": "show_sku", "label": "Show variant SKU", "default": true },
+    { "type": "text", "id": "sku_label", "label": "SKU label", "default": "SKU" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",   "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",     "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start",  "label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",    "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Product Meta", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}

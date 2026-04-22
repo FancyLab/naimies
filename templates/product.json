@@ -188,6 +188,23 @@
                   },
                   "blocks": {}
                 },
+                "fcy_product_meta_main": {
+                  "type": "fcy-product-meta",
+                  "settings": {
+                    "show_bestseller_pill": true,
+                    "bestseller_label": "Industry Bestseller",
+                    "show_rating": true,
+                    "show_sku": true,
+                    "sku_label": "SKU",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "price_tVjtKg": {
                   "type": "price",
                   "settings": {
@@ -214,6 +231,7 @@
               "block_order": [
                 "fcy_vendor_eyebrow",
                 "text_xpVMaM",
+                "fcy_product_meta_main",
                 "price_tVjtKg"
               ]
             },
