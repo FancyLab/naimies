@@ -8,7 +8,7 @@
   @example
   {% render 'price-filter', filter: filter, filter_style: 'vertical' %}
 {%- enddoc -%}
-{%- if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters -%}{%- return -%}{%- endif -%}
+{%- unless fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters -%}
 <accordion-custom
   class="facets__item"
   {% if filter_style == 'horizontal' %}
@@ -178,6 +178,7 @@
     </floating-panel-component>
   </details>
 </accordion-custom>
+{%- endunless -%}
 
 {% stylesheet %}
   /* Price filter */

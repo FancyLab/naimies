@@ -15,7 +15,7 @@
   %}
 {% enddoc %}
 
-{%- if fcy_hide_prices -%}{%- return -%}{%- endif -%}
+{%- unless fcy_hide_prices -%}
 {%- liquid
   assign has_quantity_rules = false
   if variant.quantity_rule.min > 1 or variant.quantity_rule.increment > 1 or variant.quantity_rule.max != null
@@ -140,6 +140,7 @@
     </div>
   </anchored-popover-component>
 {%- endif -%}
+{%- endunless -%}
 
 {% stylesheet %}
   .volume-pricing-info {

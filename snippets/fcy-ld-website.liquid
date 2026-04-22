@@ -2,6 +2,7 @@
   fcy-ld-website — WebSite JSON-LD with optional Sitelinks Searchbox. Rendered once from layout/theme.liquid.
 {%- endcomment -%}
 {%- if settings.fancyfy_seo_website_enabled -%}
+  {%- capture fcy_search_url_template -%}{{ shop.url }}/search?q={search_term_string}{%- endcapture -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -13,7 +14,7 @@
         "@type": "SearchAction",
         "target": {
           "@type": "EntryPoint",
-          "urlTemplate": {{ shop.url | append: '/search?q={search_term_string}' | json }}
+          "urlTemplate": {{ fcy_search_url_template | json }}
         },
         "query-input": "required name=search_term_string"
       }
