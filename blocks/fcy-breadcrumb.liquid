@@ -28,6 +28,41 @@
   </ol>
 </nav>
 
+{% stylesheet %}
+  .fcy-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size--xs);
+    font-family: var(--font-body--family);
+  }
+
+  .fcy-breadcrumb__link {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-decoration: none;
+  }
+
+  .fcy-breadcrumb__link:hover,
+  .fcy-breadcrumb__link:focus-visible {
+    color: var(--color-foreground);
+    text-decoration: underline;
+  }
+
+  .fcy-breadcrumb__separator {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    user-select: none;
+  }
+
+  .fcy-breadcrumb__item--current {
+    color: var(--color-foreground);
+    font-size: var(--font-size--xs);
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "Fancyfy — Breadcrumb",

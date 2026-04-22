@@ -74,7 +74,7 @@
                 "inherit_color_scheme": true,
                 "color_scheme": "scheme-1",
                 "padding-block-start": 0,
-                "padding-block-end": 0,
+                "padding-block-end": 8,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
