@@ -1,0 +1,209 @@
+{%- doc -%}
+  fcy-button — Pill-style CTA button / link.
+
+  @param {string}  label             - Visible button text (required)
+  @param {string}  [link]            - href; blank = disabled
+  @param {string}  [tag]             - "a" (default) or "button"
+  @param {string}  [button_type]     - submit | button (only when tag="button", default "button")
+  @param {string}  [type]            - "primary" (filled, default) | "ghost" (outline)
+  @param {object}  [icon]            - Shopify image object (image_picker)
+  @param {number}  [icon_size]       - Icon px size (default 18)
+  @param {string}  [icon_position]   - "left" | "right" (default "right")
+  @param {string}  [hover_animation]
+        No-icon buttons: "ripple-out" | "ripple-in"
+        Icon buttons:    "icon-forward" | "icon-up" | "icon-pulse"
+        All:             "none" (default)
+  @param {boolean} [full_width]      - Stretch to 100%
+  @param {string}  [extra_class]     - Additional CSS classes
+  @param {boolean} [disabled]        - Disabled state (tag="button" only)
+{%- enddoc -%}
+
+{%- liquid
+  assign btn_tag       = tag | default: 'a'
+  assign btn_type      = type | default: 'primary'
+  assign btn_icon_pos  = icon_position | default: 'right'
+  assign btn_anim      = hover_animation | default: 'none'
+  assign btn_icon_px   = icon_size | default: 18
+-%}
+
+<{{ btn_tag }}
+  class="fcy-btn fcy-btn--{{ btn_type -}}
+    {%- if btn_anim != 'none' and btn_anim != blank %} fcy-btn--hvr-{{ btn_anim }}{%- endif -%}
+    {%- if full_width %} fcy-btn--full{%- endif -%}
+    {%- if extra_class != blank %} {{ extra_class }}{%- endif -%}
+  "
+  style="--fcy-btn-icon-size: {{ btn_icon_px }}px;"
+  {%- if btn_tag == 'a' -%}
+    {%- if link != blank %} href="{{ link }}"{%- else %} role="link" aria-disabled="true"{%- endif -%}
+  {%- elsif btn_tag == 'button' -%}
+    type="{{ button_type | default: 'button' }}"
+    {%- if disabled %} disabled{%- endif -%}
+  {%- endif -%}
+>
+  {%- if icon != blank and btn_icon_pos == 'left' -%}
+    <span class="fcy-btn__icon" aria-hidden="true">
+      {{- icon | image_url: width: 64 | image_tag: class: 'fcy-btn__icon-media', alt: '', width: btn_icon_px, height: btn_icon_px, loading: 'lazy' -}}
+    </span>
+  {%- endif -%}
+
+  <span class="fcy-btn__label">{{ label | escape }}</span>
+
+  {%- if icon != blank and btn_icon_pos == 'right' -%}
+    <span class="fcy-btn__icon" aria-hidden="true">
+      {{- icon | image_url: width: 64 | image_tag: class: 'fcy-btn__icon-media', alt: '', width: btn_icon_px, height: btn_icon_px, loading: 'lazy' -}}
+    </span>
+  {%- endif -%}
+</{{ btn_tag }}>
+
+{% stylesheet %}
+/* ── fcy-btn base ─────────────────────────────────────────────── */
+.fcy-btn {
+  --fcy-btn-icon-size: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding-block: 1rem;
+  padding-inline: 1.75rem;
+  border-radius: 100px;
+  border: 1.5px solid transparent;
+  font-family: var(--font-body--family);
+  font-size: var(--font-size--sm);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+  white-space: nowrap;
+  width: fit-content;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.fcy-btn--full {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Primary (filled) ────────────────────────────────────────── */
+.fcy-btn--primary {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  border-color: var(--color-foreground);
+}
+
+.fcy-btn--primary:hover {
+  background-color: rgb(var(--color-foreground-rgb) / 0.82);
+  border-color: rgb(var(--color-foreground-rgb) / 0.82);
+}
+
+/* ── Ghost (outline) ─────────────────────────────────────────── */
+.fcy-btn--ghost {
+  background-color: transparent;
+  color: var(--color-foreground);
+  border-color: var(--color-foreground);
+}
+
+.fcy-btn--ghost:hover {
+  background-color: rgb(var(--color-foreground-rgb) / 0.06);
+}
+
+/* ── Icon ────────────────────────────────────────────────────── */
+.fcy-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--fcy-btn-icon-size);
+  height: var(--fcy-btn-icon-size);
+}
+
+.fcy-btn__icon-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ── Hover: Ripple Out ───────────────────────────────────────── */
+@keyframes fcy-ripple-out {
+  0%   { top: 0; right: 0; bottom: 0; left: 0; opacity: 1; }
+  100% { top: -10px; right: -10px; bottom: -10px; left: -10px; opacity: 0; }
+}
+
+.fcy-btn--hvr-ripple-out::before {
+  content: '';
+  position: absolute;
+  border: 1.5px solid currentcolor;
+  border-radius: inherit;
+  top: 0; right: 0; bottom: 0; left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fcy-btn--hvr-ripple-out:hover::before {
+  animation: fcy-ripple-out 0.65s ease-out;
+}
+
+/* ── Hover: Ripple In ────────────────────────────────────────── */
+@keyframes fcy-ripple-in {
+  0%   { top: -10px; right: -10px; bottom: -10px; left: -10px; opacity: 1; }
+  100% { top: 0; right: 0; bottom: 0; left: 0; opacity: 0; }
+}
+
+.fcy-btn--hvr-ripple-in::before {
+  content: '';
+  position: absolute;
+  border: 1.5px solid currentcolor;
+  border-radius: inherit;
+  top: 0; right: 0; bottom: 0; left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fcy-btn--hvr-ripple-in:hover::before {
+  animation: fcy-ripple-in 0.65s ease-out;
+}
+
+/* ── Hover: Icon Forward (slide right) ───────────────────────── */
+.fcy-btn--hvr-icon-forward .fcy-btn__icon {
+  transition: transform 0.2s ease;
+}
+
+.fcy-btn--hvr-icon-forward:hover .fcy-btn__icon {
+  transform: translateX(4px);
+}
+
+/* ── Hover: Icon Up ──────────────────────────────────────────── */
+.fcy-btn--hvr-icon-up .fcy-btn__icon {
+  transition: transform 0.2s ease;
+}
+
+.fcy-btn--hvr-icon-up:hover .fcy-btn__icon {
+  transform: translateY(-4px);
+}
+
+/* ── Hover: Icon Pulse ───────────────────────────────────────── */
+@keyframes fcy-icon-pulse {
+  25%  { transform: scale(1.35); }
+  75%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.fcy-btn--hvr-icon-pulse:hover .fcy-btn__icon {
+  animation: fcy-icon-pulse 0.35s linear;
+}
+
+/* ── Disabled ────────────────────────────────────────────────── */
+.fcy-btn[aria-disabled='true'],
+.fcy-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+{% endstylesheet %}

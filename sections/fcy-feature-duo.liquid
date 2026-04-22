@@ -20,6 +20,7 @@
   class="fcy-feature-duo-wrapper section spacing-style color-{{ s.color_scheme }}"
   style="
     --fcy-duo-icon-size: {{ s.check_icon_size | default: 18 }}px;
+    --fcy-duo-media-ratio: {{ s.media_aspect_ratio | default: '4/5' }};
     {% render 'spacing-style', settings: s %}
   "
 >
@@ -68,13 +69,15 @@
         </ul>
 
         {%- if s.cta_label != blank -%}
-          <a
-            class="fcy-feature-duo__cta button button-primary"
-            {% if s.cta_link != blank %}href="{{ s.cta_link }}"{% endif %}
-          >
-            <span>{{ s.cta_label | escape }}</span>
-            {%- render 'icon-or-image', icon: 'arrow', width: 18, class_name: 'fcy-feature-duo__cta-icon' -%}
-          </a>
+          {%- render 'fcy-button',
+            label: s.cta_label,
+            link: s.cta_link,
+            type: s.cta_style,
+            icon: s.cta_icon,
+            icon_size: s.cta_icon_size,
+            icon_position: s.cta_icon_position,
+            hover_animation: s.cta_hover_animation
+          -%}
         {%- endif -%}
       </div>
 
@@ -248,6 +251,7 @@
   .fcy-feature-duo__content {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: var(--gap-md);
     min-width: 0;
   }
@@ -265,9 +269,6 @@
   .fcy-feature-duo__heading {
     margin: 0;
     font-family: var(--font-heading--family);
-    font-size: var(--font-size--3xl);
-    font-weight: 600;
-    line-height: 1.15;
   }
 
   .fcy-feature-duo__body {
@@ -325,23 +326,19 @@
     margin: 0;
   }
 
-  .fcy-feature-duo__cta {
-    align-self: flex-start;
-    margin-top: 1rem;
-  }
-
   .fcy-feature-duo__media {
     position: relative;
     width: 100%;
     overflow: hidden;
     border-radius: 0.75rem;
+    aspect-ratio: var(--fcy-duo-media-ratio, 4/5);
   }
 
   .fcy-feature-duo__image,
   .fcy-feature-duo__video {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
   }
 
@@ -417,6 +414,31 @@
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_label", "label": "Label", "default": "Buy it now" },
     { "type": "url",  "id": "cta_link",  "label": "Link" },
+    { "type": "select", "id": "cta_style", "label": "Style",
+      "options": [
+        { "value": "primary", "label": "Primary (filled)" },
+        { "value": "ghost",   "label": "Ghost (outline)" }
+      ],
+      "default": "primary" },
+    { "type": "image_picker", "id": "cta_icon", "label": "Icon (SVG or image, leave blank to hide)" },
+    { "type": "range", "id": "cta_icon_size", "label": "Icon size", "min": 12, "max": 32, "step": 2, "unit": "px", "default": 18 },
+    { "type": "select", "id": "cta_icon_position", "label": "Icon position",
+      "options": [
+        { "value": "left",  "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right",
+      "visible_if": "{{ section.settings.cta_icon != blank }}" },
+    { "type": "select", "id": "cta_hover_animation", "label": "Hover animation",
+      "options": [
+        { "value": "none",         "label": "None" },
+        { "value": "ripple-out",   "label": "Ripple Out" },
+        { "value": "ripple-in",    "label": "Ripple In" },
+        { "value": "icon-forward", "label": "Icon — Slide right" },
+        { "value": "icon-up",      "label": "Icon — Float up" },
+        { "value": "icon-pulse",   "label": "Icon — Pulse" }
+      ],
+      "default": "ripple-out" },
 
     { "type": "header", "content": "Media" },
     { "type": "select", "id": "media_type", "label": "Media type",
@@ -451,6 +473,15 @@
       "visible_if": "{{ section.settings.media_type == 'before-after' and section.settings.show_labels }}" },
 
     { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "media_aspect_ratio", "label": "Media aspect ratio",
+      "options": [
+        { "value": "auto", "label": "Natural (from image)" },
+        { "value": "1/1",  "label": "Square (1:1)" },
+        { "value": "4/5",  "label": "Portrait (4:5)" },
+        { "value": "3/4",  "label": "Portrait tall (3:4)" },
+        { "value": "16/9", "label": "Landscape (16:9)" }
+      ],
+      "default": "4/5" },
     { "type": "select", "id": "layout", "label": "Media position",
       "options": [
         { "value": "image-right", "label": "Image on the right" },
