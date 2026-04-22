@@ -2,43 +2,157 @@
   fcy-faq — FAQ section with child Q/A blocks + optional "Contact us" CTA.
 
   Child blocks come from Horizon's `_accordion-row` so merchants get the
-  familiar block picker and behaviour.
+  familiar block picker and behaviour. The section:
+    - Constrains content to page-width via the outer `.section` grid.
+    - Hides the default caret so only the +/− toggle is shown.
+    - Renders the footer CTA through `fcy-button` (design-system pill).
 {%- endcomment -%}
 
 {%- assign s = section.settings -%}
 
-<div class="fcy-faq-wrapper color-{{ s.color_scheme }}">
-  <fcy-faq
-    class="fcy-faq section"
-    style="{% render 'spacing-style', settings: s %}"
-  >
+<div
+  class="fcy-faq-wrapper section spacing-style color-{{ s.color_scheme }}"
+  style="{% render 'spacing-style', settings: s %}"
+>
+  <fcy-faq class="fcy-faq">
     {%- if s.heading != blank -%}
       <h2 class="fcy-faq__heading" style="text-align: {{ s.heading_alignment | default: 'center' }};">
         {{ s.heading | escape }}
       </h2>
     {%- endif -%}
 
-    <div class="fcy-faq__list">
-      {% content_for 'blocks' %}
-    </div>
-
-    {%- if s.contact_label != blank or s.contact_link != blank -%}
-      <div class="fcy-faq__footer" style="text-align: {{ s.footer_alignment | default: 'center' }};">
-        {%- if s.contact_prompt != blank -%}
-          <span class="fcy-faq__prompt">{{ s.contact_prompt | escape }}</span>
-        {%- endif -%}
-        {%- if s.contact_label != blank -%}
-          <a
-            class="fcy-faq__cta button button-secondary"
-            {% if s.contact_link != blank %}href="{{ s.contact_link }}"{% endif %}
-          >
-            {{ s.contact_label | escape }}
-          </a>
-        {%- endif -%}
+    <div class="fcy-faq__inner" style="--fcy-faq-max-width: {{ s.content_max_width | default: 880 }}px;">
+      <div class="fcy-faq__list">
+        {% content_for 'blocks' %}
       </div>
-    {%- endif -%}
+
+      {%- if s.contact_label != blank or s.contact_prompt != blank -%}
+        <div class="fcy-faq__footer" style="text-align: {{ s.footer_alignment | default: 'center' }};">
+          {%- if s.contact_prompt != blank -%}
+            <span class="fcy-faq__prompt">{{ s.contact_prompt | escape }}</span>
+          {%- endif -%}
+          {%- if s.contact_label != blank -%}
+            {%- render 'fcy-button',
+              label: s.contact_label,
+              link: s.contact_link,
+              type: s.contact_style,
+              icon: s.contact_icon,
+              icon_size: s.contact_icon_size,
+              icon_position: s.contact_icon_position,
+              hover_animation: s.contact_hover_animation,
+              extra_class: 'fcy-faq__cta'
+            -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
   </fcy-faq>
 </div>
+
+{% stylesheet %}
+  fcy-faq {
+    display: block;
+    width: 100%;
+  }
+
+  .fcy-faq__heading {
+    margin: 0 0 var(--gap-lg);
+    font-family: var(--font-heading--family);
+  }
+
+  .fcy-faq__inner {
+    max-width: var(--fcy-faq-max-width, 880px);
+    margin-inline: auto;
+  }
+
+  .fcy-faq__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fcy-faq accordion-custom {
+    border-bottom: 1px solid #E7E7E7;
+  }
+
+  /* Hide the default caret inside the FAQ — we only want the +/− toggle */
+  .fcy-faq .details__header .icon-caret {
+    display: none;
+  }
+
+  /* Enlarge and color the +/− toggle */
+  .fcy-faq .details__header .icon-plus {
+    width: 24px;
+    height: 24px;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-faq .details[open] > .details__header .icon-plus,
+  .fcy-faq details[open] > .details__header .icon-plus {
+    color: var(--color-foreground);
+  }
+
+  .fcy-faq .details__header {
+    padding-block: 24px;
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--md);
+    color: var(--color-foreground);
+  }
+
+  /* Separator between the question and its answer when the row is open */
+  .fcy-faq details[open] > .details__header {
+    border-bottom: 1px solid #E7E7E7;
+  }
+
+  .fcy-faq .details-content {
+    font-size: var(--font-size--sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  /* Horizon zeroes out content padding when closed and animates it open;
+     set a small open-state padding so the answer sits between borders
+     without feeling cavernous. */
+  .fcy-faq accordion-custom details[open] .details-content,
+  .fcy-faq accordion-custom details[open]::details-content {
+    padding-block: 12px 16px;
+  }
+
+  /* Text blocks default to fit-content/narrow max-width, set as inline
+     custom properties that beat stylesheet rules. Override `width` and
+     `max-inline-size` directly on both the block and its children so the
+     answer always fills the full wrapper width. */
+  .fcy-faq .details-content .text-block,
+  .fcy-faq .details-content .text-block > * {
+    width: 100%;
+    max-width: 100%;
+    max-inline-size: 100%;
+  }
+
+  .fcy-faq .details-content p {
+    color: inherit;
+  }
+
+  .fcy-faq__footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap-md);
+    margin-top: var(--gap-lg);
+    flex-wrap: wrap;
+  }
+
+  .fcy-faq__footer[style*='text-align: left'] {
+    justify-content: flex-start;
+  }
+
+  .fcy-faq__footer[style*='text-align: right'] {
+    justify-content: flex-end;
+  }
+
+  .fcy-faq__prompt {
+    font-family: var(--font-body--family);
+    color: var(--color-foreground);
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -58,11 +172,37 @@
         { "value": "right", "label": "Right" }
       ],
       "default": "center" },
+    { "type": "range", "id": "content_max_width", "label": "Content max-width", "min": 560, "max": 1200, "step": 20, "unit": "px", "default": 880 },
 
     { "type": "header", "content": "Contact CTA (optional)" },
     { "type": "text", "id": "contact_prompt", "label": "Prompt text", "default": "Still have questions?" },
     { "type": "text", "id": "contact_label",  "label": "Button label", "default": "Contact Us" },
     { "type": "url",  "id": "contact_link",   "label": "Button link" },
+    { "type": "select", "id": "contact_style", "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary (filled)" },
+        { "value": "ghost",   "label": "Ghost (outline)" }
+      ],
+      "default": "ghost" },
+    { "type": "image_picker", "id": "contact_icon", "label": "Button icon (leave blank to hide)" },
+    { "type": "range", "id": "contact_icon_size", "label": "Icon size", "min": 12, "max": 32, "step": 2, "unit": "px", "default": 18 },
+    { "type": "select", "id": "contact_icon_position", "label": "Icon position",
+      "options": [
+        { "value": "left",  "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right",
+      "visible_if": "{{ section.settings.contact_icon != blank }}" },
+    { "type": "select", "id": "contact_hover_animation", "label": "Hover animation",
+      "options": [
+        { "value": "none",         "label": "None" },
+        { "value": "ripple-out",   "label": "Ripple Out" },
+        { "value": "ripple-in",    "label": "Ripple In" },
+        { "value": "icon-forward", "label": "Icon — Slide right" },
+        { "value": "icon-up",      "label": "Icon — Float up" },
+        { "value": "icon-pulse",   "label": "Icon — Pulse" }
+      ],
+      "default": "ripple-out" },
     { "type": "select", "id": "footer_alignment", "label": "Footer alignment",
       "options": [
         { "value": "left", "label": "Left" },
@@ -89,7 +229,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "What skin types is this powder best for?", "open_by_default": true },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>This lightweight setting powder works especially well for normal, combination, and oily skin. It helps control shine while keeping makeup looking smooth and fresh.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>This lightweight setting powder works especially well for normal, combination, and oily skin. It helps control shine while keeping makeup looking smooth and fresh.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         },
@@ -97,7 +237,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "Will this powder cause flashback in photos?" },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>No. The formula is photo-optimised and avoids the white cast you get with silica-heavy powders.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>No. The formula is photo-optimised and avoids the white cast you get with silica-heavy powders.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         },
@@ -105,7 +245,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "How do I choose the right shade?" },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Translucent works across the shade range; tinted options are matched to our foundation family — match to your undertone, not your depth.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>Translucent works across the shade range; tinted options are matched to our foundation family — match to your undertone, not your depth.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         },
@@ -113,7 +253,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "Can I use this powder for baking?" },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Yes. Apply a generous layer under the eyes and T-zone, let it sit for 5–10 minutes, then dust away the excess.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>Yes. Apply a generous layer under the eyes and T-zone, let it sit for 5–10 minutes, then dust away the excess.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         },
@@ -121,7 +261,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "How often should I replace this product?" },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Every 12–18 months once opened, depending on use and storage.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>Every 12–18 months once opened, depending on use and storage.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         },
@@ -129,7 +269,7 @@
           "type": "_accordion-row",
           "settings": { "heading": "Is this product suitable for professional makeup kits?" },
           "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Absolutely — it's a favorite in artist kits for long-wear editorial and bridal work.</p>", "type_preset": "rte", "alignment": "left" } }
+            "t": { "type": "text", "settings": { "text": "<p>Absolutely — it's a favorite in artist kits for long-wear editorial and bridal work.</p>", "type_preset": "rte", "alignment": "left", "width": "100%", "max_width": "none" } }
           },
           "block_order": ["t"]
         }
