@@ -596,7 +596,10 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["fcy_badge_shipping", "fcy_badge_returns"]
+              "block_order": [
+                "fcy_badge_shipping",
+                "fcy_badge_returns"
+              ]
             },
             "fcy_badge_limited_offer": {
               "type": "fcy-info-badge",
@@ -613,8 +616,8 @@
                 "tone": "success",
                 "inherit_color_scheme": true,
                 "color_scheme": "scheme-1",
-                "padding-block-start": 12,
-                "padding-block-end": 12,
+                "padding-block-start": 16,
+                "padding-block-end": 16,
                 "padding-inline-start": 16,
                 "padding-inline-end": 16
               },
@@ -713,7 +716,9 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": ["spec_table_about"]
+                  "block_order": [
+                    "spec_table_about"
+                  ]
                 },
                 "accordion_row_ingredients": {
                   "type": "_accordion-row",
@@ -732,7 +737,9 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": ["text_ingredients"]
+                  "block_order": [
+                    "text_ingredients"
+                  ]
                 },
                 "accordion_row_howto": {
                   "type": "_accordion-row",
@@ -751,7 +758,9 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": ["text_howto"]
+                  "block_order": [
+                    "text_howto"
+                  ]
                 },
                 "accordion_row_shipping": {
                   "type": "_accordion-row",
@@ -770,7 +779,9 @@
                       "blocks": {}
                     }
                   },
-                  "block_order": ["text_shipping"]
+                  "block_order": [
+                    "text_shipping"
+                  ]
                 }
               },
               "block_order": [
@@ -1361,51 +1372,129 @@
       "blocks": {
         "faq_row_1": {
           "type": "_accordion-row",
-          "settings": { "heading": "What skin types is this powder best for?", "open_by_default": true },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>This lightweight setting powder works especially well for normal, combination, and oily skin. It helps control shine while keeping makeup looking smooth and fresh.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "What skin types is this powder best for?",
+            "open_by_default": true
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>This lightweight setting powder works especially well for normal, combination, and oily skin. It helps control shine while keeping makeup looking smooth and fresh.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         },
         "faq_row_2": {
           "type": "_accordion-row",
-          "settings": { "heading": "Will this powder cause flashback in photos?", "open_by_default": false },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>No. The formula is photo-optimised and avoids the white cast you see with silica-heavy powders.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "Will this powder cause flashback in photos?",
+            "open_by_default": false
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>No. The formula is photo-optimised and avoids the white cast you see with silica-heavy powders.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         },
         "faq_row_3": {
           "type": "_accordion-row",
-          "settings": { "heading": "How do I choose the right shade?", "open_by_default": false },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Translucent works across the shade range; tinted options are matched to our foundation family — match to your undertone, not your depth.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "How do I choose the right shade?",
+            "open_by_default": false
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Translucent works across the shade range; tinted options are matched to our foundation family — match to your undertone, not your depth.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         },
         "faq_row_4": {
           "type": "_accordion-row",
-          "settings": { "heading": "Can I use this powder for baking?", "open_by_default": false },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Yes. Apply a generous layer under the eyes and T-zone, let it sit for 5–10 minutes, then dust away the excess.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "Can I use this powder for baking?",
+            "open_by_default": false
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Yes. Apply a generous layer under the eyes and T-zone, let it sit for 5–10 minutes, then dust away the excess.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         },
         "faq_row_5": {
           "type": "_accordion-row",
-          "settings": { "heading": "How often should I replace this product?", "open_by_default": false },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Every 12–18 months once opened, depending on use and storage.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "How often should I replace this product?",
+            "open_by_default": false
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Every 12–18 months once opened, depending on use and storage.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         },
         "faq_row_6": {
           "type": "_accordion-row",
-          "settings": { "heading": "Is this product suitable for professional makeup kits?", "open_by_default": false },
-          "blocks": {
-            "t": { "type": "text", "settings": { "text": "<p>Absolutely — it's a favorite in artist kits for long-wear editorial and bridal work.</p>", "type_preset": "rte", "alignment": "left" }, "blocks": {} }
+          "settings": {
+            "heading": "Is this product suitable for professional makeup kits?",
+            "open_by_default": false
           },
-          "block_order": ["t"]
+          "blocks": {
+            "t": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Absolutely — it's a favorite in artist kits for long-wear editorial and bridal work.</p>",
+                "type_preset": "rte",
+                "alignment": "left"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "t"
+          ]
         }
       },
       "block_order": [
