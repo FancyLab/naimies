@@ -263,12 +263,38 @@
                     "width": "100%",
                     "alignment": "left",
                     "font": "var(--font-body--family)",
-                    "font_size": "1rem",
+                    "font_size": "1.25rem",
                     "line_height": "normal",
                     "letter_spacing": "normal",
                     "case": "none",
                     "color": "var(--color-foreground)",
                     "padding-block-start": 8,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_shipping_link": {
+                  "type": "text",
+                  "name": "Shipping link",
+                  "settings": {
+                    "text": "<a href='/policies/shipping-policy'>Shipping calculated at checkout</a>",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.75rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text))",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
@@ -280,7 +306,8 @@
                 "fcy_vendor_eyebrow",
                 "text_xpVMaM",
                 "fcy_product_meta_main",
-                "price_tVjtKg"
+                "price_tVjtKg",
+                "text_shipping_link"
               ]
             },
             "divider_VJhene": {
