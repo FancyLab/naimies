@@ -109,7 +109,7 @@
                 "align_baseline": false,
                 "horizontal_alignment_flex_direction_column": "flex-start",
                 "vertical_alignment_flex_direction_column": "center",
-                "gap": 12,
+                "gap": 6,
                 "width": "fill",
                 "custom_width": 100,
                 "width_mobile": "fill",
@@ -136,6 +136,32 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "fcy_vendor_eyebrow": {
+                  "type": "text",
+                  "name": "Brand eyebrow",
+                  "settings": {
+                    "text": "{{ closest.product.vendor }}",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "0.6875rem",
+                    "line_height": "normal",
+                    "letter_spacing": "0.1em",
+                    "case": "uppercase",
+                    "wrap": "pretty",
+                    "color": "rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text))",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
                 "text_xpVMaM": {
                   "type": "text",
                   "name": "t:names.title",
@@ -145,9 +171,9 @@
                     "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "h3",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
+                    "font": "var(--font-heading--family)",
+                    "font_size": "1.625rem",
+                    "line_height": "1.2",
                     "letter_spacing": "normal",
                     "case": "none",
                     "wrap": "pretty",
@@ -177,7 +203,7 @@
                     "letter_spacing": "normal",
                     "case": "none",
                     "color": "var(--color-foreground)",
-                    "padding-block-start": 4,
+                    "padding-block-start": 8,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
                     "padding-inline-end": 0
@@ -186,6 +212,7 @@
                 }
               },
               "block_order": [
+                "fcy_vendor_eyebrow",
                 "text_xpVMaM",
                 "price_tVjtKg"
               ]
