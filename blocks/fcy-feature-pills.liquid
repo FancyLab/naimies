@@ -1,0 +1,181 @@
+{%- comment -%}
+  fcy-feature-pills — PDP "Matte Finish · Long Wearing · Blurring" row.
+
+  Fixed-slot pattern (up to 5 pills). A pill renders only when its label
+  is non-blank, so merchants add/remove by clearing the label.
+
+  ADR-002: authored as a theme block with inline schema (fancyfy block
+  pipeline pending — follow-up). ADR-003: consumes Horizon tokens; wraps
+  markup in color-{{ scheme }} per the DS contract.
+{%- endcomment -%}
+
+{%- assign block_settings = block.settings -%}
+{%- assign alignment = block_settings.alignment | default: 'flex-start' -%}
+{%- assign gap = block_settings.gap | default: 12 -%}
+
+<fcy-feature-pills
+  class="fcy-feature-pills{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  data-alignment="{{ alignment }}"
+  style="--fcy-pills-gap: {{ gap }}px; {% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <ul
+    class="fcy-feature-pills__list"
+    role="list"
+  >
+    {%- for i in (1..5) -%}
+      {%- assign label_key = 'pill_' | append: i | append: '_label' -%}
+      {%- assign icon_key = 'pill_' | append: i | append: '_icon' -%}
+      {%- assign label = block_settings[label_key] -%}
+      {%- assign icon = block_settings[icon_key] -%}
+      {%- if label != blank -%}
+        <li class="fcy-feature-pills__item">
+          {%- if icon != blank and icon != 'none' -%}
+            <span class="fcy-feature-pills__icon" aria-hidden="true">
+              {%- render 'icon-or-image', icon: icon, width: 20, class_name: 'fcy-feature-pills__icon-media' -%}
+            </span>
+          {%- endif -%}
+          <span class="fcy-feature-pills__label">{{ label | escape }}</span>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</fcy-feature-pills>
+
+{% schema %}
+{
+  "name": "Fancyfy — Feature pills",
+  "class": "fcy-feature-pills-block",
+  "settings": [
+    { "type": "header", "content": "Pills" },
+
+    { "type": "select", "id": "pill_1_icon", "label": "Pill 1 — icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "eye", "label": "Eye" },
+        { "value": "lipstick", "label": "Lipstick" },
+        { "value": "perfume", "label": "Perfume" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" }
+      ],
+      "default": "check_box" },
+    { "type": "text", "id": "pill_1_label", "label": "Pill 1 — label", "default": "Matte Finish" },
+
+    { "type": "select", "id": "pill_2_icon", "label": "Pill 2 — icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "eye", "label": "Eye" },
+        { "value": "lipstick", "label": "Lipstick" },
+        { "value": "perfume", "label": "Perfume" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" }
+      ],
+      "default": "stopwatch" },
+    { "type": "text", "id": "pill_2_label", "label": "Pill 2 — label", "default": "Long Wearing" },
+
+    { "type": "select", "id": "pill_3_icon", "label": "Pill 3 — icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "eye", "label": "Eye" },
+        { "value": "lipstick", "label": "Lipstick" },
+        { "value": "perfume", "label": "Perfume" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" }
+      ],
+      "default": "eye" },
+    { "type": "text", "id": "pill_3_label", "label": "Pill 3 — label", "default": "Blurring" },
+
+    { "type": "select", "id": "pill_4_icon", "label": "Pill 4 — icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "eye", "label": "Eye" },
+        { "value": "lipstick", "label": "Lipstick" },
+        { "value": "perfume", "label": "Perfume" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" }
+      ],
+      "default": "none" },
+    { "type": "text", "id": "pill_4_label", "label": "Pill 4 — label (leave empty to hide)", "default": "" },
+
+    { "type": "select", "id": "pill_5_icon", "label": "Pill 5 — icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "eye", "label": "Eye" },
+        { "value": "lipstick", "label": "Lipstick" },
+        { "value": "perfume", "label": "Perfume" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" }
+      ],
+      "default": "none" },
+    { "type": "text", "id": "pill_5_label", "label": "Pill 5 — label (leave empty to hide)", "default": "" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "alignment", "label": "Alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" },
+        { "value": "space-between", "label": "Space between" }
+      ],
+      "default": "flex-start" },
+    { "type": "range", "id": "gap", "label": "Gap between pills", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 12 },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",   "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Feature pills",
+      "category": "Fancyfy"
+    }
+  ]
+}
+{% endschema %}
