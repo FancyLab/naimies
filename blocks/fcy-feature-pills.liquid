@@ -32,7 +32,7 @@
         <li class="fcy-feature-pills__item">
           {%- if icon != blank and icon != 'none' -%}
             <span class="fcy-feature-pills__icon" aria-hidden="true">
-              {%- render 'icon-or-image', icon: icon, width: 20, class_name: 'fcy-feature-pills__icon-media' -%}
+              {%- render 'icon-or-image', icon: icon, width: block_settings.icon_size, class_name: 'fcy-feature-pills__icon-media' -%}
             </span>
           {%- endif -%}
           <span class="fcy-feature-pills__label">{{ label | escape }}</span>
@@ -41,6 +41,51 @@
     {%- endfor -%}
   </ul>
 </fcy-feature-pills>
+
+{% stylesheet %}
+  fcy-feature-pills {
+    display: block;
+  }
+
+  .fcy-feature-pills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fcy-pills-gap, 12px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  fcy-feature-pills[data-alignment="flex-start"] .fcy-feature-pills__list { justify-content: flex-start; }
+  fcy-feature-pills[data-alignment="center"]      .fcy-feature-pills__list { justify-content: center; }
+  fcy-feature-pills[data-alignment="flex-end"]    .fcy-feature-pills__list { justify-content: flex-end; }
+  fcy-feature-pills[data-alignment="space-between"] .fcy-feature-pills__list { justify-content: space-between; }
+
+  .fcy-feature-pills__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375em;
+    padding: 0.3em 0.75em;
+    border-radius: var(--style-border-radius-pills);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.15);
+    background-color: rgb(var(--color-foreground-rgb) / 0.04);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    line-height: 1.4;
+    color: var(--color-foreground);
+  }
+
+  .fcy-feature-pills__icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-feature-pills__icon-media {
+    display: block;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -150,6 +195,7 @@
     { "type": "text", "id": "pill_5_label", "label": "Pill 5 — label (leave empty to hide)" },
 
     { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 12, "max": 24, "step": 2, "unit": "px", "default": 16 },
     { "type": "select", "id": "alignment", "label": "Alignment",
       "options": [
         { "value": "flex-start", "label": "Left" },

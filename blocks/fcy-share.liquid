@@ -72,6 +72,57 @@
   </ul>
 </fcy-share>
 
+{% stylesheet %}
+  fcy-share {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+  }
+
+  .fcy-share__label {
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    white-space: nowrap;
+  }
+
+  .fcy-share__list {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fcy-share__item {
+    display: inline-flex;
+  }
+
+  .fcy-share__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--style-border-radius-pills);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-decoration: none;
+    transition: color 0.15s, background-color 0.15s;
+  }
+
+  .fcy-share__link:hover,
+  .fcy-share__link:focus-visible {
+    color: var(--color-foreground);
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .fcy-share__icon {
+    display: block;
+    flex-shrink: 0;
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "Fancyfy — Share",

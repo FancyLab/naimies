@@ -1,0 +1,109 @@
+{%- comment -%}
+  Top-actions cluster — wishlist placeholder + optional compact share icon.
+  Wire wishlist to chosen app in a follow-up once app is selected.
+{%- endcomment -%}
+{%- assign block_settings = block.settings -%}
+
+<div
+  class="fcy-wishlist{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <button
+    class="fcy-wishlist__btn"
+    type="button"
+    aria-label="{{ 'products.product.wishlist_add' | t }}"
+  >
+    {%- render 'icon-or-image', icon: 'heart', width: block_settings.icon_size, class_name: 'fcy-wishlist__icon' -%}
+  </button>
+  {%- if block_settings.show_share -%}
+    <button
+      class="fcy-wishlist__btn"
+      type="button"
+      aria-label="{{ block_settings.share_label | escape }}"
+      data-fcy-share="{{ block.id }}"
+    >
+      {%- render 'icon-or-image', icon: 'share', width: block_settings.icon_size, class_name: 'fcy-wishlist__icon' -%}
+    </button>
+    <script>
+      (function () {
+        var btn = document.querySelector('[data-fcy-share="{{ block.id }}"]');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          if (navigator.share) {
+            navigator.share({ title: document.title, url: location.href });
+          } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(location.href).catch(function () {});
+          }
+        });
+      })();
+    </script>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  /* Push the actions cluster to the inline-end when inside a flex-row parent */
+  .fcy-wishlist-block {
+    margin-inline-start: auto;
+  }
+
+  .fcy-wishlist {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .fcy-wishlist__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: var(--style-border-radius-pills);
+    cursor: pointer;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    transition: color 0.15s, background-color 0.15s;
+  }
+
+  .fcy-wishlist__btn:hover,
+  .fcy-wishlist__btn:focus-visible {
+    color: var(--color-foreground);
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .fcy-wishlist__icon {
+    display: block;
+    flex-shrink: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fancyfy — Wishlist placeholder",
+  "class": "fcy-wishlist-block",
+  "settings": [
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 40, "step": 2, "unit": "px", "default": 24 },
+
+    { "type": "header", "content": "Share" },
+    { "type": "checkbox", "id": "show_share", "label": "Show compact share icon", "default": true },
+    { "type": "text", "id": "share_label", "label": "Share button label (accessibility)", "default": "Share product" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",   "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",     "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start",  "label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",    "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Wishlist (placeholder)", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}

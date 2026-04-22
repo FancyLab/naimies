@@ -1,0 +1,88 @@
+{%- assign block_settings = block.settings -%}
+{%- assign separator = block_settings.separator | default: '/' -%}
+
+<nav
+  class="fcy-breadcrumb{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  aria-label="{{ 'products.breadcrumb.label' | t }}"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <ol class="fcy-breadcrumb__list" role="list">
+    <li class="fcy-breadcrumb__item">
+      <a class="fcy-breadcrumb__link" href="/">
+        {{- 'products.breadcrumb.home' | t -}}
+      </a>
+    </li>
+    {%- if product.collections.first -%}
+      <li class="fcy-breadcrumb__separator" aria-hidden="true">{{ separator }}</li>
+      <li class="fcy-breadcrumb__item">
+        <a class="fcy-breadcrumb__link" href="{{ product.collections.first.url }}">
+          {{- product.collections.first.title -}}
+        </a>
+      </li>
+    {%- endif -%}
+    <li class="fcy-breadcrumb__separator" aria-hidden="true">{{ separator }}</li>
+    <li class="fcy-breadcrumb__item fcy-breadcrumb__item--current" aria-current="page">
+      {{- product.title -}}
+    </li>
+  </ol>
+</nav>
+
+{% stylesheet %}
+  .fcy-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size--xs);
+    font-family: var(--font-body--family);
+  }
+
+  .fcy-breadcrumb__link {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-decoration: none;
+  }
+
+  .fcy-breadcrumb__link:hover,
+  .fcy-breadcrumb__link:focus-visible {
+    color: var(--color-foreground);
+    text-decoration: underline;
+  }
+
+  .fcy-breadcrumb__separator {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    user-select: none;
+  }
+
+  .fcy-breadcrumb__item--current {
+    color: var(--color-foreground);
+    font-size: var(--font-size--xs);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fancyfy — Breadcrumb",
+  "class": "fcy-breadcrumb-block",
+  "settings": [
+    { "type": "text", "id": "separator", "label": "Separator", "default": "/" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",   "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",     "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start",  "label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",    "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Breadcrumb", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,93 @@
+{%- assign block_settings = block.settings -%}
+{%- assign spec_rows = product.metafields.custom.spec_table.value -%}
+
+{%- if spec_rows != blank -%}
+  <div
+    class="fcy-spec-table{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+    style="{% render 'spacing-style', settings: block_settings %}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if block_settings.heading != blank -%}
+      <p class="fcy-spec-table__heading">{{ block_settings.heading | escape }}</p>
+    {%- endif -%}
+    <table class="fcy-spec-table__table">
+      <tbody>
+        {%- for row in spec_rows -%}
+          <tr class="fcy-spec-table__row">
+            <th class="fcy-spec-table__label" scope="row">{{ row.label | escape }}</th>
+            <td class="fcy-spec-table__value">{{ row.value | escape }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .fcy-spec-table {
+    width: 100%;
+  }
+
+  .fcy-spec-table__heading {
+    margin: 0 0 var(--gap-xs);
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-spec-table__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size--xs);
+    line-height: 1.5;
+  }
+
+  .fcy-spec-table__row {
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .fcy-spec-table__row:last-child {
+    border-block-end: none;
+  }
+
+  .fcy-spec-table__label {
+    padding-block: var(--gap-xs);
+    padding-inline-end: var(--gap-sm);
+    font-weight: 600;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    text-align: start;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .fcy-spec-table__value {
+    padding-block: var(--gap-xs);
+    color: var(--color-foreground);
+    text-align: start;
+    vertical-align: top;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fancyfy — Spec table",
+  "class": "fcy-spec-table-block",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading (leave blank to hide)" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",   "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",     "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start",  "label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",    "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Spec table", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}
