@@ -44,9 +44,20 @@
             {%- assign item = s[item_key] -%}
             {%- if item != blank -%}
               <li class="fcy-feature-duo__item">
-                <span class="fcy-feature-duo__check" aria-hidden="true">
-                  {%- render 'icon-or-image', icon: s.check_icon | default: 'check_box', width: 18, class_name: 'fcy-feature-duo__check-media' -%}
-                </span>
+                {%- if s.check_icon != blank -%}
+                  <span class="fcy-feature-duo__check" aria-hidden="true">
+                    {{
+                      s.check_icon
+                      | image_url: width: 64
+                      | image_tag:
+                          class: 'fcy-feature-duo__check-media',
+                          alt: '',
+                          width: s.check_icon_size,
+                          height: s.check_icon_size,
+                          loading: 'lazy'
+                    }}
+                  </span>
+                {%- endif -%}
                 <span class="fcy-feature-duo__item-text">{{ item }}</span>
               </li>
             {%- endif -%}
@@ -290,16 +301,12 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 1.25rem;
-    height: 1.25rem;
     margin-top: 0.125rem;
-    color: var(--color-foreground);
   }
 
   .fcy-feature-duo__check-media {
     display: block;
-    width: 1.125rem;
-    height: 1.125rem;
+    object-fit: contain;
   }
 
   .fcy-feature-duo__item-text {
@@ -388,27 +395,8 @@
       "default": "<p>Our award-winning setting powder combines cutting-edge technology with clean, skin-caring ingredients. The weightless formula creates a soft-focus finish that photographs beautifully—perfect for everyday wear or special events.</p>" },
 
     { "type": "header", "content": "Checklist (clear to hide)" },
-    { "type": "select", "id": "check_icon", "label": "Check icon",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "check_box", "label": "Check" },
-        { "value": "star", "label": "Star" },
-        { "value": "lightning_bolt", "label": "Lightning" },
-        { "value": "heart", "label": "Heart" },
-        { "value": "leaf", "label": "Leaf" },
-        { "value": "stopwatch", "label": "Stopwatch" },
-        { "value": "snowflake", "label": "Snowflake" },
-        { "value": "fire", "label": "Fire" },
-        { "value": "truck", "label": "Truck" },
-        { "value": "return", "label": "Return arrow" },
-        { "value": "map_pin", "label": "Map pin" },
-        { "value": "box", "label": "Box" },
-        { "value": "price_tag", "label": "Price tag" },
-        { "value": "lock", "label": "Lock" },
-        { "value": "plane", "label": "Plane" },
-        { "value": "clipboard", "label": "Clipboard" }
-      ],
-      "default": "check_box" },
+    { "type": "image_picker", "id": "check_icon", "label": "Bullet icon (SVG or image, leave blank to hide)" },
+    { "type": "range", "id": "check_icon_size", "label": "Icon size", "min": 10, "max": 40, "step": 2, "unit": "px", "default": 18 },
     { "type": "richtext", "id": "item_1", "label": "Item 1",
       "default": "<p><strong>Invisible Finish:</strong> Ultra-fine milled powder blurs imperfections without looking cakey or settling into fine lines.</p>" },
     { "type": "richtext", "id": "item_2", "label": "Item 2",
