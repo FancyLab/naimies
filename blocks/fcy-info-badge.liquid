@@ -1,0 +1,173 @@
+{%- comment -%}
+  fcy-info-badge — reusable promo / info card.
+
+  Covers: Auto-Replenish (inline), Delivery Options cards (card variant),
+  Limited Time Offer panel (card + filled), Free Shipping line (inline),
+  "OUR MOST-LOVED PRODUCT" gallery badge.
+
+  ADR-003: consumes Horizon tokens; filled variants use `--fcy-color-*`
+  (category C) or merchant-picked color scheme.
+{%- endcomment -%}
+
+{%- assign block_settings = block.settings -%}
+{%- assign variant = block_settings.variant | default: 'inline' -%}
+{%- assign emphasis = block_settings.emphasis | default: 'none' -%}
+{%- assign tone = block_settings.tone | default: 'scheme' -%}
+
+{%- capture tone_style -%}
+  {%- case tone -%}
+    {%- when 'success' -%}
+      --fcy-badge-bg: var(--fcy-color-success-surface);
+      --fcy-badge-fg: var(--fcy-color-success-surface-contrast);
+      --fcy-badge-accent: var(--fcy-color-success);
+    {%- when 'accent' -%}
+      --fcy-badge-bg: var(--fcy-color-accent);
+      --fcy-badge-fg: var(--fcy-color-accent-contrast);
+      --fcy-badge-accent: var(--fcy-color-accent-contrast);
+    {%- else -%}
+      --fcy-badge-bg: var(--color-background);
+      --fcy-badge-fg: var(--color-foreground);
+      --fcy-badge-accent: var(--color-foreground);
+  {%- endcase -%}
+{%- endcapture -%}
+
+{%- assign tag_name = 'div' -%}
+{%- if block_settings.link != blank -%}
+  {%- assign tag_name = 'a' -%}
+{%- endif -%}
+
+<{{ tag_name }}
+  class="fcy-info-badge fcy-info-badge--{{ variant }} fcy-info-badge--{{ emphasis }}{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  data-tone="{{ tone }}"
+  {% if tag_name == 'a' %}
+    href="{{ block_settings.link }}"
+    {% if block_settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}
+  {% endif %}
+  style="{{ tone_style | strip_newlines | strip }} {% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if block_settings.icon != blank and block_settings.icon != 'none' -%}
+    <span class="fcy-info-badge__icon" aria-hidden="true">
+      {%- render 'icon-or-image', icon: block_settings.icon, width: block_settings.icon_size, class_name: 'fcy-info-badge__icon-media' -%}
+    </span>
+  {%- endif -%}
+
+  <div class="fcy-info-badge__content">
+    {%- if block_settings.title != blank -%}
+      <p class="fcy-info-badge__title">{{ block_settings.title | escape }}</p>
+    {%- endif -%}
+    {%- if block_settings.description != blank -%}
+      <div class="fcy-info-badge__description">{{ block_settings.description }}</div>
+    {%- endif -%}
+    {%- if block_settings.link_label != blank and tag_name != 'a' and block_settings.link != blank -%}
+      <a class="fcy-info-badge__link" href="{{ block_settings.link }}"{% if block_settings.open_in_new_tab %} target="_blank" rel="noopener"{% endif %}>
+        {{ block_settings.link_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</{{ tag_name }}>
+
+{% schema %}
+{
+  "name": "Fancyfy — Info badge",
+  "class": "fcy-info-badge-block",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "select", "id": "icon", "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "check_box", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "lightning_bolt", "label": "Lightning" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "leaf", "label": "Leaf" },
+        { "value": "stopwatch", "label": "Stopwatch" },
+        { "value": "snowflake", "label": "Snowflake" },
+        { "value": "fire", "label": "Fire" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "return", "label": "Return arrow" },
+        { "value": "map_pin", "label": "Map pin" },
+        { "value": "box", "label": "Box" },
+        { "value": "price_tag", "label": "Price tag" },
+        { "value": "lock", "label": "Lock" },
+        { "value": "plane", "label": "Plane" },
+        { "value": "clipboard", "label": "Clipboard" }
+      ],
+      "default": "stopwatch" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 14, "max": 40, "step": 2, "unit": "px", "default": 20 },
+    { "type": "text", "id": "title", "label": "Title", "default": "Auto-Replenish" },
+    { "type": "richtext", "id": "description", "label": "Description", "default": "<p>Save 5% on every delivery</p>" },
+    { "type": "url", "id": "link", "label": "Link (optional)" },
+    { "type": "text", "id": "link_label", "label": "Link label (shown when the whole badge is not a link)" },
+    { "type": "checkbox", "id": "open_in_new_tab", "label": "Open in new tab", "default": false },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "variant", "label": "Variant",
+      "options": [
+        { "value": "inline", "label": "Inline (compact row)" },
+        { "value": "card",   "label": "Card (stacked)" }
+      ],
+      "default": "inline" },
+    { "type": "select", "id": "emphasis", "label": "Emphasis",
+      "options": [
+        { "value": "none",    "label": "Minimal (transparent)" },
+        { "value": "outline", "label": "Outline" },
+        { "value": "filled",  "label": "Filled" }
+      ],
+      "default": "none" },
+    { "type": "select", "id": "tone", "label": "Tone (filled / outline only)",
+      "options": [
+        { "value": "scheme",  "label": "Color scheme" },
+        { "value": "success", "label": "Success (green)" },
+        { "value": "accent",  "label": "Accent (yellow)" }
+      ],
+      "default": "scheme" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding-block-end",   "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 12 }
+  ],
+  "presets": [
+    { "name": "Info badge — Auto-Replenish",
+      "category": "Fancyfy",
+      "settings": {
+        "icon": "stopwatch",
+        "title": "Auto-Replenish",
+        "description": "<p>Save 5% on every delivery</p>",
+        "variant": "inline",
+        "emphasis": "filled",
+        "tone": "success"
+      }
+    },
+    { "name": "Info badge — Delivery option",
+      "category": "Fancyfy",
+      "settings": {
+        "icon": "truck",
+        "title": "Same-Day Delivery",
+        "description": "<p>Select items delivered at checkout where available.</p>",
+        "variant": "card",
+        "emphasis": "outline",
+        "tone": "scheme"
+      }
+    },
+    { "name": "Info badge — Limited-time offer",
+      "category": "Fancyfy",
+      "settings": {
+        "icon": "lightning_bolt",
+        "title": "Limited-time offer",
+        "description": "<p>Limited-time savings on select shades and sizes. Stock up on artist favorites while the offer is available.</p>",
+        "variant": "card",
+        "emphasis": "filled",
+        "tone": "success"
+      }
+    }
+  ]
+}
+{% endschema %}

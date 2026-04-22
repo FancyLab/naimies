@@ -23,7 +23,7 @@
             "icons_style": "arrow",
             "slideshow_controls_style": "counter",
             "slideshow_mobile_controls_style": "dots",
-            "thumbnail_position": "right",
+            "thumbnail_position": "left",
             "thumbnail_width": 44,
             "aspect_ratio": "adapt",
             "constrain_to_viewport": true,
@@ -173,16 +173,62 @@
               },
               "blocks": {}
             },
+            "fcy_feature_pills_main": {
+              "type": "fcy-feature-pills",
+              "settings": {
+                "pill_1_icon": "check_box",
+                "pill_1_label": "Matte Finish",
+                "pill_2_icon": "stopwatch",
+                "pill_2_label": "Long Wearing",
+                "pill_3_icon": "eye",
+                "pill_3_label": "Blurring",
+                "pill_4_icon": "none",
+                "pill_4_label": "",
+                "pill_5_icon": "none",
+                "pill_5_label": "",
+                "alignment": "flex-start",
+                "gap": 12,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 4,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
               "settings": {
                 "variant_style": "buttons",
-                "show_swatches": false,
+                "show_swatches": true,
                 "alignment": "left",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "fcy_info_badge_autoreplenish": {
+              "type": "fcy-info-badge",
+              "settings": {
+                "icon": "stopwatch",
+                "icon_size": 16,
+                "title": "Auto-Replenish",
+                "description": "<p>Save 5% on every delivery</p>",
+                "link": "",
+                "link_label": "",
+                "open_in_new_tab": false,
+                "variant": "inline",
+                "emphasis": "filled",
+                "tone": "success",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 6,
+                "padding-block-end": 6,
+                "padding-inline-start": 12,
+                "padding-inline-end": 12
               },
               "blocks": {}
             },
@@ -251,7 +297,9 @@
           "block_order": [
             "group_icgrde",
             "divider_VJhene",
+            "fcy_feature_pills_main",
             "variant_picker_R3rGDr",
+            "fcy_info_badge_autoreplenish",
             "buy_buttons_eYQEYi",
             "text_aEtTtq"
           ]
