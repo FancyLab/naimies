@@ -975,48 +975,10 @@
     },
     "fcy_feature_duo_love_it": {
       "type": "fcy-feature-duo",
-      "blocks": {
-        "media_comparison": {
-          "type": "comparison-slider",
-          "settings": {
-            "slider_style": "horizontal",
-            "show_text": true,
-            "before_text": "Before",
-            "after_text": "After 6 hours",
-            "text_preset": "h6",
-            "text_position_horizontal": "bottom",
-            "text_position_vertical": "start",
-            "text_background": true,
-            "text_background_color": "#ffffffcc",
-            "text_corner_radius": 8,
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "inherit_color_scheme": true,
-            "color_scheme": "scheme-1",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 12,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "media_comparison"
-      ],
       "settings": {
         "eyebrow": "",
         "heading": "Why You'll Love It",
         "body": "<p>Our award-winning setting powder combines cutting-edge technology with clean, skin-caring ingredients. The weightless formula creates a soft-focus finish that photographs beautifully—perfect for everyday wear or special events.</p>",
-        "check_icon": "check_box",
         "item_1": "<p><strong>Invisible Finish:</strong> Ultra-fine milled powder blurs imperfections without looking cakey or settling into fine lines.</p>",
         "item_2": "<p><strong>All-Day Wear:</strong> Locks in your makeup for 16+ hours while controlling oil and shine.</p>",
         "item_3": "<p><strong>Skin-Perfecting Formula:</strong> Infused with light-reflecting pearls and skin-loving ingredients for a luminous, airbrushed effect.</p>",
@@ -1024,6 +986,10 @@
         "item_5": "",
         "cta_label": "Buy it now",
         "cta_link": "",
+        "media_type": "before-after",
+        "show_labels": true,
+        "before_label": "Before",
+        "after_label": "After 6 hours",
         "layout": "image-right",
         "color_scheme": "scheme-1",
         "padding-block-start": 72,
@@ -1435,37 +1401,10 @@
     },
     "fcy_feature_duo_about_brand": {
       "type": "fcy-feature-duo",
-      "blocks": {
-        "media_image": {
-          "type": "image",
-          "settings": {
-            "link": "",
-            "image_ratio": "landscape",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "media_image"
-      ],
       "settings": {
         "eyebrow": "",
         "heading": "About the Brand",
         "body": "<p>Huda Beauty is known for creating high-performance makeup designed for both professional artists and everyday beauty lovers. Focused on innovation, texture, and long-wear results, the brand offers products that enhance confidence while supporting creative expression.</p>",
-        "check_icon": "check_box",
         "item_1": "<p><strong>Ultra-Fine Texture:</strong> Helps blur imperfections and smooth the look of skin without feeling heavy.</p>",
         "item_2": "<p><strong>Long-Wear Performance:</strong> Supports makeup longevity through busy days, events, and on-set use.</p>",
         "item_3": "<p><strong>Photo-Friendly Finish:</strong> Designed to reduce flashback and maintain a natural appearance under different lighting conditions.</p>",
@@ -1473,6 +1412,7 @@
         "item_5": "",
         "cta_label": "",
         "cta_link": "",
+        "media_type": "image",
         "layout": "image-left",
         "color_scheme": "scheme-2",
         "padding-block-start": 72,
