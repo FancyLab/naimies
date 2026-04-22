@@ -18,7 +18,10 @@
 
 <div
   class="fcy-feature-duo-wrapper section spacing-style color-{{ s.color_scheme }}"
-  style="{% render 'spacing-style', settings: s %}"
+  style="
+    --fcy-duo-icon-size: {{ s.check_icon_size | default: 18 }}px;
+    {% render 'spacing-style', settings: s %}
+  "
 >
   <fcy-feature-duo
     class="fcy-feature-duo"
@@ -301,11 +304,15 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    width: var(--fcy-duo-icon-size, 18px);
+    height: var(--fcy-duo-icon-size, 18px);
     margin-top: 0.125rem;
   }
 
   .fcy-feature-duo__check-media {
     display: block;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
   }
 
