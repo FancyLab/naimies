@@ -17,7 +17,7 @@
   class="fcy-action-lookbook{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
   data-item-width="{{ block_settings.item_width | default: 92 }}"
   data-item-ratio="{{ block_settings.item_ratio | default: '2 / 3' }}"
-  style="{% render 'spacing-style', settings: block_settings %}"
+  style="--fcy-lookbook-item-width: {{ block_settings.item_width | default: 92 }}px; --fcy-lookbook-item-ratio: {{ block_settings.item_ratio | default: '2 / 3' }}; {% render 'spacing-style', settings: block_settings %}"
   {{ block.shopify_attributes }}
 >
   {%- if heading != blank -%}
@@ -67,6 +67,74 @@
     {%- endfor -%}
   </ul>
 </fcy-action-lookbook>
+
+{% stylesheet %}
+  fcy-action-lookbook {
+    display: block;
+  }
+
+  .fcy-action-lookbook__heading {
+    margin: 0 0 var(--gap-sm);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--xs);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .fcy-action-lookbook__list {
+    display: flex;
+    gap: var(--gap-sm);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-block-end: 4px;
+  }
+
+  .fcy-action-lookbook__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fcy-action-lookbook__item {
+    flex: 0 0 var(--fcy-lookbook-item-width, 92px);
+    scroll-snap-align: start;
+  }
+
+  .fcy-action-lookbook__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .fcy-action-lookbook__media {
+    aspect-ratio: var(--fcy-lookbook-item-ratio, 2 / 3);
+    overflow: hidden;
+    border-radius: var(--style-border-radius-pills);
+  }
+
+  .fcy-action-lookbook__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .fcy-action-lookbook__link:hover .fcy-action-lookbook__image {
+    transform: scale(1.03);
+  }
+
+  .fcy-action-lookbook__caption {
+    margin: var(--gap-xs) 0 0;
+    font-size: var(--font-size--xs);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
