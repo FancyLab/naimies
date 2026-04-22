@@ -67,6 +67,32 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "fcy_breadcrumb_main": {
+              "type": "fcy-breadcrumb",
+              "settings": {
+                "separator": "/",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "fcy_wishlist_main": {
+              "type": "fcy-wishlist-placeholder",
+              "settings": {
+                "icon_size": 24,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "group_icgrde": {
               "type": "group",
               "name": "Header",
@@ -386,6 +412,20 @@
               },
               "blocks": {}
             },
+            "fcy_payment_security_main": {
+              "type": "fcy-payment-security",
+              "settings": {
+                "heading": "Payment & Security",
+                "legal_text": "<p>Your payment information is processed securely. We do not store credit card details nor have access to your credit card information.</p>",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 8,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
             "fcy_share_main": {
               "type": "fcy-share",
               "settings": {
@@ -417,6 +457,29 @@
                 "padding-inline-end": 0
               },
               "blocks": {
+                "accordion_row_about": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "About the Product",
+                    "open_by_default": true
+                  },
+                  "blocks": {
+                    "spec_table_about": {
+                      "type": "fcy-spec-table",
+                      "settings": {
+                        "heading": "",
+                        "inherit_color_scheme": true,
+                        "color_scheme": "scheme-1",
+                        "padding-block-start": 0,
+                        "padding-block-end": 0,
+                        "padding-inline-start": 0,
+                        "padding-inline-end": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": ["spec_table_about"]
+                },
                 "accordion_row_ingredients": {
                   "type": "_accordion-row",
                   "settings": {
@@ -476,6 +539,7 @@
                 }
               },
               "block_order": [
+                "accordion_row_about",
                 "accordion_row_ingredients",
                 "accordion_row_howto",
                 "accordion_row_shipping"
@@ -483,19 +547,20 @@
             }
           },
           "block_order": [
+            "fcy_breadcrumb_main",
+            "fcy_wishlist_main",
             "group_icgrde",
-            "divider_VJhene",
             "fcy_feature_pills_main",
             "variant_picker_R3rGDr",
             "fcy_info_badge_autoreplenish",
             "buy_buttons_eYQEYi",
+            "text_aEtTtq",
             "fcy_badge_shipping",
             "fcy_badge_returns",
             "fcy_badge_limited_offer",
             "fcy_lookbook_main",
-            "payment_icons_main",
+            "fcy_payment_security_main",
             "fcy_share_main",
-            "text_aEtTtq",
             "accordion_main"
           ]
         }

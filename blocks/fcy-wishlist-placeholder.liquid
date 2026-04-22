@@ -1,0 +1,43 @@
+{%- comment -%}
+  Wishlist placeholder — icon button only. No persistence or app wiring.
+  Wire to chosen wishlist app in a follow-up once app is selected.
+{%- endcomment -%}
+{%- assign block_settings = block.settings -%}
+
+<div
+  class="fcy-wishlist{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  <button
+    class="fcy-wishlist__button"
+    type="button"
+    aria-label="{{ 'products.product.wishlist_add' | t }}"
+  >
+    {%- render 'icon-or-image', icon: 'heart', width: block_settings.icon_size, class_name: 'fcy-wishlist__icon' -%}
+  </button>
+</div>
+
+{% schema %}
+{
+  "name": "Fancyfy — Wishlist placeholder",
+  "class": "fcy-wishlist-block",
+  "settings": [
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 40, "step": 2, "unit": "px", "default": 24 },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",   "label": "Top",    "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end",     "label": "Bottom", "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start",  "label": "Left",   "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",    "label": "Right",  "min": 0, "max": 64, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Wishlist (placeholder)", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}
