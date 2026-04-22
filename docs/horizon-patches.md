@@ -54,7 +54,7 @@ Derived from the Horizon audit (`docs/horizon-audit.md` §2). Strategy per ADR-0
 | P9 | `blocks/_featured-product-price.liquid` | 5–14, 37–39 inline "From $X" | Wrap these specific lines (P1 covers line 40) | live |
 | P10 | `snippets/quantity-selector.liquid` | 116, 139, 152, 154 `data-variant-price` attributes + quantity-break JSON | Attribute-level: empty string or sentinel when `fcy_hide_prices` | live |
 | P11 | `snippets/meta-tags.liquid` | 77 `<meta property="product:price:amount">` | Omit the meta when hidden (avoid OG leak) | live |
-| P12 | `snippets/price-filter.liquid` | Top of file | `{% if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters %}{% return %}{% endif %}` | live |
+| P12 | `snippets/price-filter.liquid` | Wrap markup (before `<accordion-custom>`, after `</accordion-custom>`) | `{%- unless fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters -%} ... {%- endunless -%}`. Shopify Liquid has no `{% return %}` tag; wrap the output instead. `{% stylesheet %}` stays outside the guard. | live |
 | P13 | `snippets/filter-remove-buttons.liquid` | 31–39 price branch | Wrap the price-type branch only | live |
 | P14 | `snippets/sorting.liquid` | Sort options loop | `{% continue %}` on `price-ascending` / `price-descending` | live |
 | P15 | `layout/theme.liquid` | After `{%- render 'fcy-tokens' -%}` | `{%- render 'fcy-price-visibility' -%}` to compute `fcy_hide_prices` once | live |

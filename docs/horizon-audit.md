@@ -114,7 +114,7 @@
 
 | File | Lines | What's rendered | Wrapper |
 |---|---|---|---|
-| `snippets/price-filter.liquid` | 46, 50–59, 99, 105, 126, 130–132, 154 | Price-range filter UI | wrap whole snippet with `{% if fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters %}{% return %}{% endif %}` |
+| `snippets/price-filter.liquid` | 46, 50–59, 99, 105, 126, 130–132, 154 | Price-range filter UI | wrap whole markup with `{%- unless fcy_hide_prices and settings.fancyfy_hide_prices_hide_filters -%} ... {%- endunless -%}` (Shopify Liquid has no `{% return %}`) |
 | `snippets/filter-remove-buttons.liquid` | 31, 33, 35, 37, 39 | Applied-price-filter pill | wrap the price branch only |
 | `blocks/filters.liquid` | 182, 443 | Calls `render 'price-filter'` | covered |
 | `snippets/sorting.liquid` | sort options loop | Emits `price-ascending` / `price-descending` | wrap inside option loop — `{% continue %}` on price values |
