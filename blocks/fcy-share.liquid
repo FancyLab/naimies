@@ -1,0 +1,103 @@
+{%- comment -%}
+  fcy-share — product share buttons (Facebook / X / Pinterest).
+
+  URLs are built in Liquid against `canonical_url` and the product title,
+  so no JavaScript is required for the markup baseline. A future slice may
+  add a Web Share API wrapper as progressive enhancement.
+{%- endcomment -%}
+
+{%- assign block_settings = block.settings -%}
+{%- assign share_url = canonical_url -%}
+{%- assign share_title = closest.product.title | default: shop.name -%}
+{%- assign share_image = closest.product.featured_image | image_url: width: 1200 -%}
+
+{%- capture facebook_href -%}https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}{%- endcapture -%}
+{%- capture twitter_href -%}https://twitter.com/intent/tweet?url={{ share_url | url_encode }}&text={{ share_title | url_encode }}{%- endcapture -%}
+{%- capture pinterest_href -%}https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}&media={{ share_image | url_encode }}&description={{ share_title | url_encode }}{%- endcapture -%}
+
+<fcy-share
+  class="fcy-share{% if block_settings.inherit_color_scheme == false %} color-{{ block_settings.color_scheme }}{% endif %}"
+  style="{% render 'spacing-style', settings: block_settings %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if block_settings.label != blank -%}
+    <span class="fcy-share__label">{{ block_settings.label | escape }}</span>
+  {%- endif -%}
+
+  <ul class="fcy-share__list" role="list">
+    {%- if block_settings.show_facebook -%}
+      <li class="fcy-share__item">
+        <a
+          class="fcy-share__link"
+          href="{{ facebook_href }}"
+          aria-label="{{ 'accessibility.share_on_facebook' | t | default: 'Share on Facebook' }}"
+          target="_blank"
+          rel="noopener"
+          data-network="facebook"
+        >
+          {%- render 'icon-or-image', icon: 'facebook', width: block_settings.icon_size, class_name: 'fcy-share__icon' -%}
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if block_settings.show_twitter -%}
+      <li class="fcy-share__item">
+        <a
+          class="fcy-share__link"
+          href="{{ twitter_href }}"
+          aria-label="{{ 'accessibility.share_on_x' | t | default: 'Share on X' }}"
+          target="_blank"
+          rel="noopener"
+          data-network="twitter"
+        >
+          {%- render 'icon-or-image', icon: 'twitter', width: block_settings.icon_size, class_name: 'fcy-share__icon' -%}
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if block_settings.show_pinterest -%}
+      <li class="fcy-share__item">
+        <a
+          class="fcy-share__link"
+          href="{{ pinterest_href }}"
+          aria-label="{{ 'accessibility.share_on_pinterest' | t | default: 'Pin on Pinterest' }}"
+          target="_blank"
+          rel="noopener"
+          data-network="pinterest"
+        >
+          {%- render 'icon-or-image', icon: 'pinterest', width: block_settings.icon_size, class_name: 'fcy-share__icon' -%}
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+</fcy-share>
+
+{% schema %}
+{
+  "name": "Fancyfy — Share",
+  "class": "fcy-share-block",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Share:" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 14, "max": 40, "step": 2, "unit": "px", "default": 20 },
+
+    { "type": "header", "content": "Networks" },
+    { "type": "checkbox", "id": "show_facebook",  "label": "Facebook",  "default": true },
+    { "type": "checkbox", "id": "show_twitter",   "label": "X (Twitter)","default": true },
+    { "type": "checkbox", "id": "show_pinterest", "label": "Pinterest", "default": true },
+
+    { "type": "header", "content": "Color" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "Inherit color scheme from parent", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start", "label": "Top",    "min": 0, "max": 48, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding-block-end",   "label": "Bottom", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding-inline-start","label": "Left",   "min": 0, "max": 48, "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",  "label": "Right",  "min": 0, "max": 48, "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    { "name": "Share", "category": "Fancyfy" }
+  ]
+}
+{% endschema %}

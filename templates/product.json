@@ -292,6 +292,194 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "fcy_badge_shipping": {
+              "type": "fcy-info-badge",
+              "settings": {
+                "icon": "truck",
+                "icon_size": 20,
+                "title": "Free International Shipping over $120",
+                "description": "",
+                "link": "",
+                "link_label": "",
+                "open_in_new_tab": false,
+                "variant": "inline",
+                "emphasis": "none",
+                "tone": "scheme",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 8,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "fcy_badge_returns": {
+              "type": "fcy-info-badge",
+              "settings": {
+                "icon": "return",
+                "icon_size": 20,
+                "title": "Free Returns Within 30 days",
+                "description": "",
+                "link": "",
+                "link_label": "",
+                "open_in_new_tab": false,
+                "variant": "inline",
+                "emphasis": "none",
+                "tone": "scheme",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 0,
+                "padding-block-end": 4,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "fcy_badge_limited_offer": {
+              "type": "fcy-info-badge",
+              "settings": {
+                "icon": "lightning_bolt",
+                "icon_size": 28,
+                "title": "Limited-time offer",
+                "description": "<p>Limited-time savings on select shades and sizes. Stock up on artist favorites while the offer is available.</p>",
+                "link": "",
+                "link_label": "",
+                "open_in_new_tab": false,
+                "variant": "card",
+                "emphasis": "filled",
+                "tone": "success",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 12,
+                "padding-block-end": 12,
+                "padding-inline-start": 16,
+                "padding-inline-end": 16
+              },
+              "blocks": {}
+            },
+            "fcy_lookbook_main": {
+              "type": "fcy-action-lookbook",
+              "settings": {
+                "heading": "See It In Action",
+                "item_width": 92,
+                "item_ratio": "2 / 3",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 16,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "payment_icons_main": {
+              "type": "payment-icons",
+              "settings": {
+                "horizontal_alignment": "flex-start",
+                "gap": 8,
+                "padding-block-start": 8,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "fcy_share_main": {
+              "type": "fcy-share",
+              "settings": {
+                "label": "Share:",
+                "icon_size": 20,
+                "show_facebook": true,
+                "show_twitter": true,
+                "show_pinterest": true,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 8,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "accordion_main": {
+              "type": "accordion",
+              "settings": {
+                "icon": "caret",
+                "dividers": true,
+                "type_preset": "h6",
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-1",
+                "padding-block-start": 8,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "accordion_row_ingredients": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Ingredients",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_ingredients": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Full ingredient list goes here.</p>",
+                        "type_preset": "rte",
+                        "alignment": "left"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": ["text_ingredients"]
+                },
+                "accordion_row_howto": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "How to Use",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_howto": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>How-to-use instructions go here.</p>",
+                        "type_preset": "rte",
+                        "alignment": "left"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": ["text_howto"]
+                },
+                "accordion_row_shipping": {
+                  "type": "_accordion-row",
+                  "settings": {
+                    "heading": "Shipping & Returns",
+                    "open_by_default": false
+                  },
+                  "blocks": {
+                    "text_shipping": {
+                      "type": "text",
+                      "settings": {
+                        "text": "<p>Free international shipping on orders over $120. Free returns within 30 days.</p>",
+                        "type_preset": "rte",
+                        "alignment": "left"
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": ["text_shipping"]
+                }
+              },
+              "block_order": [
+                "accordion_row_ingredients",
+                "accordion_row_howto",
+                "accordion_row_shipping"
+              ]
             }
           },
           "block_order": [
@@ -301,7 +489,14 @@
             "variant_picker_R3rGDr",
             "fcy_info_badge_autoreplenish",
             "buy_buttons_eYQEYi",
-            "text_aEtTtq"
+            "fcy_badge_shipping",
+            "fcy_badge_returns",
+            "fcy_badge_limited_offer",
+            "fcy_lookbook_main",
+            "payment_icons_main",
+            "fcy_share_main",
+            "text_aEtTtq",
+            "accordion_main"
           ]
         }
       },
