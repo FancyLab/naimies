@@ -381,6 +381,95 @@
               },
               "blocks": {}
             },
+            "group_delivery_options": {
+              "type": "group",
+              "name": "Delivery options",
+              "settings": {
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "stretch",
+                "gap": 8,
+                "width": "fill",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "fcy_delivery_standard": {
+                  "type": "fcy-info-badge",
+                  "settings": {
+                    "icon": "truck",
+                    "icon_size": 20,
+                    "title": "Standard Shipping",
+                    "description": "<p>Free on orders over $120</p>",
+                    "link": "",
+                    "link_label": "",
+                    "open_in_new_tab": false,
+                    "variant": "card",
+                    "emphasis": "outline",
+                    "tone": "scheme",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 12,
+                    "padding-block-end": 12,
+                    "padding-inline-start": 12,
+                    "padding-inline-end": 12
+                  },
+                  "blocks": {}
+                },
+                "fcy_delivery_sameday": {
+                  "type": "fcy-info-badge",
+                  "settings": {
+                    "icon": "lightning_bolt",
+                    "icon_size": 20,
+                    "title": "Same-Day Delivery",
+                    "description": "<p>Select items, check at checkout</p>",
+                    "link": "",
+                    "link_label": "",
+                    "open_in_new_tab": false,
+                    "variant": "card",
+                    "emphasis": "outline",
+                    "tone": "scheme",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 12,
+                    "padding-block-end": 12,
+                    "padding-inline-start": 12,
+                    "padding-inline-end": 12
+                  },
+                  "blocks": {}
+                },
+                "fcy_delivery_pickup": {
+                  "type": "fcy-info-badge",
+                  "settings": {
+                    "icon": "map_pin",
+                    "icon_size": 20,
+                    "title": "Store Pickup",
+                    "description": "<p>Ready in 2 hours</p>",
+                    "link": "",
+                    "link_label": "",
+                    "open_in_new_tab": false,
+                    "variant": "card",
+                    "emphasis": "outline",
+                    "tone": "scheme",
+                    "inherit_color_scheme": true,
+                    "color_scheme": "scheme-1",
+                    "padding-block-start": 12,
+                    "padding-block-end": 12,
+                    "padding-inline-start": 12,
+                    "padding-inline-end": 12
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "fcy_delivery_standard",
+                "fcy_delivery_sameday",
+                "fcy_delivery_pickup"
+              ]
+            },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
@@ -675,6 +764,7 @@
             "fcy_feature_pills_main",
             "variant_picker_R3rGDr",
             "fcy_info_badge_autoreplenish",
+            "group_delivery_options",
             "buy_buttons_eYQEYi",
             "text_aEtTtq",
             "fcy_badge_shipping",
