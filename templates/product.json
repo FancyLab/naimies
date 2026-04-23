@@ -595,46 +595,39 @@
     },
     "fcy_highlights_main": {
       "type": "fcy-highlights",
-      "settings": {
-        "heading": "Highlights",
-        "icon_size": 32,
-        "gap": 64,
-        "alignment": "center",
-        "color_scheme": "scheme-1",
-        "icon_bg_color": "#F6F6F8",
-        "padding-block-start": 48,
-        "padding-block-end": 24,
-        "padding-inline-start": 0,
-        "padding-inline-end": 0
-      },
       "blocks": {
         "highlight_1": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/icon.svg",
             "label": "Matte"
           }
         },
         "highlight_2": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Black.svg",
             "label": "Medium Coverage"
           }
         },
         "highlight_3": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/icon_2.svg",
             "label": "Long Wearing"
           }
         },
         "highlight_4": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/icon_3.svg",
             "label": "Oily Skin"
           }
         },
         "highlight_5": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/icon_1.svg",
             "label": "Liquid Formulation"
           }
         }
@@ -645,7 +638,19 @@
         "highlight_3",
         "highlight_4",
         "highlight_5"
-      ]
+      ],
+      "settings": {
+        "heading": "Highlights",
+        "icon_size": 32,
+        "gap": 64,
+        "alignment": "center",
+        "color_scheme": "scheme-1",
+        "icon_bg_color": "#f6f6f8",
+        "padding-block-start": 40,
+        "padding-block-end": 40,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
+      }
     },
     "product_recs_use_with": {
       "type": "product-recommendations",
@@ -803,17 +808,19 @@
       "type": "fcy-steps",
       "settings": {
         "heading": "How to Use",
+        "step_1_number": "1",
         "step_1_title": "Bake",
         "step_1_body": "<p>Apply a generous layer of powder to areas you want to brighten or set, such as under the eyes, T-zone, smile lines, and chin.</p>",
+        "step_2_number": "2",
         "step_2_title": "Set",
         "step_2_body": "<p>Lightly sweep powder across the face to lock in makeup and control shine. Focus on oily areas like the forehead, nose, and around the eyes.</p>",
+        "step_3_number": "3",
         "step_3_title": "Touch up",
         "step_3_body": "<p>Use throughout the day to refresh makeup and reduce shine without buildup. Perfect for quick on-the-go mattifying.</p>",
-        "step_4_title": "",
-        "step_4_body": "",
-        "step_5_title": "",
-        "step_5_body": "",
         "alignment": "center",
+        "column_gap": 48,
+        "number_bg_color": "#0a0a0a",
+        "number_text_color": "#ffffff",
         "color_scheme": "scheme-1",
         "padding-block-start": 24,
         "padding-block-end": 48,
@@ -827,13 +834,14 @@
       "settings": {
         "heading": "Similar Products",
         "heading_alignment": "center",
+        "collection": "",
         "products_limit": 8,
         "columns": 5,
         "columns_mobile": "1",
         "card_gap": 16,
         "show_tag": true,
-        "tag_color": "#FEDC5C",
-        "tag_text_color": "#0A0A0A",
+        "tag_color": "#fedc5c",
+        "tag_text_color": "#0a0a0a",
         "cta_label": "See details",
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
@@ -848,6 +856,7 @@
         "eyebrow": "",
         "heading": "Why You'll Love It",
         "body": "<p>Our award-winning setting powder combines cutting-edge technology with clean, skin-caring ingredients. The weightless formula creates a soft-focus finish that photographs beautifully—perfect for everyday wear or special events.</p>",
+        "check_icon_size": 18,
         "item_1": "<p><strong>Invisible Finish:</strong> Ultra-fine milled powder blurs imperfections without looking cakey or settling into fine lines.</p>",
         "item_2": "<p><strong>All-Day Wear:</strong> Locks in your makeup for 16+ hours while controlling oil and shine.</p>",
         "item_3": "<p><strong>Skin-Perfecting Formula:</strong> Infused with light-reflecting pearls and skin-loving ingredients for a luminous, airbrushed effect.</p>",
@@ -855,12 +864,21 @@
         "item_5": "",
         "cta_label": "Buy it now",
         "cta_link": "",
+        "cta_style": "primary",
+        "cta_icon_size": 18,
+        "cta_icon_position": "right",
+        "cta_hover_animation": "ripple-out",
         "media_type": "before-after",
+        "video_autoplay": true,
+        "video_loop": true,
+        "video_controls": false,
         "show_labels": true,
         "before_label": "Before",
         "after_label": "After 6 hours",
+        "media_aspect_ratio": "4/5",
         "layout": "image-right",
         "color_scheme": "scheme-1",
+        "background_color": "",
         "padding-block-start": 72,
         "padding-block-end": 72,
         "padding-inline-start": 0,
@@ -1257,9 +1275,14 @@
       "settings": {
         "heading": "Discover more in our FAQ",
         "heading_alignment": "center",
+        "content_max_width": 880,
         "contact_prompt": "Still have questions?",
         "contact_label": "Contact Us",
         "contact_link": "/pages/contact",
+        "contact_style": "ghost",
+        "contact_icon_size": 18,
+        "contact_icon_position": "right",
+        "contact_hover_animation": "ripple-out",
         "footer_alignment": "center",
         "color_scheme": "scheme-1",
         "padding-block-start": 64,
@@ -1274,6 +1297,7 @@
         "eyebrow": "",
         "heading": "About the Brand",
         "body": "<p>Huda Beauty is known for creating high-performance makeup designed for both professional artists and everyday beauty lovers. Focused on innovation, texture, and long-wear results, the brand offers products that enhance confidence while supporting creative expression.</p>",
+        "check_icon_size": 18,
         "item_1": "<p><strong>Ultra-Fine Texture:</strong> Helps blur imperfections and smooth the look of skin without feeling heavy.</p>",
         "item_2": "<p><strong>Long-Wear Performance:</strong> Supports makeup longevity through busy days, events, and on-set use.</p>",
         "item_3": "<p><strong>Photo-Friendly Finish:</strong> Designed to reduce flashback and maintain a natural appearance under different lighting conditions.</p>",
@@ -1281,9 +1305,21 @@
         "item_5": "",
         "cta_label": "",
         "cta_link": "",
+        "cta_style": "primary",
+        "cta_icon_size": 18,
+        "cta_icon_position": "right",
+        "cta_hover_animation": "ripple-out",
         "media_type": "image",
+        "video_autoplay": true,
+        "video_loop": true,
+        "video_controls": false,
+        "show_labels": true,
+        "before_label": "Before",
+        "after_label": "After 6 hours",
+        "media_aspect_ratio": "4/5",
         "layout": "image-left",
         "color_scheme": "scheme-2",
+        "background_color": "",
         "padding-block-start": 72,
         "padding-block-end": 72,
         "padding-inline-start": 0,
