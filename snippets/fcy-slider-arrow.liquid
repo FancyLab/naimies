@@ -1,0 +1,45 @@
+{%- doc -%}
+  fcy-slider-arrow — Circular arrow control with shadow.
+
+  Shared across every fancyfy carousel so the slider chrome (prev/next arrows)
+  looks identical everywhere. Uses `icon-arrow.svg` flipped for the prev
+  direction; background is a clean white circle with a soft shadow.
+
+  Styles live in `assets/fcy-slider-arrow.css`. The consuming section is
+  responsible for loading it once via `stylesheet_tag`.
+
+  @param {string}  action           - "previous" | "next" (required)
+  @param {string}  [controls]       - id of the element this button controls (scroll container)
+  @param {string}  [label]          - aria-label override
+  @param {number}  [size]           - diameter in px (default 44)
+  @param {string}  [extra_class]    - extra classes on the button
+{%- enddoc -%}
+
+{%- liquid
+  assign btn_size = size | default: 44
+  assign btn_label = label
+  if btn_label == blank
+    if action == 'previous'
+      assign btn_label = 'Previous slide'
+    else
+      assign btn_label = 'Next slide'
+    endif
+  endif
+-%}
+
+<button
+  type="button"
+  class="fcy-slider-arrow fcy-slider-arrow--{{ action }}{% if extra_class != blank %} {{ extra_class }}{% endif %}"
+  aria-label="{{ btn_label | escape }}"
+  {% if controls != blank %}aria-controls="{{ controls }}"{% endif %}
+  data-action="{{ action }}"
+  style="--fcy-slider-arrow-size: {{ btn_size }}px;"
+>
+  <span class="fcy-slider-arrow__icon" aria-hidden="true">
+    {%- if action == 'previous' -%}
+      {{- 'icon-chevron-left.svg' | inline_asset_content -}}
+    {%- else -%}
+      {{- 'icon-chevron-right.svg' | inline_asset_content -}}
+    {%- endif -%}
+  </span>
+</button>

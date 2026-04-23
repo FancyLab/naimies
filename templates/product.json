@@ -822,155 +822,24 @@
       }
     },
     "product_recs_similar": {
-      "type": "product-recommendations",
-      "blocks": {
-        "text_header_similar": {
-          "type": "text",
-          "name": "Header",
-          "settings": {
-            "text": "<h3>Similar Products</h3>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "h4",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 12,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 8,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "pc_gallery_sim": {
-              "type": "_product-card-gallery",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "pc_title_sim": {
-              "type": "product-title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "0.9375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 6,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "pc_price_sim": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "paragraph",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "0.9375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 2,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "pc_review_sim": {
-              "type": "review",
-              "settings": {
-                "stars_style": "shaded",
-                "show_number": true,
-                "rating_color": "primary",
-                "type_preset": "paragraph",
-                "width": "100%",
-                "alignment": "left"
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "pc_gallery_sim",
-            "pc_title_sim",
-            "pc_price_sim",
-            "pc_review_sim"
-          ]
-        }
-      },
-      "block_order": [
-        "text_header_similar"
-      ],
+      "type": "fcy-similar-products",
       "name": "Similar products",
       "settings": {
-        "product": "{{ closest.product }}",
-        "recommendation_type": "related",
-        "layout_type": "grid",
-        "carousel_on_mobile": true,
-        "max_products": 5,
+        "heading": "Similar Products",
+        "heading_alignment": "center",
+        "products_limit": 8,
         "columns": 5,
-        "mobile_columns": "2",
-        "columns_gap": 12,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 24,
+        "columns_mobile": "1",
+        "card_gap": 16,
+        "show_tag": true,
+        "tag_color": "#FEDC5C",
+        "tag_text_color": "#0A0A0A",
+        "cta_label": "See details",
         "color_scheme": "scheme-1",
-        "padding-block-start": 24,
-        "padding-block-end": 48
+        "padding-block-start": 48,
+        "padding-block-end": 72,
+        "padding-inline-start": 0,
+        "padding-inline-end": 0
       }
     },
     "fcy_feature_duo_love_it": {
