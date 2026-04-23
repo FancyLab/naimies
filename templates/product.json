@@ -834,7 +834,7 @@
       "settings": {
         "heading": "Similar Products",
         "heading_alignment": "center",
-        "collection": "",
+        "collection": "test-collection",
         "products_limit": 8,
         "columns": 5,
         "columns_mobile": "1",
