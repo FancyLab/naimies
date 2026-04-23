@@ -1289,8 +1289,8 @@
         "contact_hover_animation": "ripple-out",
         "footer_alignment": "center",
         "color_scheme": "scheme-1",
-        "padding-block-start": 64,
-        "padding-block-end": 64,
+        "padding-block-start": 40,
+        "padding-block-end": 80,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }
