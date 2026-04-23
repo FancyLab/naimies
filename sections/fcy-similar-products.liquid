@@ -1,0 +1,315 @@
+{%- comment -%}
+  fcy-similar-products — Horizontal carousel of reusable fcy-product-card tiles.
+
+  Merchants pick a source collection; the section renders up to N products as
+  a scroll-snap slider with circular arrow controls that match the rest of
+  the fancyfy slider chrome (see `fcy-slider-arrow`). The product card itself
+  is the `fcy-product-card` snippet, so the same tile can be reused anywhere
+  a list of products needs to be rendered.
+
+  Padding is handled by the Horizon .section.spacing-style pattern on the
+  outer wrapper.
+
+  CSS for the snippets used here (fcy-product-card, fcy-slider-arrow) lives
+  in asset files so the same stylesheets can be reused by any other section
+  that renders those snippets. Shopify's `{% stylesheet %}` block only
+  bundles styles for sections reliably, so snippet styles are shipped as
+  standalone assets instead.
+{%- endcomment -%}
+
+{{ 'fcy-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'fcy-slider-arrow.css' | asset_url | stylesheet_tag }}
+
+{%- assign s = section.settings -%}
+{%- assign heading_alignment = s.heading_alignment | default: 'center' -%}
+{%- assign limit = s.products_limit | default: 8 -%}
+
+{%- liquid
+  # Source priority:
+  #   1. Explicit collection setting (merchant-picked).
+  #   2. PDP fallback: the current product's first collection (most recent
+  #      assignment), which is the closest Liquid-only analog to "related".
+  assign products = null
+  assign source_collection = collections[s.collection]
+  if source_collection != blank
+    assign products = source_collection.products
+  elsif product != blank and product.collections.size > 0
+    assign products = product.collections.first.products
+  endif
+
+  # Exclude the current product when this section is rendered on a PDP.
+  assign current_product_id = product.id
+-%}
+
+<div
+  class="fcy-similar-products-wrapper section spacing-style color-{{ s.color_scheme }}"
+  style="{% render 'spacing-style', settings: s %}"
+>
+  <fcy-similar-products
+    class="fcy-similar-products"
+    data-section-id="{{ section.id }}"
+  >
+    {%- if s.heading != blank -%}
+      <h2 class="fcy-similar-products__heading" style="text-align: {{ heading_alignment }};">
+        {{ s.heading | escape }}
+      </h2>
+    {%- endif -%}
+
+    <div class="fcy-similar-products__viewport">
+      {%- render 'fcy-slider-arrow',
+        action: 'previous',
+        controls: 'fcy-sp-track-' | append: section.id,
+        extra_class: 'fcy-similar-products__arrow fcy-similar-products__arrow--prev'
+      -%}
+
+      <ul
+        id="fcy-sp-track-{{ section.id }}"
+        class="fcy-similar-products__track"
+        role="list"
+        data-columns="{{ s.columns | default: 5 }}"
+        data-columns-mobile="{{ s.columns_mobile | default: 1 }}"
+        style="
+          --fcy-sp-columns: {{ s.columns | default: 5 }};
+          --fcy-sp-columns-mobile: {{ s.columns_mobile | default: 1 }};
+          --fcy-sp-gap: {{ s.card_gap | default: 16 }}px;
+        "
+      >
+        {%- if products != blank -%}
+          {%- assign rendered = 0 -%}
+          {%- for p in products -%}
+            {%- if rendered >= limit -%}{%- break -%}{%- endif -%}
+            {%- if p.id == current_product_id -%}{%- continue -%}{%- endif -%}
+            <li class="fcy-similar-products__slide">
+              {%- render 'fcy-product-card',
+                product: p,
+                tag_color: s.tag_color,
+                tag_text_color: s.tag_text_color,
+                show_tag: s.show_tag,
+                cta_label: s.cta_label
+              -%}
+            </li>
+            {%- assign rendered = rendered | plus: 1 -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..limit) -%}
+            <li class="fcy-similar-products__slide fcy-similar-products__slide--placeholder">
+              <article class="fcy-product-card fcy-product-card--placeholder">
+                <div class="fcy-product-card__media">
+                  {{ 'product-apparel-1' | placeholder_svg_tag: 'fcy-product-card__placeholder-svg' }}
+                </div>
+                <div class="fcy-product-card__body">
+                  <h3 class="fcy-product-card__title">Product title</h3>
+                  <div class="fcy-product-card__prices">
+                    <span class="fcy-product-card__price">$0.00</span>
+                  </div>
+                </div>
+              </article>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+
+      {%- render 'fcy-slider-arrow',
+        action: 'next',
+        controls: 'fcy-sp-track-' | append: section.id,
+        extra_class: 'fcy-similar-products__arrow fcy-similar-products__arrow--next'
+      -%}
+    </div>
+  </fcy-similar-products>
+</div>
+
+<script>
+  (function () {
+    var root = document.querySelector(
+      'fcy-similar-products[data-section-id="{{ section.id }}"]'
+    );
+    if (!root) return;
+    var track = root.querySelector('.fcy-similar-products__track');
+    var prev = root.querySelector('.fcy-similar-products__arrow--prev');
+    var next = root.querySelector('.fcy-similar-products__arrow--next');
+    if (!track || !prev || !next) return;
+
+    function step() {
+      var first = track.querySelector('.fcy-similar-products__slide');
+      if (!first) return track.clientWidth;
+      var style = window.getComputedStyle(track);
+      var gap = parseFloat(style.columnGap || style.gap) || 0;
+      return first.getBoundingClientRect().width + gap;
+    }
+
+    function update() {
+      var maxScroll = track.scrollWidth - track.clientWidth - 1;
+      prev.toggleAttribute('disabled', track.scrollLeft <= 0);
+      next.toggleAttribute('disabled', track.scrollLeft >= maxScroll);
+    }
+
+    prev.addEventListener('click', function () {
+      track.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', function () {
+      track.scrollBy({ left: step(), behavior: 'smooth' });
+    });
+
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+{% stylesheet %}
+  fcy-similar-products {
+    display: block;
+    width: 100%;
+  }
+
+  .fcy-similar-products__heading {
+    margin: 0 0 var(--gap-lg, 2rem);
+    font-family: var(--font-heading--family);
+    color: var(--color-foreground-heading);
+  }
+
+  .fcy-similar-products__viewport {
+    position: relative;
+  }
+
+  .fcy-similar-products__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(
+      (100% - (var(--fcy-sp-columns-mobile, 1) - 1) * var(--fcy-sp-gap, 16px)) /
+        var(--fcy-sp-columns-mobile, 1)
+    );
+    column-gap: var(--fcy-sp-gap, 16px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .fcy-similar-products__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .fcy-similar-products__track {
+      grid-auto-columns: calc(
+        (100% - (var(--fcy-sp-columns, 5) - 1) * var(--fcy-sp-gap, 16px)) /
+          var(--fcy-sp-columns, 5)
+      );
+    }
+  }
+
+  .fcy-similar-products__slide {
+    scroll-snap-align: start;
+    min-width: 0;
+    display: flex;
+  }
+
+  .fcy-similar-products__slide > * {
+    width: 100%;
+  }
+
+  /* ── Arrows overlay ──────────────────────────────────────── */
+  /* Arrows sit over the square media area of the cards, not the overall card
+     centre. Approximated at ~30% from the top of the viewport which tracks
+     image-centre across typical card sizes (title/price/CTA push the true
+     card centre well below the image). */
+  .fcy-similar-products__arrow {
+    position: absolute;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .fcy-similar-products__arrow--prev {
+    left: -22px;
+  }
+
+  .fcy-similar-products__arrow--next {
+    right: -22px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .fcy-similar-products__arrow {
+      display: none;
+    }
+  }
+
+  /* ── Placeholder state ───────────────────────────────────── */
+  .fcy-product-card--placeholder .fcy-product-card__media {
+    opacity: 0.6;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fancyfy — Similar",
+  "tag": "section",
+  "class": "fcy-similar-products-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Similar Products" },
+    { "type": "select", "id": "heading_alignment", "label": "Heading alignment",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ],
+      "default": "center" },
+
+    { "type": "header", "content": "Source" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_limit", "label": "Max products", "min": 3, "max": 16, "step": 1, "default": 8 },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Cards per row (desktop)", "min": 2, "max": 6, "step": 1, "default": 5 },
+    { "type": "select", "id": "columns_mobile", "label": "Cards per row (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1" },
+    { "type": "range", "id": "card_gap", "label": "Gap between cards", "min": 0, "max": 48, "step": 2, "unit": "px", "default": 16 },
+
+    { "type": "header", "content": "Card tag" },
+    { "type": "checkbox", "id": "show_tag", "label": "Show first product tag on card", "default": true },
+    { "type": "color", "id": "tag_color", "label": "Tag background color", "default": "#FEDC5C" },
+    { "type": "color", "id": "tag_text_color", "label": "Tag text color", "default": "#0A0A0A" },
+
+    { "type": "header", "content": "Card CTA" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "See details" },
+
+    { "type": "header", "content": "Color" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding-block-start",  "label": "Top",    "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding-block-end",    "label": "Bottom", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding-inline-start", "label": "Left",   "min": 0, "max": 80,  "step": 2, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end",   "label": "Right",  "min": 0, "max": 80,  "step": 2, "unit": "px", "default": 0 }
+  ],
+  "presets": [
+    {
+      "name": "Fancyfy — Similar",
+      "category": "Fancyfy",
+      "settings": {
+        "heading": "Similar Products",
+        "heading_alignment": "center",
+        "products_limit": 8,
+        "columns": 5,
+        "columns_mobile": "1",
+        "card_gap": 16,
+        "show_tag": true,
+        "tag_color": "#FEDC5C",
+        "tag_text_color": "#0A0A0A",
+        "cta_label": "See details",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

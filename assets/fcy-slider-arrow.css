@@ -1,0 +1,60 @@
+/* fcy-slider-arrow — circular shadowed arrow control (see snippets/fcy-slider-arrow.liquid) */
+
+.fcy-slider-arrow {
+  --fcy-slider-arrow-size: 44px;
+  --fcy-slider-arrow-icon: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fcy-slider-arrow-size);
+  height: var(--fcy-slider-arrow-size);
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border: 1px solid rgb(var(--color-foreground-rgb) / 0.06);
+  border-radius: 50%;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 4px 12px rgb(0 0 0 / 0.1);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.fcy-slider-arrow:hover {
+  background-color: var(--color-background);
+  box-shadow:
+    0 2px 4px rgb(0 0 0 / 0.06),
+    0 6px 18px rgb(0 0 0 / 0.14);
+  transform: translateY(-1px);
+}
+
+.fcy-slider-arrow:focus-visible {
+  outline: 2px solid var(--color-foreground);
+  outline-offset: 2px;
+}
+
+.fcy-slider-arrow:disabled,
+.fcy-slider-arrow[aria-disabled='true'] {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+.fcy-slider-arrow__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fcy-slider-arrow-icon);
+  height: var(--fcy-slider-arrow-icon);
+}
+
+.fcy-slider-arrow__icon svg {
+  width: auto;
+  height: 100%;
+  --icon-stroke-width: 2px;
+}

@@ -1,0 +1,147 @@
+{%- doc -%}
+  fcy-product-card — Reusable premium product card.
+
+  Renders a single product tile with:
+    - Soft-tinted rounded surface
+    - Optional tag pill (first product tag; merchant-controlled color via `tag_color`)
+    - Primary image with smooth hover crossfade to the second gallery image
+    - Title (two-line clamp)
+    - Price + compare-at (strike)
+    - Placeholder star rating (hard-coded until the real review integration lands)
+    - SEE DETAILS ghost pill CTA
+
+  Designed to be dropped into any product-loop context:
+
+    {% for product in collections.something.products %}
+      {% render 'fcy-product-card', product: product, tag_color: '#FEDC5C' %}
+    {% endfor %}
+
+  Styles live in `assets/fcy-product-card.css`. The consuming section is
+  responsible for loading it once via `stylesheet_tag` — see
+  `sections/fcy-similar-products.liquid` for the reference wiring.
+
+  @param {product} product             - Shopify product object (required)
+  @param {string}  [tag_color]         - Background color for the tag pill (default: --fcy-color-accent)
+  @param {string}  [tag_text_color]    - Text color for the tag pill (default: --fcy-color-accent-contrast)
+  @param {boolean} [show_tag]          - Whether to render the tag pill (default true; hides when product has no tags)
+  @param {string}  [cta_label]         - Override CTA label (default "See details")
+  @param {string}  [extra_class]       - Extra CSS classes on the card wrapper
+{%- enddoc -%}
+
+{%- liquid
+  assign show_tag_flag = show_tag
+  if show_tag == nil
+    assign show_tag_flag = true
+  endif
+
+  assign cta = cta_label | default: 'See details'
+
+  # Use the first public tag. Shopify convention: tags prefixed with "_" are
+  # treated as internal/admin-only (e.g. Okendo syndication keys) and should
+  # not render to shoppers.
+  assign first_tag = blank
+  if product != blank and product.tags.size > 0
+    for t in product.tags
+      assign first_char = t | slice: 0
+      if first_char == '_'
+        continue
+      endif
+      assign first_tag = t
+      break
+    endfor
+  endif
+
+  assign variant = product.selected_or_first_available_variant
+  assign primary_image = product.featured_media.preview_image
+  if primary_image == blank
+    assign primary_image = variant.featured_image
+  endif
+  assign secondary_image = blank
+  if product.media.size > 1
+    assign secondary_image = product.media[1].preview_image
+  endif
+
+  assign product_url = variant.url | default: product.url
+-%}
+
+<article class="fcy-product-card{% if extra_class != blank %} {{ extra_class }}{% endif %}" data-product-id="{{ product.id }}">
+  {%- if show_tag_flag and first_tag != blank -%}
+    <span
+      class="fcy-product-card__tag"
+      style="
+        {%- if tag_color != blank and tag_color != 'rgba(0,0,0,0)' %}--fcy-card-tag-bg: {{ tag_color }};{% endif -%}
+        {%- if tag_text_color != blank and tag_text_color != 'rgba(0,0,0,0)' %}--fcy-card-tag-fg: {{ tag_text_color }};{% endif -%}
+      "
+    >
+      {{- first_tag | escape -}}
+    </span>
+  {%- endif -%}
+
+  <a class="fcy-product-card__media-link" href="{{ product_url }}">
+    <span class="visually-hidden">{{ product.title | escape }}</span>
+    <div class="fcy-product-card__media">
+      {%- if primary_image != blank -%}
+        {{
+          primary_image
+          | image_url: width: 800
+          | image_tag:
+              class: 'fcy-product-card__image fcy-product-card__image--primary',
+              alt: product.featured_media.alt | default: product.title,
+              widths: '300, 500, 700, 900, 1200',
+              sizes: '(min-width: 990px) 20vw, (min-width: 750px) 33vw, 60vw',
+              loading: 'lazy'
+        }}
+      {%- else -%}
+        <div class="fcy-product-card__placeholder" aria-hidden="true">
+          {{ 'product-apparel-1' | placeholder_svg_tag: 'fcy-product-card__placeholder-svg' }}
+        </div>
+      {%- endif -%}
+
+      {%- if secondary_image != blank -%}
+        {{
+          secondary_image
+          | image_url: width: 800
+          | image_tag:
+              class: 'fcy-product-card__image fcy-product-card__image--secondary',
+              alt: '',
+              widths: '300, 500, 700, 900, 1200',
+              sizes: '(min-width: 990px) 20vw, (min-width: 750px) 33vw, 60vw',
+              loading: 'lazy'
+        }}
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="fcy-product-card__body">
+    <h3 class="fcy-product-card__title">
+      <a class="fcy-product-card__title-link" href="{{ product_url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    <div class="fcy-product-card__prices">
+      <span class="fcy-product-card__price">{{ variant.price | money }}</span>
+      {%- if variant.compare_at_price > variant.price -%}
+        <s class="fcy-product-card__compare">{{ variant.compare_at_price | money }}</s>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}
+      Placeholder rating — hard-coded until the real review integration lands.
+      Visible so the layout can be previewed; swap with the review-app render
+      when that integration is wired.
+    {%- endcomment -%}
+    <div class="fcy-product-card__rating" aria-label="Rated 4.4 out of 5">
+      <span class="fcy-product-card__stars" aria-hidden="true">★★★★★</span>
+      <span class="fcy-product-card__rating-meta">4.4 (1699)</span>
+    </div>
+
+    <div class="fcy-product-card__cta-wrap">
+      {%- render 'fcy-button',
+        label: cta,
+        link: product_url,
+        type: 'ghost',
+        extra_class: 'fcy-product-card__cta'
+      -%}
+    </div>
+  </div>
+</article>
+
