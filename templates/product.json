@@ -822,8 +822,8 @@
         "number_bg_color": "#0a0a0a",
         "number_text_color": "#ffffff",
         "color_scheme": "scheme-1",
-        "padding-block-start": 24,
-        "padding-block-end": 48,
+        "padding-block-start": 40,
+        "padding-block-end": 40,
         "padding-inline-start": 0,
         "padding-inline-end": 0
       }
